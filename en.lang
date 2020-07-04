@@ -56,3 +56,7 @@ command.config.delete.successful.description=Your channed has been deleted
 #private
 command.config.private.successful.title=Visibility updated
 command.config.private.successful.description=:lock: Your channel is now a **private** channel
+
+#public
+command.config.public.successful.title=Visibility updated
+command.config.public.successful.description=:unlock: Your channel is now a **public** channel
