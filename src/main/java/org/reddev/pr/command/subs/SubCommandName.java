@@ -26,7 +26,7 @@ public class SubCommandName implements ConfigSubCommandExecutor {
             return;
         }
         voiceChannel.createUpdater().setName("🔐 " + String.join(" ", args)).update();
-        textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.config.name.successful.title"), String.format(I18n.format(server.getId(), "command.config.name.successful.description"), args[0])));
+        textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.config.name.successful.title"), String.format(I18n.format(server.getId(), "command.config.name.successful.description"), String.join(" ", args))));
 
     }
 
