@@ -12,6 +12,7 @@ import fr.il_totore.ucp.GeneralResult;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
+import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.Main;
 import org.reddev.pr.event.ServerJoinEventListener;
 import org.reddev.pr.event.ServerLeaveEventListener;
@@ -38,11 +39,11 @@ public class LangCommand implements BiFunction<MessageCreateEvent, CommandContex
         TextChannel textChannel = event.getChannel();
 
         if (args.length != 1) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.lang.error.syntax"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.lang.error.syntax"), server));
             return null;
         }
         if (!(langs.contains(args[0]))) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.lang.error.not_correct_lang"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.lang.error.not_correct_lang"), server));
             return null;
         }
         try {
@@ -51,11 +52,11 @@ public class LangCommand implements BiFunction<MessageCreateEvent, CommandContex
             stmt.setLong(2, server.getId());
             stmt.execute();
             stmt.close();
-            textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.lang.successful.title"), I18n.format(server.getId(), "command.lang.successful.description")));
+            textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.lang.successful.title"), I18n.format(server.getId(), "command.lang.successful.description")));
             ServerLeaveEventListener.deleteChannels(server);
             ServerJoinEventListener.createChannels(server, true);
         } catch (Exception e) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "error.sql_error"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "error.sql_error"), server));
         }
         return null;
     }

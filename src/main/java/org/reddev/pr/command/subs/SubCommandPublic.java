@@ -12,7 +12,7 @@ import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.reddev.pr.Main;
+import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
@@ -22,7 +22,7 @@ public class SubCommandPublic implements ConfigSubCommandExecutor {
     public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel, Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
 
         voiceChannel.createUpdater().addPermissionOverwrite(server.getEveryoneRole(), Permissions.fromBitmask(0, 0)).update();
-        textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.config.public.successful.title"), I18n.format(server.getId(), "command.config.public.successful.description")));
+        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.public.successful.title"), I18n.format(server.getId(), "command.config.public.successful.description")));
 
     }
 

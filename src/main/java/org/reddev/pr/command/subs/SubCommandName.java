@@ -11,7 +11,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.reddev.pr.Main;
+import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
@@ -22,11 +22,11 @@ public class SubCommandName implements ConfigSubCommandExecutor {
     public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel, Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
 
         if (args.length < 1) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.config.name.error.syntax"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.name.error.syntax"), server));
             return;
         }
         voiceChannel.createUpdater().setName("🔐 " + String.join(" ", args)).update();
-        textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.config.name.successful.title"), String.format(I18n.format(server.getId(), "command.config.name.successful.description"), String.join(" ", args))));
+        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.name.successful.title"), String.format(I18n.format(server.getId(), "command.config.name.successful.description"), String.join(" ", args))));
 
     }
 

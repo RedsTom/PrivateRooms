@@ -13,7 +13,7 @@ import fr.il_totore.ucp.registration.CommandRegistry;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
-import org.reddev.pr.Main;
+import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.utils.i18n.I18n;
 import org.reddev.pr.utils.spec.PermissionedCommandSpec;
 
@@ -46,13 +46,13 @@ public class MessageCreateEventListener implements MessageCreateListener {
             if (permissionSpec.getPermissions().isPresent() && event.getServer().isPresent() && event.getMessageAuthor().isUser()) {
                 List<PermissionType> permissions = new ArrayList<>(permissionSpec.getPermissions().get().getAllowedPermission());
                 if (!event.getServer().get().hasPermissions(event.getMessageAuthor().asUser().get(), permissions.toArray(new PermissionType[0]))) {
-                    event.getChannel().sendMessage(Main.getErrorEmbed(I18n.format(event.getServer().get().getId(), "error.no_perm"), event.getServer().get()));
+                    event.getChannel().sendMessage(EmbedUtils.getErrorEmbed(I18n.format(event.getServer().get().getId(), "error.no_perm"), event.getServer().get()));
                     return;
                 }
             }
         }
         if (parsingResult.getResultType() == ParsingResult.ResultType.FAILURE) {
-            event.getChannel().sendMessage(Main.getErrorEmbed(parsingResult.getMessage().get(), event.getServer().get()));
+            event.getChannel().sendMessage(EmbedUtils.getErrorEmbed(parsingResult.getMessage().get(), event.getServer().get()));
             return;
         }
         if (parsingResult.getResultType() == ParsingResult.ResultType.SUCCESS) {

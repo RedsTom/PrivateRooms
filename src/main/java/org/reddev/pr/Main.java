@@ -11,18 +11,14 @@ import fr.il_totore.ucp.registration.CommandRegistry;
 import fr.il_totore.ucp.registration.PrefixedCommandRegistry;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.json.simple.JSONArray;
 import org.reddev.pr.register.CommandRegister;
 import org.reddev.pr.register.EventRegistry;
 import org.reddev.pr.register.LangReader;
 import org.reddev.pr.register.LangRegisterer;
-import org.reddev.pr.utils.i18n.I18n;
 import org.reddev.pr.utils.sql.DatabaseManager;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -71,22 +67,6 @@ public class Main {
 
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
-    }
-
-    public static EmbedBuilder getErrorEmbed(String s, Server server) {
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(I18n.format(server.getId(), "message.error") + " : ")
-                .setDescription(s)
-                .setColor(Color.RED);
-        return embed;
-    }
-
-    public static EmbedBuilder getSuccessEmbed(String title, String message) {
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(title)
-                .setDescription(message)
-                .setColor(Color.GREEN);
-        return embed;
     }
 
     public static File getLangFile() {

@@ -14,6 +14,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
+import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.Main;
 import org.reddev.pr.command.subs.*;
 import org.reddev.pr.utils.i18n.I18n;
@@ -50,11 +51,11 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         }
         ServerVoiceChannel voiceChannel = user.getConnectedVoiceChannel(server).orElse(null);
         if (voiceChannel == null) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_channel"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_channel"), server));
             return null;
         }
         if (voiceChannel.getOverwrittenPermissions().get(user) == null || !(voiceChannel.getOverwrittenPermissions().get(user).getAllowedBitmask() == Main.ownerPermission)) {
-            textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_my_channel"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_my_channel"), server));
             return null;
         }
 
