@@ -52,3 +52,7 @@ command.config.setowner.successful.description=Le propri%e%taire du salon a bien
 #delete
 command.config.delete.successful.title=Salon supprim%e%
 command.config.delete.successful.description=Votre salon a bien %e%t%e% supprim%e%
+
+#private
+command.config.private.successful.title=Visibilit%e% mise %aa% jour
+command.config.private.successful.description=:lock: Votre salon est d%e%sormais un salon **priv%e%**

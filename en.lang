@@ -52,3 +52,7 @@ command.config.setowner.error.not_connected=The user you mentionned is not in yo
 #delete
 command.config.delete.successful.title=Channel removed
 command.config.delete.successful.description=Your channed has been deleted
+
+#private
+command.config.private.successful.title=Visibility updated
+command.config.private.successful.description=:lock: Your channel is now a **private** channel
