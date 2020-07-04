@@ -39,7 +39,7 @@ command.config.help.description=Aide du %config
 #name
 command.config.name.description=Renomme le salon de l'utilisateur
 command.config.name.successful.title=Salon renomm%e%
-command.config.name.successful.description=Votre salon a été renommé en **$s**
+command.config.name.successful.description=Votre salon a %e%t%e% renomm%e% en **$s**
 command.config.name.error.syntax=Syntaxe incorrected ! La syntaxe correcte est ``config name [new name]``
 
 #setowner
