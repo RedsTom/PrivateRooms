@@ -61,6 +61,8 @@ public class Main {
             api = new DiscordApiBuilder().setToken(token).login().join();
         }
 
+        api.updateActivity("%help | Your Private Channels");
+
         Main.getDatabaseManager().createTableIfNotExists("servers", "id INT(255) UNIQUE, createChannelId INT(255) UNIQUE, categoryId INT(255) UNIQUE, lang VARCHAR(255)");
 
         new CommandRegister(registry);

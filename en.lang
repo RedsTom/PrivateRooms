@@ -50,23 +50,28 @@ command.config.setowner.error.no_mention=Please specify a mention
 command.config.setowner.error.not_connected=The user you mentionned is not in your channel
 
 #delete
+command.config.delete.description=Delete the channel
 command.config.delete.successful.title=Channel removed
 command.config.delete.successful.description=Your channed has been deleted
 
 #private
+command.config.private.description=Closes the channel. Only the added users will be able to join.
 command.config.private.successful.title=Visibility updated
 command.config.private.successful.description=:lock: Your channel is now a **private** channel
 
 #public
+command.config.public.description=Open the channel. Everyone will be able to join
 command.config.public.successful.title=Visibility updated
 command.config.public.successful.description=:unlock: Your channel is now a **public** channel
 
 #add
+command.config.add.description=Add an user to the whitelist of the channel
 command.config.add.error.no_mention=Please mention a player
 command.config.add.successful.title=Users updated
 command.config.add.successful.description=:key: You gave the access of your channel for $s
 
 #remove
+command.config.remove.description=Removes an user from the whitelist of the channel
 command.config.remove.error.no_mention=Please mention a player
 command.config.remove.successful.title=Users updated
 command.config.remove.successful.description=:closed_lock_with_key: You removed the access of your channel for $s
