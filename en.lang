@@ -64,4 +64,9 @@ command.config.public.successful.description=:unlock: Your channel is now a **pu
 #add
 command.config.add.error.no_mention=Please mention a player
 command.config.add.successful.title=Users updated
-command.config.add.successful.description=:key: You gave the access of your channel to $s
+command.config.add.successful.description=:key: You gave the access of your channel for $s
+
+#remove
+command.config.remove.error.no_mention=Please mention a player
+command.config.remove.successful.title=Users updated
+command.config.remove.successful.description=:closed_lock_with_key: You removed the access of your channel for $s

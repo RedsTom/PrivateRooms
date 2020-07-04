@@ -35,7 +35,7 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         subs.put("private", new SubCommandPrivate());
         subs.put("public", new SubCommandPublic());
         subs.put("add", new SubCommandAdd());
-        //TODO add, remove
+        subs.put("remove", new SubCommandRemove());
     }
 
     @Override

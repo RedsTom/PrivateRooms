@@ -65,3 +65,8 @@ command.config.public.successful.description=:unlock: Votre salon est d%e%sormai
 command.config.add.error.no_mention=Veuillez pr%e%ciser un joueur
 command.config.add.successful.title=Utilisateurs mis %aa% jour
 command.config.add.successful.description=:key: Vous avez donn%e% l'acces %aa% votre salon %aa% $s
+
+#add
+command.config.add.error.no_mention=Veuillez pr%e%ciser un joueur
+command.config.add.successful.title=Utilisateurs mis %aa% jour
+command.config.add.successful.description=:closed_lock_with_key: Vous avez retir%e% l'acces %aa% votre salon %aa% $s
