@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)
+ * RedDev 2020
+ * Private Rooms Bot
+ */
+
 package org.reddev.pr;
 
 import com.google.common.collect.Lists;
@@ -26,7 +32,7 @@ public class Main {
     public static int userPermission = 66061568;
     public static JSONArray langs;
     private static DiscordApi api;
-    private static CommandRegistry<MessageCreateEvent> registry = new PrefixedCommandRegistry<>(Lists.newArrayList(), "%");
+    private static final CommandRegistry<MessageCreateEvent> registry = new PrefixedCommandRegistry<>(Lists.newArrayList(), "%");
     private static DatabaseManager databaseManager;
     private static File langFile;
     public static String token;

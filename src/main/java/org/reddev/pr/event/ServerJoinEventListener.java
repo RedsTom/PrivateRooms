@@ -1,3 +1,9 @@
+/*
+ * Copyright (c)
+ * RedDev 2020
+ * Private Rooms Bot
+ */
+
 package org.reddev.pr.event;
 
 import org.javacord.api.entity.channel.ChannelCategory;
