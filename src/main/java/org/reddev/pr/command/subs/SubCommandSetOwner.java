@@ -36,7 +36,7 @@ public class SubCommandSetOwner implements ConfigSubCommandExecutor {
 
         voiceChannel.createUpdater()
                 .removePermissionOverwrite(user)
-                .addPermissionOverwrite(mentionnedUser, Permissions.fromBitmask(Main.userPermission))
+                .addPermissionOverwrite(mentionnedUser, Permissions.fromBitmask(Main.ownerPermission))
                 .update();
 
         textChannel.sendMessage(Main.getSuccessEmbed(I18n.format(server.getId(), "command.config.setowner.successful.title"), String.format(I18n.format(server.getId(), "command.config.setowner.successful.description"), mentionnedUser.getMentionTag())));

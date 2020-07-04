@@ -60,3 +60,8 @@ command.config.private.successful.description=:lock: Your channel is now a **pri
 #public
 command.config.public.successful.title=Visibility updated
 command.config.public.successful.description=:unlock: Your channel is now a **public** channel
+
+#add
+command.config.add.error.no_mention=Please mention a player
+command.config.add.successful.title=Users updated
+command.config.add.successful.description=:key: You gave the access of your channel to $s

@@ -29,7 +29,10 @@ import java.sql.SQLException;
 
 public class Main {
 
-    public static int userPermission = 66061056;
+    public static int ownerPermission = 66061056;
+    public static int userPermission = 3146752;
+    public static int userDeniedPermission = 62914816;
+    public static int deniedPermission = 30408960;
     public static JSONArray langs;
     private static DiscordApi api;
     private static final CommandRegistry<MessageCreateEvent> registry = new PrefixedCommandRegistry<>(Lists.newArrayList(), "%");

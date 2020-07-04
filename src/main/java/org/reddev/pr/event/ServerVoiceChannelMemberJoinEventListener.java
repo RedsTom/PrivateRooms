@@ -34,7 +34,7 @@ public class ServerVoiceChannelMemberJoinEventListener implements ServerVoiceCha
 
                 ServerVoiceChannelBuilder builder = new ServerVoiceChannelBuilder(server)
                         .setName("🔐 " + user.getName() + "'s channel")
-                        .addPermissionOverwrite(user, Permissions.fromBitmask(Main.userPermission));
+                        .addPermissionOverwrite(user, Permissions.fromBitmask(Main.ownerPermission));
 
                 if (category != null) builder.setCategory(category);
 

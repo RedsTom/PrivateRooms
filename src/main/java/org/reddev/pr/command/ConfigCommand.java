@@ -34,7 +34,8 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         subs.put("delete", new SubCommandDelete());
         subs.put("private", new SubCommandPrivate());
         subs.put("public", new SubCommandPublic());
-        //TODO public, add, remove
+        subs.put("add", new SubCommandAdd());
+        //TODO add, remove
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
             textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_channel"), server));
             return null;
         }
-        if (voiceChannel.getOverwrittenPermissions().get(user) == null || !(voiceChannel.getOverwrittenPermissions().get(user).getAllowedBitmask() == Main.userPermission)) {
+        if (voiceChannel.getOverwrittenPermissions().get(user) == null || !(voiceChannel.getOverwrittenPermissions().get(user).getAllowedBitmask() == Main.ownerPermission)) {
             textChannel.sendMessage(Main.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_my_channel"), server));
             return null;
         }
