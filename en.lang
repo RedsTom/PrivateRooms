@@ -48,6 +48,8 @@ command.config.name.error.syntax=Incorrect syntax ! The correct syntax is ``conf
 command.config.setowner.description=Change the owner of the channel
 command.config.setowner.error.no_mention=Please specify a mention
 command.config.setowner.error.not_connected=The user you mentionned is not in your channel
+command.config.setowner.successful.title=Owner changed
+command.config.setowner.successful.description=The owner of your channel has been changed to $s
 
 #delete
 command.config.delete.description=Delete the channel
