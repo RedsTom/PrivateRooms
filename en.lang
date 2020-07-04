@@ -1,0 +1,50 @@
+#Placeholders in src/main/java/org/reddev/pr/utils/lang/Placeholders
+
+message.error=Error
+
+error.sql_error=An error occured while using the ``servers.db`` file !
+error.no_perm=You don't have permission to execute this command !
+
+text.create_channel=Create Private Room
+text.no_description=No description
+text.help=Help
+
+command.lang.description=Change the server's lang settings !
+command.lang.successful.title=Language changed !
+command.lang.successful.description=The server's language has been changed to ``English``
+command.lang.error.syntax=Incorrect syntax ! Correct syntax is ``%lang [locale]``
+command.lang.error.not_correct_lang=The language you provided isn't correct !
+
+command.cleardata.description=Delete all the stocked data of the server !
+command.cleardata.successful.title=Data cleared !
+command.cleardata.successful.description=I have been removed all I know on you from my database
+
+command.setup.description=Reconfigure the server
+command.setup.successful.title=Server set up !
+command.setup.successful.description=Your channel has been set up.%n %n:x: Do not move it to another category%n:white_check_mark: You can rename it%n:white_check_mark: You can rename the category
+
+command.serverinfo.description=Server's informations
+command.serverinfo.embed.title=Server Infos
+command.serverinfo.embed.description=What infos have I on this server ?
+
+command.help.description=Show the bot's help
+
+command.config.description=Configure the user's private channels !
+command.config.error.not_in_channel=You must be in a channel to execute this command !
+command.config.error.not_in_my_channel=You must be in **your** channel to execute this command !
+
+#Config's subcommands
+
+#help
+command.config.help.description=Help of the %config
+
+#name
+command.config.name.description=Rename the channel of the user
+command.config.name.successful.title=Channel renamed
+command.config.name.successful.description=Your channel has been renamed to **$s**
+command.config.name.error.syntax=Incorrect syntax ! The correct syntax is ``config name [new name]``
+
+#setowner
+command.config.setowner.description=Change the owner of the channel
+command.config.setowner.error.no_mention=Please specify a mention
+command.config.setowner.error.not_connected=The user you mentionned is not in your channel
