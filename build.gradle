@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+group 'org.reddev'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.compile]
+}
+
+application {
+    mainClassName("org.reddev.pr.Main")
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.github.RedsTom:UCP:v1.1'
+    compile 'org.javacord:javacord:3.0.6'
+    compile 'org.xerial:sqlite-jdbc:3.8.9.1'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.reddev.pr.Main'
+    }
+}

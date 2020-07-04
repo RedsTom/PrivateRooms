@@ -1,0 +1,54 @@
+message.error=Erreur
+
+error.sql_error=Une erreur est survenue lors de l'utilisation du fichier ``servers.db`` !
+error.no_perm=Vous n'avez pas la permission d'executer cette commande !
+
+text.create_channel=Cr%e%er un salon priv%e%
+text.no_description=Pas de description
+text.help=Aide :
+
+command.lang.description=Change les param%ee%tres de langue du serveur !
+command.lang.successful.title=Langue mise %aa% jour !
+command.lang.successful.description=La langue du serveur est d%e%sormais le ``Fran%c%ais``
+command.lang.error.syntax=Syntaxe incorrecte ! La syntaxe correct est ``%lang [langue]``
+command.lang.error.not_correct_lang=Le language que vous avez pr%e%cis%e% n'est pas correct !
+
+command.cleardata.description=Supprime toutes les donn%e%es stoc%e%es sur le serveur !
+command.cleardata.successful.title=Donn%e%es supprim%e%es !
+command.cleardata.successful.description=J'ai supprim%e% toutes les informatiosn que j'avais sur votre serveur. Plus qu'%aa% tout reconfigurer :wink:
+
+command.setup.description=Reconfigurer le serveur
+command.setup.successful.title=Serveur configur%e% !
+command.setup.successful.description=Vos salons priv%e%s sont pr%eee%ts %aa% l'emploi.%n %n:x: Ne les changez pas de cat%e%gorie%n:white_check_mark: Vous pouvez le renommer%n:white_check_mark: Vous pouvez renommer la cat%e%gorie
+
+command.serverinfo.embed.title=Informations du serveur
+command.serverinfo.embed.description=Quelles sont les informations que je stocke sur ce serveur ?
+command.serverinfo.description=Affiche les informations stock%e%es %aa% propos du serveur
+
+command.help.description=Affiche l'aide du bot
+
+command.config.description=Configurer le salon priv%e% dans lequel l'utilisateur est !
+command.config.error.not_in_channel=Vous devez %eee%tre dans un salon pour executer cette commande !
+command.config.error.not_in_my_channel=Vous devez %eee%tre dans **votre** salon pour executer cette commande !
+
+#Config's subcommands
+
+#help
+command.config.help.description=Aide du %config
+
+#name
+command.config.name.description=Renomme le salon de l'utilisateur
+command.config.name.successful.title=Salon renomm%e%
+command.config.name.successful.description=Votre salon a été renommé en **$s**
+command.config.name.error.syntax=Syntaxe incorrected ! La syntaxe correcte est ``config name [new name]``
+
+#setowner
+command.config.setowner.description=Change le propri%e%taire du salon
+command.config.setowner.error.no_mention=Veuillez pr%e%ciser un joueur
+command.config.setowner.error.not_connected=L'utilisateur que vous avez mentionn%e% n'est pas dans votre salon
+command.config.setowner.successful.title=Propri%e%taire chang%e%
+command.config.setowner.successful.description=Le propri%e%taire du salon a bien %e%t%e% chang%e% vers $s
+
+#delete
+command.config.delete.successful.title=Salon supprim%e%
+command.config.delete.successful.description=Votre salon a bien %e%t%e% supprim%e%
