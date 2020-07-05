@@ -86,4 +86,4 @@ command.config.hide.successful.description=:lock: Your channel is now a **hidden
 #show
 command.config.show.description=Show the channel. Everybody will be able to see the channel.
 command.config.show.successful.title=Visibility updated
-command.config.show.successful.description=:lock: Your channel is now a **visible**
+command.config.show.successful.description=:lock: Your channel is now a **visible** channel
