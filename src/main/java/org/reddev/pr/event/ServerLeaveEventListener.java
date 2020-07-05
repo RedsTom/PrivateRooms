@@ -19,12 +19,14 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class ServerLeaveEventListener implements ServerLeaveListener {
-    public static void deleteChannels(Server server, boolean deleteSql) throws SQLException {
+    public static boolean deleteChannels(Server server, boolean deleteSql) throws SQLException {
 
         PreparedStatement stmt = Main.getDatabaseManager().getConnection().prepareStatement("SELECT categoryId FROM servers WHERE id=?");
         stmt.setLong(1, server.getId());
         ResultSet rs = stmt.executeQuery();
+        boolean toRt = false;
         if (rs.next()) {
+            toRt = true;
             long categoryId = rs.getLong(1);
 
             Optional<ChannelCategory> channelCategory = server.getChannelCategoryById(categoryId);
@@ -45,6 +47,7 @@ public class ServerLeaveEventListener implements ServerLeaveListener {
             stmt.close();
         }
 
+        return toRt;
     }
 
     @Override

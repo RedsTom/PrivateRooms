@@ -25,7 +25,7 @@ public class I18n {
             if (!(f.exists())) f.createNewFile();
             InputStream stream = new FileInputStream(f);
 
-            if (!(stream != null) && !(locale.equals("en"))) {
+            if (!(locale.equals("en"))) {
                 return I18n.format("en", key);
             } else if (stream == null) {
                 throw new FileNotFoundException("The file " + propFileName + " cannot be found !");
