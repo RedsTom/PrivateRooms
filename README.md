@@ -22,9 +22,9 @@ Enjoy modifying PrivateRooms
 ## How to use it ?
 
 Prerequisites : Install the JDK version 8 or 1.8 : 
-![Official Website](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) 
-![Adopt OpenJDK](https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=hotspot) 
-![Amazon Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html)
+[Official Website](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) 
+[Adopt OpenJDK](https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=hotspot) 
+[Amazon Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html)
 
 ### 1 : Clone project 
 
