@@ -1,25 +1,25 @@
 # PrivateRooms
 
-## How to edit ?
+## Comment le modifier ?
 
-### 1 : Clone project 
+### 1 : Cloner le projet
 
-Execute the ``git clone https://github.com/RedsTom/PrivateRooms.git`` command or download the zip file
+Executez la commande ``git clone https://github.com/RedsTom/PrivateRooms.git`` ou installez le fichier ZIP
 
 ### 2 : Open project with your IDE
 ### → 2.1 Idea
-With Intellij Idea, open the folder downloaded and import the gradle project
+Avec IntelliJ IDEA, ouvrez le projet et importez le fichier gradle
 
 ### → 2.2 Eclipse
-With Eclipse, open the parent folder as workspace and import the gradle project
+Avec eclipse, ouvrez le dossier parent du projet en temps que Workspace et importez le projet Gradle.
 
 ### 3 : Setup the config.json
-During the first run, a file called ``config.json`` will be created at the root of your project. Put your token in and enjoy.
+Lors du premier lancement, un fichier ``config.json`` va être créé à la racine de votre projet : ouvrez le et renseignez votre token.
 
-### 4 : Start coding !
-Enjoy modifying PrivateRooms
+### 4 : Commencez à developper !
+Amusez vous à modifier PrivateRooms comme bon vous semble.
 
-## How to use it ?
+## Comment l'utiliser ?
 
 Prérequis : Installez le JDK 8 ou 1.8 :
 [Official Website](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) 
