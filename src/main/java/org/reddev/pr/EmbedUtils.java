@@ -15,19 +15,17 @@ import java.awt.*;
 public class EmbedUtils {
 
     public static EmbedBuilder getErrorEmbed(String s, Server server) {
-        EmbedBuilder embed = new EmbedBuilder()
+        return new EmbedBuilder()
                 .setTitle(I18n.format(server.getId(), "message.error") + " : ")
                 .setDescription(s)
                 .setColor(Color.RED);
-        return embed;
     }
 
     public static EmbedBuilder getSuccessEmbed(String title, String message) {
-        EmbedBuilder embed = new EmbedBuilder()
+        return new EmbedBuilder()
                 .setTitle(title)
                 .setDescription(message)
                 .setColor(Color.GREEN);
-        return embed;
     }
 
 }

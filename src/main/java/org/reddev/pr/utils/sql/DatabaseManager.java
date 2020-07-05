@@ -35,16 +35,14 @@ public class DatabaseManager {
         return true;
     }
 
-    public void executeQuery(String query) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.execute();
-        stmt.close();
-    }
-
-    public void createTableIfNotExists(String table, String arguments) throws SQLException {
-        PreparedStatement q = connection.prepareStatement(String.format("CREATE TABLE IF NOT EXISTS %s (%s)", table, arguments));
-        q.execute();
-        q.close();
+    public void createTableIfNotExists(String table, String arguments) {
+        try {
+            PreparedStatement q = connection.prepareStatement(String.format("CREATE TABLE IF NOT EXISTS %s (%s)", table, arguments));
+            q.execute();
+            q.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Object getData(String table, String dataToGet, String condition) throws SQLException {

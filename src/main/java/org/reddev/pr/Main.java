@@ -21,8 +21,6 @@ import org.reddev.pr.register.LangRegisterer;
 import org.reddev.pr.utils.sql.DatabaseManager;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main {
 
@@ -32,22 +30,22 @@ public class Main {
     private static File langFile;
     public static String token;
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) {
 
         databaseManager = new DatabaseManager();
         databaseManager.openConnection();
         langFile = new File(System.getProperty("user.dir"), "config.json");
         if (!(langFile.exists())) {
-            //noinspection ResultOfMethodCallIgnored -> Ignores the result of langFile.createNewFile();
-            langFile.createNewFile();
+            try {
+                //noinspection ResultOfMethodCallIgnored -> Ignores the result of langFile.createNewFile();
+                langFile.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             new LangRegisterer(langFile);
         }
 
-        try {
-            new LangReader();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new LangReader();
 
         //API DEFINITION
         DiscordApi api;

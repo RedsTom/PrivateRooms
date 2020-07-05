@@ -23,24 +23,12 @@ public class LangRegisterer {
         langs.add("en");
         langs.add("fr");
         obj.put("langs", langs);
-        FileWriter fw = null;
 
-        try {
-            fw = new FileWriter(langFile);
+        try (FileWriter fw = new FileWriter(langFile)) {
             fw.write(obj.toJSONString());
+            fw.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fw != null) {
-                    fw.flush();
-                }
-                if (fw != null) {
-                    fw.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
