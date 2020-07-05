@@ -37,6 +37,8 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         subs.put("public", new SubCommandPublic());
         subs.put("add", new SubCommandAdd());
         subs.put("remove", new SubCommandRemove());
+        subs.put("hide", new SubCommandHide());
+        subs.put("show", new SubCommandShow());
         //TODO %setup text → create a text channel with the same permissions than the voice channel. For commands, chatting, etc...
     }
 

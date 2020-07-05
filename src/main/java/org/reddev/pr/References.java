@@ -10,8 +10,11 @@ public class References {
 
     public static final int OWNER_PERMISSION = 66061056;
 
-    public static final int USER_ALLOWED_PERMISSION = 3146752;
-    public static final int USER_DENIED_PERMISSION = 62714816;
+    public static final int USER_ALLOWED_PERMISSION_SHOWN = 36701184;
+    public static final int USER_DENIED_PERMISSION_SHOWN = 29360384;
+
+    public static final int USER_ALLOWED_PERMISSION_HIDDEN = 36700160;
+    public static final int USER_DENIED_PERMISSION_HIDDEN = 29361408;
 
     public static final int DENIED_PERMISSION = 30408960;
 

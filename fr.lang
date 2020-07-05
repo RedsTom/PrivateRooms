@@ -75,3 +75,13 @@ command.config.remove.description=Retire un joueur de la liste blanche du salon
 command.config.remove.error.no_mention=Veuillez pr%e%ciser un joueur
 command.config.remove.successful.title=Utilisateurs mis %aa% jour
 command.config.remove.successful.description=:closed_lock_with_key: Vous avez retir%e% l'acces %aa% votre salon %aa% $s
+
+#hide
+command.config.hide.description=Rends le salon cach%e%. Seul les joueurs autoris%e% pourront le voir
+command.config.hide.successful.title=Visibilit%e% mise %aa% jour
+command.config.hide.successful.description=:lock: Votre salon est d%e%sormais **cach%e%**
+
+#show
+command.config.show.description=Rends le salon visible. Tout le monde pourra le voir
+command.config.show.successful.title=Visibilit%e% mise %aa% jour
+.successful.description=:lock: Votre salon est d%e%sormais **visible**

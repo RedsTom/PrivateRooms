@@ -77,3 +77,13 @@ command.config.remove.description=Removes an user from the whitelist of the chan
 command.config.remove.error.no_mention=Please mention a player
 command.config.remove.successful.title=Users updated
 command.config.remove.successful.description=:closed_lock_with_key: You removed the access of your channel for $s
+
+#hide
+command.config.hide.description=Hide the channel. Only the added users will be able to see it.
+command.config.hide.successful.title=Visibility updated
+command.config.hide.successful.description=:lock: Your channel is now a **hidden**
+
+#show
+command.config.show.description=Show the channel. Everybody will be able to see the channel.
+command.config.show.successful.title=Visibility updated
+command.config.show.successful.description=:lock: Your channel is now a **visible**
