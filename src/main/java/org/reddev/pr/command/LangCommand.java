@@ -60,8 +60,6 @@ public class LangCommand implements BiFunction<MessageCreateEvent, CommandContex
                     .setName("🔒 " + I18n.format(server.getId(), "text.create_channel") + " 🔒")
                     .update();
 
-            System.out.println("Updated ! \n" + "🔒 " + I18n.format(server.getId(), "text.create_channel") + " 🔒\n" + createChannel.getName());
-
             textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.lang.successful.title"), I18n.format(server.getId(), "command.lang.successful.description")));
 
         } catch (Exception e) {
