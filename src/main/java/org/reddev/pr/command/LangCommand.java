@@ -9,13 +9,12 @@ package org.reddev.pr.command;
 import com.google.common.collect.Lists;
 import fr.il_totore.ucp.CommandContext;
 import fr.il_totore.ucp.GeneralResult;
+import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.Main;
-import org.reddev.pr.event.ServerJoinEventListener;
-import org.reddev.pr.event.ServerLeaveEventListener;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.sql.PreparedStatement;
@@ -52,9 +51,19 @@ public class LangCommand implements BiFunction<MessageCreateEvent, CommandContex
             stmt.setLong(2, server.getId());
             stmt.execute();
             stmt.close();
+
+            long createChannelId = (long) Main.getDatabaseManager().getData("servers", "createChannelId", "id=" + server.getId());
+
+            assert server.getVoiceChannelById(createChannelId).isPresent();
+            ServerVoiceChannel createChannel = server.getVoiceChannelById(createChannelId).get();
+            createChannel.createUpdater()
+                    .setName("🔒 " + I18n.format(server.getId(), "text.create_channel") + " 🔒")
+                    .update();
+
+            System.out.println("Updated ! \n" + "🔒 " + I18n.format(server.getId(), "text.create_channel") + " 🔒\n" + createChannel.getName());
+
             textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.lang.successful.title"), I18n.format(server.getId(), "command.lang.successful.description")));
-            ServerLeaveEventListener.deleteChannels(server, false);
-            ServerJoinEventListener.createChannels(server, true);
+
         } catch (Exception e) {
             textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "error.sql_error"), server));
         }
