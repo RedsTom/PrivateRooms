@@ -11,6 +11,7 @@ import fr.il_totore.ucp.registration.CommandRegistry;
 import fr.il_totore.ucp.registration.PrefixedCommandRegistry;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.json.simple.JSONArray;
 import org.reddev.pr.register.CommandRegister;
@@ -56,6 +57,8 @@ public class Main {
         {
             api = new DiscordApiBuilder().setToken(token).login().join();
         }
+
+        System.out.println(api.createBotInvite(Permissions.fromBitmask(18107472)));
 
         api.updateActivity("%help | by @RedsTom#4985");
 
