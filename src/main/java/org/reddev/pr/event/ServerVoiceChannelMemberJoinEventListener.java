@@ -15,6 +15,7 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.event.channel.server.voice.ServerVoiceChannelMemberJoinEvent;
 import org.javacord.api.listener.channel.server.voice.ServerVoiceChannelMemberJoinListener;
 import org.reddev.pr.Main;
+import org.reddev.pr.References;
 
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class ServerVoiceChannelMemberJoinEventListener implements ServerVoiceCha
 
                 ServerVoiceChannelBuilder builder = new ServerVoiceChannelBuilder(server)
                         .setName("🔐 " + user.getName() + "'s channel")
-                        .addPermissionOverwrite(user, Permissions.fromBitmask(Main.ownerPermission));
+                        .addPermissionOverwrite(user, Permissions.fromBitmask(References.OWNER_PERMISSION));
 
                 if (category != null) builder.setCategory(category);
 

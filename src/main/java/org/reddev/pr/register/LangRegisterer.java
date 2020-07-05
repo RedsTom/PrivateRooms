@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@SuppressWarnings("unchecked") // Remove the JSON Errors that says to generify
 public class LangRegisterer {
     public LangRegisterer(File langFile) {
 
@@ -31,8 +32,12 @@ public class LangRegisterer {
             e.printStackTrace();
         } finally {
             try {
-                fw.flush();
-                fw.close();
+                if (fw != null) {
+                    fw.flush();
+                }
+                if (fw != null) {
+                    fw.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

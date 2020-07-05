@@ -13,7 +13,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
-import org.reddev.pr.Main;
+import org.reddev.pr.References;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
@@ -37,7 +37,7 @@ public class SubCommandSetOwner implements ConfigSubCommandExecutor {
 
         voiceChannel.createUpdater()
                 .removePermissionOverwrite(user)
-                .addPermissionOverwrite(mentionnedUser, Permissions.fromBitmask(Main.ownerPermission))
+                .addPermissionOverwrite(mentionnedUser, Permissions.fromBitmask(References.OWNER_PERMISSION))
                 .update();
 
         textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.setowner.successful.title"), String.format(I18n.format(server.getId(), "command.config.setowner.successful.description"), mentionnedUser.getMentionTag())));

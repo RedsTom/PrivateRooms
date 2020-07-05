@@ -26,12 +26,7 @@ import java.sql.SQLException;
 
 public class Main {
 
-    public static int ownerPermission = 66061056;
-    public static int userPermission = 3146752;
-    public static int userDeniedPermission = 62914816;
-    public static int deniedPermission = 30408960;
     public static JSONArray langs;
-    private static DiscordApi api;
     private static final CommandRegistry<MessageCreateEvent> registry = new PrefixedCommandRegistry<>(Lists.newArrayList(), "%");
     private static DatabaseManager databaseManager;
     private static File langFile;
@@ -43,6 +38,7 @@ public class Main {
         databaseManager.openConnection();
         langFile = new File(System.getProperty("user.dir"), "config.json");
         if (!(langFile.exists())) {
+            //noinspection ResultOfMethodCallIgnored -> Ignores the result of langFile.createNewFile();
             langFile.createNewFile();
             new LangRegisterer(langFile);
         }
@@ -54,6 +50,7 @@ public class Main {
         }
 
         //API DEFINITION
+        DiscordApi api;
         {
             api = new DiscordApiBuilder().setToken(token).login().join();
         }
