@@ -53,7 +53,7 @@ public class LangCommand implements BiFunction<MessageCreateEvent, CommandContex
             stmt.execute();
             stmt.close();
             textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.lang.successful.title"), I18n.format(server.getId(), "command.lang.successful.description")));
-            ServerLeaveEventListener.deleteChannels(server);
+            ServerLeaveEventListener.deleteChannels(server, false);
             ServerJoinEventListener.createChannels(server, true);
         } catch (Exception e) {
             textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "error.sql_error"), server));

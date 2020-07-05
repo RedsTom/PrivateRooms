@@ -20,7 +20,7 @@ public class ClearDataCommand implements BiFunction<MessageCreateEvent, CommandC
     public GeneralResult apply(MessageCreateEvent event, CommandContext<MessageCreateEvent> messageCreateEventCommandContext) {
 
         try {
-            ServerLeaveEventListener.deleteChannels(event.getServer().get());
+            ServerLeaveEventListener.deleteChannels(event.getServer().get(), true);
             event.getChannel().sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(event.getServer().get().getId(), "command.cleardata.successful.title"), I18n.format(event.getServer().get().getId(), "command.cleardata.successful.description")));
         } catch (Exception e) {
             e.printStackTrace();

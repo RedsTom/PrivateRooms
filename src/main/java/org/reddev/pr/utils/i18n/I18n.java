@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
+// I nternationalizatio n
 public class I18n {
 
     public static String format(String locale, String key) {
@@ -24,7 +25,7 @@ public class I18n {
             if (!(f.exists())) f.createNewFile();
             InputStream stream = new FileInputStream(f);
 
-            if (stream == null && !(locale.equals("en"))) {
+            if (!(stream != null) && !(locale.equals("en"))) {
                 return I18n.format("en", key);
             } else if (stream == null) {
                 throw new FileNotFoundException("The file " + propFileName + " cannot be found !");
