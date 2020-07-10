@@ -50,7 +50,7 @@ Vous pouvez suivre ces étapes
 ### ⇢ 2.1.5 Maintenant, ouvrez le ``config.json`` et renseignez votre jeton. Vous devez également copier les fichiers ``.lang`` dans ce dossier.
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win6.gif)
 
-### ⇢ 2.1.6 Maintenant, dans un CMD au dossier ``build\libs``, et vous pouvez réexecuter la commande de l'étape ``2.1.4``. Et votre bot est prêt à l'emploi :)
+### ⇢ 2.1.6 Maintenant, réouvrez un CMD au dossier ``build\libs``, et vous pouvez réexecuter la commande de l'étape ``2.1.4``. Et votre bot est prêt à l'emploi :)
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win7.gif)
 
 ### → 2.2 Linux / Mac
