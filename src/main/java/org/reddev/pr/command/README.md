@@ -1,6 +1,6 @@
 # Command Package : Commands of the bot
 
-If you wanna add a command to the bot, add it to this package
+If you wanna add a command to the bot, register it in the ``register/CommandRegister.java`` file and create it into this package
 
 ## ``subs`` package
 You can rename it; it contains the sub commands of the config command !
