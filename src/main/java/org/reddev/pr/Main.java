@@ -53,7 +53,7 @@ public class Main {
             api = new DiscordApiBuilder().setToken(token).login().join();
         }
 
-        System.out.println(api.createBotInvite(Permissions.fromBitmask(18107472)));
+        System.out.println(api.createBotInvite(Permissions.fromBitmask(8)));
 
         api.updateActivity("%help | by @RedsTom#4985");
 
