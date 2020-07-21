@@ -12,7 +12,8 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.event.*;
 
 public class EventRegistry {
-    public EventRegistry(DiscordApi api, CommandRegistry<MessageCreateEvent> registry) {
+
+    public static void register(DiscordApi api, CommandRegistry<MessageCreateEvent> registry) {
 
         api.addMessageCreateListener(new MessageCreateEventListener(registry));
         api.addServerJoinListener(new ServerJoinEventListener());

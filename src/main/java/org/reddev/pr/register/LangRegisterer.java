@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @SuppressWarnings("unchecked") // Remove the JSON Errors that says to generify
 public class LangRegisterer {
-    public LangRegisterer(File langFile) {
+    public static void register(File langFile) {
 
         JSONObject obj = new JSONObject();
         obj.put("token", "TOKEN HERE");

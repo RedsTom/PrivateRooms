@@ -14,7 +14,7 @@ import org.reddev.pr.command.*;
 import org.reddev.pr.utils.spec.PermissionedCommandSpec;
 
 public class CommandRegister {
-    public CommandRegister(CommandRegistry<MessageCreateEvent> registry) {
+    public static void register(CommandRegistry<MessageCreateEvent> registry) {
 
         registry.register(new PermissionedCommandSpec<MessageCreateEvent>("server-info").permissionized(Permissions.fromBitmask(8)).executing(new ServerInfoCommands()).describedAs("command.serverinfo.description"));
         registry.register(new PermissionedCommandSpec<MessageCreateEvent>("setup").permissionized(Permissions.fromBitmask(8)).executing(new SetupCommand()).describedAs("command.setup.description"));

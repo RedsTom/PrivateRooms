@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class LangReader {
 
-    public LangReader() {
+    public static void register() {
 
         try {
             JSONParser parser = new JSONParser();

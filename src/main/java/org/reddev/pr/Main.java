@@ -42,25 +42,25 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            new LangRegisterer(langFile);
+            LangRegisterer.register(langFile);
         }
 
-        new LangReader();
-
+        LangReader.register();
+        //TEST 2
         //API DEFINITION
         DiscordApi api;
         {
             api = new DiscordApiBuilder().setToken(token).login().join();
         }
 
-        System.out.println(api.createBotInvite(Permissions.fromBitmask(18107472)));
+        System.out.println(api.createBotInvite(Permissions.fromBitmask(8)));
 
         api.updateActivity("%help | by @RedsTom#4985");
 
         Main.getDatabaseManager().createTableIfNotExists("servers", "id INT(255) UNIQUE, createChannelId INT(255) UNIQUE, categoryId INT(255) UNIQUE, lang VARCHAR(255)");
 
-        new CommandRegister(registry);
-        new EventRegistry(api, registry);
+        CommandRegister.register(registry);
+        EventRegistry.register(api, registry);
     }
 
     public static DatabaseManager getDatabaseManager() {
