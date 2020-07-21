@@ -84,4 +84,4 @@ command.config.hide.successful.description=:lock: Votre salon est d%e%sormais **
 #show
 command.config.show.description=Rends le salon visible. Tout le monde pourra le voir
 command.config.show.successful.title=Visibilit%e% mise %aa% jour
-.successful.description=:lock: Votre salon est d%e%sormais **visible**
+command.config.show.successful.description=:lock: Votre salon est d%e%sormais **visible**
