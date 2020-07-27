@@ -16,7 +16,7 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.References;
-import org.reddev.pr.command.subs.*;
+import org.reddev.pr.command.configsubs.*;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.HashMap;
