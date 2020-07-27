@@ -8,4 +8,4 @@ Private Rooms is a bot that allows you to create private rooms on your server. O
 ### French : https://github.com/RedsTom/PrivateRooms/blob/master/README-FR.MD
 
 ## Want to download easily : (BETA)
-https://redstom.fr/files/prdl.jar
+https://redstom.fr/cdn/prdl.jar
