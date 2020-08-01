@@ -14,6 +14,7 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.References;
+import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
@@ -42,6 +43,6 @@ public class SubCommandAdd implements ConfigSubCommandExecutor {
 
     @Override
     public String getUsage() {
-        return "[mention]";
+        return "<@mention>";
     }
 }

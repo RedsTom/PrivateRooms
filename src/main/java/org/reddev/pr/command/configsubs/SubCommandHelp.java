@@ -12,6 +12,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
+import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.awt.*;
@@ -24,7 +25,19 @@ public class SubCommandHelp implements ConfigSubCommandExecutor {
 
         EmbedBuilder embed = new EmbedBuilder().setTitle(I18n.format(server.getId(), "text.help")).setDescription("").setColor(new Color(0xFAFAFA));
 
-        subs.forEach((key, value) -> embed.addField(" **\\▷ %config " + key + "**" + (!value.getUsage().isEmpty() ? " *" + value.getUsage() + "*" : ""), "```css\n" + value.getDescription(server) + "```", true));
+        subs.forEach((key, value) ->
+                embed.addField(
+                        " **\\▷ %config " + key + "**"
+                                + (
+                                !value.getUsage().isEmpty() ?
+                                        " *" + value.getUsage() + "*"
+                                        : ""
+                        ),
+                        "```css\n"
+                                + value.getDescription(server)
+                                + "```",
+                        true)
+        );
 
         textChannel.sendMessage(embed);
 

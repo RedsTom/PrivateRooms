@@ -14,11 +14,12 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.References;
+import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
 
-public class SubCommandShow implements org.reddev.pr.command.configsubs.ConfigSubCommandExecutor {
+public class SubCommandShow implements ConfigSubCommandExecutor {
 
     @Override
     public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel, Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {

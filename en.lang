@@ -87,3 +87,8 @@ command.config.hide.successful.description=:lock: Your channel is now a **hidden
 command.config.show.description=Show the channel. Everybody will be able to see the channel.
 command.config.show.successful.title=Visibility updated
 command.config.show.successful.description=:lock: Your channel is now a **visible** channel
+
+#add-role
+command.config.add-role.description=Add a role to the whitelist of the channel
+command.config.add-role.error.no_role_precised=Please specify a role name
+command.config.add-role.error.reaction_not_correct=This reaction isn't a correct role reaction. Please retry with a correct reaction !
