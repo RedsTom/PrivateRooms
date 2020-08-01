@@ -4,7 +4,7 @@
  * Private Rooms Bot
  */
 
-package org.reddev.pr.command.configsubs;
+package org.reddev.pr.command.configsubs.utils;
 
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.channel.TextChannel;

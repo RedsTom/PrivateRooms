@@ -70,7 +70,7 @@ command.config.public.successful.description=:unlock: Your channel is now a **pu
 command.config.add.description=Add an user to the whitelist of the channel
 command.config.add.error.no_mention=Please mention a player
 command.config.add.successful.title=Users updated
-command.config.add.successful.description=:key: You gave the access of your channel for $s
+command.config.add.successful.description=:key: You gave the access of your channel to $s
 
 #remove
 command.config.remove.description=Removes an user from the whitelist of the channel
@@ -88,7 +88,19 @@ command.config.show.description=Show the channel. Everybody will be able to see 
 command.config.show.successful.title=Visibility updated
 command.config.show.successful.description=:lock: Your channel is now a **visible** channel
 
+#utils.match_role_query
+command.config.configsubs.utils.match_role_query.results_found=$s results found
+command.config.configsubs.utils.match_role_query.error.reaction_not_correct=This reaction isn't a correct role reaction. Please retry with a correct reaction !
+command.config.configsubs.utils.match_role_query.too_much_results=There is too many results, please be more precise on your query !
+
 #add-role
 command.config.add-role.description=Add a role to the whitelist of the channel
 command.config.add-role.error.no_role_precised=Please specify a role name
-command.config.add-role.error.reaction_not_correct=This reaction isn't a correct role reaction. Please retry with a correct reaction !
+command.config.add-role.successful.title=Roles updated
+command.config.add-role.successful.description=:key: You gave the access of your channel to the ``$s``'s role
+
+#remove-role
+command.config.remove-role.description=Removes a role from the whitelist of the channel
+command.config.remove-role.error.no_role_precised=Please specify a role name
+command.config.remove-role.successful.title=Roles updated
+command.config.remove-role.successful.description=:key: You removed the access of your channel for the ``$s``'s role

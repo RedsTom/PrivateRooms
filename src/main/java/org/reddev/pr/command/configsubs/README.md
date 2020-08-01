@@ -1,8 +1,8 @@
 # Subs Package
 A package for the sub commands of the ``%config``'s command
 
-## ``ConfigSubCommandExecutor.java`` > INTERFACE
-The executor of the sub commands
+## ``utils`` package
+A package with the utilities classes of the sub commands
 
 ## ``SubCommandAdd.java``
 Add a user to the channel's whitelist

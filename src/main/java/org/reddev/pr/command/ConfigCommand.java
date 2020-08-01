@@ -17,6 +17,7 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.EmbedUtils;
 import org.reddev.pr.References;
 import org.reddev.pr.command.configsubs.*;
+import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.HashMap;
@@ -39,6 +40,8 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         subs.put("remove", new SubCommandRemove());
         subs.put("hide", new SubCommandHide());
         subs.put("show", new SubCommandShow());
+        subs.put("add-role", new SubCommandAddRole());
+        subs.put("remove-role", new SubCommandRemoveRole());
         //TODO %setup text → create a text channel with the same permissions than the voice channel. For commands, chatting, etc...
     }
 
