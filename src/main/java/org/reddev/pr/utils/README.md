@@ -9,3 +9,6 @@ A package to create a command registerer with permissions. If you want to custom
 
 ## ``sql`` package
 A package to manage SQL connection. If you want to edit how SQL works, go inside
+
+## ``NumberUtils.java``
+A class to get emoji from number and number from emoji
