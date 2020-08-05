@@ -14,9 +14,9 @@ import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.reddev.pr.register.CommandRegister;
+import org.reddev.pr.register.ConfigReader;
 import org.reddev.pr.register.ConfigRegisterer;
 import org.reddev.pr.register.EventRegistry;
-import org.reddev.pr.register.LangReader;
 import org.reddev.pr.utils.sql.DatabaseManager;
 
 import java.io.File;
@@ -45,7 +45,7 @@ public class Main {
             ConfigRegisterer.register(langFile);
         }
 
-        LangReader.register();
+        ConfigReader.register();
         //TEST 2
         //API DEFINITION
         DiscordApi api;

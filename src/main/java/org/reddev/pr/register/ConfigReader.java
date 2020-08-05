@@ -9,7 +9,7 @@ package org.reddev.pr.register;
 import com.moandjiezana.toml.Toml;
 import org.reddev.pr.Main;
 
-public class LangReader {
+public class ConfigReader {
 
     public static void register() {
         Toml toml = new Toml().read(Main.getLangFile());
