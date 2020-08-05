@@ -1,5 +1,5 @@
 build
-config.json
+config.toml
 .gradle
 servers.db
 .idea

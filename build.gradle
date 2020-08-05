@@ -27,8 +27,8 @@ dependencies {
     compile 'com.github.RedsTom:UCP:v1.1'
     compile 'org.javacord:javacord:3.0.6'
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
-    compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile 'com.vdurmont:emoji-java:5.1.1'
+    compile 'com.moandjiezana.toml:toml4j:0.7.2'
 }
 
 compileJava.options.encoding = 'UTF-8'

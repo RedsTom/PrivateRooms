@@ -6,28 +6,16 @@
 
 package org.reddev.pr.register;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.moandjiezana.toml.Toml;
 import org.reddev.pr.Main;
-
-import java.io.FileReader;
-import java.io.IOException;
 
 public class LangReader {
 
     public static void register() {
+        Toml toml = new Toml().read(Main.getLangFile());
 
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject) parser.parse(new FileReader(Main.getLangFile().getAbsolutePath()));
-
-            Main.langs = (JSONArray) obj.get("langs");
-            Main.token = (String) obj.get("token");
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
+        Main.langs = toml.getList("bot.langs");
+        Main.token = toml.getString("bot.token");
     }
 
 }

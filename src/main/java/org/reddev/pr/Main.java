@@ -13,18 +13,18 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.json.simple.JSONArray;
 import org.reddev.pr.register.CommandRegister;
+import org.reddev.pr.register.ConfigRegisterer;
 import org.reddev.pr.register.EventRegistry;
 import org.reddev.pr.register.LangReader;
-import org.reddev.pr.register.LangRegisterer;
 import org.reddev.pr.utils.sql.DatabaseManager;
 
 import java.io.File;
+import java.util.List;
 
 public class Main {
 
-    public static JSONArray langs;
+    public static List<Object> langs;
     private static final CommandRegistry<MessageCreateEvent> registry = new PrefixedCommandRegistry<>(Lists.newArrayList(), "%");
     private static DatabaseManager databaseManager;
     private static File langFile;
@@ -34,7 +34,7 @@ public class Main {
 
         databaseManager = new DatabaseManager();
         databaseManager.openConnection();
-        langFile = new File(System.getProperty("user.dir"), "config.json");
+        langFile = new File(System.getProperty("user.dir"), "config.toml");
         if (!(langFile.exists())) {
             try {
                 //noinspection ResultOfMethodCallIgnored -> Ignores the result of langFile.createNewFile();
@@ -42,7 +42,7 @@ public class Main {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            LangRegisterer.register(langFile);
+            ConfigRegisterer.register(langFile);
         }
 
         LangReader.register();
