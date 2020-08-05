@@ -7,7 +7,7 @@ Package of the commands. The commands files are inside. If you wanna add or edit
 Package of the bot's event. An event is method / file that is called when an action is performed. If you wanna add or edit events, go inside
 
 ## ``register``
-Package of the registries. If you want to add commands or events, or modify the ``config.json`` file, go inside
+Package of the registries. If you want to add commands or events, or modify the ``config.toml`` file, go inside
 
 ## ``utils`` package
 Utility classes of the bot. If you wanna edit the ``i18n``, or the SQL methods, go inside. It's advanced, and not very useful for you
