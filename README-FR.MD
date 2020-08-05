@@ -13,8 +13,13 @@ Avec IntelliJ IDEA, ouvrez le projet et importez le fichier gradle
 ### → 2.2 Eclipse
 Avec eclipse, ouvrez le dossier parent du projet en temps que Workspace et importez le projet Gradle.
 
-### 3 : Setup the config.json
-Lors du premier lancement, un fichier ``config.json`` va être créé à la racine de votre projet : ouvrez le et renseignez votre token.
+### 3 : Setup the config.toml
+Lors du premier lancement, un fichier ``config.toml`` va être créé à la racine de votre projet : ouvrez le et renseignez votre token comme suit :
+```toml
+[bot]
+langs = ["en", "fr"]
+token = "TOKEN HERE" <- Renseignez le ici
+```
 
 ### 4 : Commencez à developper !
 Amusez vous à modifier PrivateRooms comme bon vous semble.
@@ -47,7 +52,13 @@ Vous pouvez suivre ces étapes
 ### ⇢ 2.1.4 Executez ``java -jar [jar file name]`` lorsqu'une erreur apparait, fermez le CMD
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win5.gif)
 
-### ⇢ 2.1.5 Maintenant, ouvrez le ``config.json`` et renseignez votre jeton. Vous devez également copier les fichiers ``.lang`` dans ce dossier.
+### ⇢ 2.1.5 Maintenant, ouvrez le ``config.toml`` et renseignez votre jeton : 
+```toml
+[bot]
+langs = ["en", "fr"]
+token = "TOKEN HERE" <- Renseignez le ici
+```
+Vous devez également copier les fichiers ``.lang`` dans ce dossier. (Gif obsolète)
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win6.gif)
 
 ### ⇢ 2.1.6 Maintenant, réouvrez un CMD au dossier ``build\libs``, et vous pouvez réexecuter la commande de l'étape ``2.1.4``. Et votre bot est prêt à l'emploi :)
