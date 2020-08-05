@@ -13,9 +13,13 @@ With Intellij Idea, open the folder downloaded and import the gradle project
 ### → 2.2 Eclipse
 With Eclipse, open the parent folder as workspace and import the gradle project
 
-### 3 : Setup the config.json
-During the first run, a file called ``config.json`` will be created at the root of your project. Put your token in and enjoy.
-
+### 3 : Setup the config.toml
+At the first run, a file called ``config.toml`` will be created at the root of your project : open it and write your token inside :
+```toml
+[bot]
+langs = ["en", "fr"]
+token = "TOKEN HERE" <- Write your token here
+```
 ### 4 : Start coding !
 Enjoy modifying PrivateRooms
 
@@ -47,7 +51,13 @@ Write ``gradlew shadowJar`` in the cmd. When the build is finished, you can clos
 ### ⇢ 2.1.4 Run ``java -jar [jar file name]`` and, when an error appear, close the cmd
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win5.gif)
 
-### ⇢ 2.1.5 Now, open the ``config.json`` file and provide your token. You can also copy the ``.lang`` files in this folder.
+### ⇢ 2.1.5 Now, open the ``config.toml`` file and provide your token : 
+```toml
+[bot]
+langs = ["en", "fr"]
+token = "TOKEN HERE" <- Write your token here
+```
+You must also copy the ``.lang`` files in this folder. (Obsolete gif)
 ![win](http://ql.redstom.fr/zer56zrdsAE/dev/win6.gif)
 
 ### ⇢ 2.1.6 Now, in your CMD into the folder ``build\libs``, you can rerun the jar file like in the step ``2.1.4``. And your bot is ready to work :)
