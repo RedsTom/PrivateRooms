@@ -8,7 +8,7 @@ Class to register commands. If you wanna add one, go inside
 Class to register the events. If you wanna add one, go inside
 
 ## ``ConfigReader.java``
-Class to read the ``config.json`` informations
+Class to read the ``config.toml`` informations
 
 ## ``ConfigRegisterer.java``
-Class to create the ``config.json`` if it doesn't exists
+Class to create the ``config.toml`` if it doesn't exists
