@@ -13,7 +13,7 @@ Avec IntelliJ IDEA, ouvrez le projet et importez le fichier gradle
 ### → 2.2 Eclipse
 Avec eclipse, ouvrez le dossier parent du projet en temps que Workspace et importez le projet Gradle.
 
-### 3 : Setup the config.toml
+### 3 : Configurez le config.toml
 Lors du premier lancement, un fichier ``config.toml`` va être créé à la racine de votre projet : ouvrez le et renseignez votre token comme suit :
 ```toml
 [bot]
