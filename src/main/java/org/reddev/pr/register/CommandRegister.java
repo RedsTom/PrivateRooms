@@ -22,6 +22,6 @@ public class CommandRegister {
         registry.register(new PermissionedCommandSpec<MessageCreateEvent>("lang").permissionized(Permissions.fromBitmask(8)).executing(new LangCommand()).describedAs("command.lang.description"));
         registry.register(new CommandSpec.ImplicitSpec<MessageCreateEvent>("config").executing(new ConfigCommand()).describedAs("command.config.description"));
         registry.register(new CommandSpec.ImplicitSpec<MessageCreateEvent>("help").executing(new HelpCommand()).describedAs("command.help.description"));
-
+        registry.register(new CommandSpec.ImplicitSpec<MessageCreateEvent>("ping").executing(new CommandPing()).describedAs("Pings the bot !"));
     }
 }

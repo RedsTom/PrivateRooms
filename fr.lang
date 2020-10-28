@@ -89,16 +89,16 @@ command.config.show.successful.description=:lock: Votre salon est d%e%sormais **
 #utils.match_role_query
 command.config.configsubs.utils.match_role_query.results_found=$s r%e%sultats trouv%e%s
 command.config.configsubs.utils.match_role_query.error.reaction_not_correct=Cette r%e%action n'est pas un r%e%action d'un role. Veuillez r%e%essayer avec une r%e%action correcte !
-command.config.configsubs.utils.match_role_query.too_much_results=Il y a trop de résultats, veuillez affiner la recherche !
+command.config.configsubs.utils.match_role_query.too_much_results=Il y a trop de r%e%sultats, veuillez affiner la recherche !
 
 #add-role
 command.config.add-role.description=Ajoute un role %aa% la liste blanche du salon
 command.config.add-role.error.no_role_precised=Veuillez pr%e%ciser un role
 command.config.add-role.successful.title=Roles mis %aa% jour !
-command.config.add-role.successful.description=:key: Vous avez donn%e% l'acc%ee% %aa% votre salon au role ``$s``
+command.config.add-role.successful.description=:key: Vous avez donn%e% l'acc%ee%s %aa% votre salon au role ``$s``
 
 #remove-role
 command.config.remove-role.description=Retire un role de la liste blanche du salon
 command.config.remove-role.error.no_role_precised=Veuillez pr%e%ciser un role
 command.config.remove-role.successful.title=Roles mis %aa% jour !
-command.config.remove-role.successful.description=:key: Vous avez retir%e% l'acc%ee% %aa% votre salon au role ``$s``
+command.config.remove-role.successful.description=:key: Vous avez retir%e% l'acc%ee%s %aa% votre salon au role ``$s``

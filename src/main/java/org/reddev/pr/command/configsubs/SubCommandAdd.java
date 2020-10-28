@@ -18,21 +18,41 @@ import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SubCommandAdd implements ConfigSubCommandExecutor {
 
     @Override
-    public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel, Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
+    public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel,
+                        Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
 
+        AtomicReference<User> mentionnedUser = new AtomicReference<>();
         if (event.getMessage().getMentionedUsers().size() != 1) {
-            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.add.error.no_mention"), server));
-            return;
+            if (args.length > 0) {
+                try {
+                    long potentialId = Long.parseLong(args[0]);
+                    server.getMemberById(potentialId).ifPresent(mentionnedUser::set);
+                } catch (NumberFormatException e) {
+                }
+            }
+            if (mentionnedUser.get() == null) {
+                textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.add" +
+                                                                                             ".error.no_mention"),
+                        server));
+                return;
+            }
+        } else {
+            mentionnedUser.set(event.getMessage().getMentionedUsers().get(0));
         }
 
-        User mentionnedUser = event.getMessage().getMentionedUsers().get(0);
 
-        voiceChannel.createUpdater().addPermissionOverwrite(mentionnedUser, Permissions.fromBitmask(References.USER_ALLOWED_PERMISSION_SHOWN, References.USER_DENIED_PERMISSION_SHOWN)).update();
-        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.add.successful.title"), String.format(I18n.format(server.getId(), "command.config.add.successful.description"), mentionnedUser.getMentionTag())));
+        voiceChannel.createUpdater().addPermissionOverwrite(mentionnedUser.get(),
+                Permissions.fromBitmask(References.USER_ALLOWED_PERMISSION_SHOWN,
+                        References.USER_DENIED_PERMISSION_SHOWN)).update();
+        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.add.successful" +
+                                                                                       ".title"),
+                String.format(I18n.format(server.getId(), "command.config.add.successful.description"),
+                        mentionnedUser.get().getMentionTag())));
 
     }
 

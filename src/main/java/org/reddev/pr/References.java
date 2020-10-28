@@ -8,7 +8,7 @@ package org.reddev.pr;
 
 public class References {
 
-    public static final int OWNER_PERMISSION = 53478144;
+    public static final int OWNER_PERMISSION = 53479168;
 
     public static final int USER_ALLOWED_PERMISSION_SHOWN = 36701184;
     public static final int USER_DENIED_PERMISSION_SHOWN = 29360384;

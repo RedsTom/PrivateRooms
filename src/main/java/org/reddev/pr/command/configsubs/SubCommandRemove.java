@@ -16,19 +16,38 @@ import org.reddev.pr.command.configsubs.utils.ConfigSubCommandExecutor;
 import org.reddev.pr.utils.i18n.I18n;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SubCommandRemove implements ConfigSubCommandExecutor {
     @Override
-    public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel, Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
+    public void execute(Server server, User user, ServerVoiceChannel voiceChannel, TextChannel textChannel,
+                        Map<String, ConfigSubCommandExecutor> subs, String[] args, MessageCreateEvent event) {
+
+
+        AtomicReference<User> mentionnedUser = new AtomicReference<>();
         if (event.getMessage().getMentionedUsers().size() != 1) {
-            textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.add.error.no_mention"), server));
-            return;
+            if (args.length > 0) {
+                try {
+                    long potentialId = Long.parseLong(args[0]);
+                    server.getMemberById(potentialId).ifPresent(mentionnedUser::set);
+                } catch (NumberFormatException e) {
+                }
+            }
+            if (mentionnedUser.get() == null) {
+                textChannel.sendMessage(EmbedUtils.getErrorEmbed(I18n.format(server.getId(), "command.config.remove" +
+                                                                                             ".error.no_mention"),
+                        server));
+                return;
+            }
+        } else {
+            mentionnedUser.set(event.getMessage().getMentionedUsers().get(0));
         }
 
-        User mentionnedUser = event.getMessage().getMentionedUsers().get(0);
-
-        voiceChannel.createUpdater().removePermissionOverwrite(mentionnedUser).update();
-        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.remove.successful.title"), String.format(I18n.format(server.getId(), "command.config.remove.successful.description"), mentionnedUser.getMentionTag())));
+        voiceChannel.createUpdater().removePermissionOverwrite(mentionnedUser.get()).update();
+        textChannel.sendMessage(EmbedUtils.getSuccessEmbed(I18n.format(server.getId(), "command.config.remove" +
+                                                                                       ".successful.title"),
+                String.format(I18n.format(server.getId(), "command.config.remove.successful.description"),
+                        mentionnedUser.get().getMentionTag())));
 
     }
 

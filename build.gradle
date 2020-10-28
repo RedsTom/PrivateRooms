@@ -25,7 +25,7 @@ application {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.github.RedsTom:UCP:v1.1'
-    compile 'org.javacord:javacord:3.0.6'
+    compile 'org.javacord:javacord:3.1.1'
     compile 'org.xerial:sqlite-jdbc:3.8.9.1'
     compile 'com.vdurmont:emoji-java:5.1.1'
     compile 'com.moandjiezana.toml:toml4j:0.7.2'
@@ -38,3 +38,6 @@ jar {
         attributes 'Main-Class': 'org.reddev.pr.Main'
     }
 }
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'

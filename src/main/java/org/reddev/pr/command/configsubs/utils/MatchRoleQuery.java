@@ -49,17 +49,20 @@ public class MatchRoleQuery implements Runnable {
     @Override
     public void run() {
 
-        if (getRoleMatches().size() < 10) {
+        if (getRoleMatches().size() > 10) {
             getTextChannel().sendMessage(EmbedUtils.getErrorEmbed(I18n.format(getTextChannel().asServerChannel().get().getServer().getId(), "command.config.configsubs.utils.match_role_query.too_much_results"), getTextChannel().asServerChannel().get().getServer()));
             return;
         }
 
         EmbedBuilder eb = new EmbedBuilder()
-                .setTitle(String.format(I18n.format(getTextChannel().asServerTextChannel().get().getServer().getId(), "command.config.configsubs.utils.match_role_query.results_found"), getRoleMatches().size()));
+                .setTitle(String.format(I18n.format(getTextChannel().asServerTextChannel().get().getServer().getId(),
+                        "command.config.configsubs.utils.match_role_query.results_found"), getRoleMatches().size()));
 
         roleMatches.forEach((role) -> {
             eb.addField(
-                    NumberUtils.getByNumber(getRoleMatches().indexOf(role)) + " " + role.getName(), "||" + getRoleMatches().indexOf(role) + " " + role.getName() + "||", true);
+                    NumberUtils.getByNumber(getRoleMatches().indexOf(role)) + " " + role.getName(),
+                    "||" + getRoleMatches().indexOf(role) + " " + role.getName() + "||", true);
+            if (role.getColor().isPresent()) eb.setColor(role.getColor().get());
         });
 
         getTextChannel().sendMessage(eb).thenApply((message) -> {
@@ -69,7 +72,7 @@ public class MatchRoleQuery implements Runnable {
             });
 
             message.addReactionAddListener((event) -> {
-                if (event.getUser().isYourself()) return;
+                if (event.getUser().get().isYourself()) return;
 
                 String s = EmojiParser.parseToAliases(event.getEmoji().asUnicodeEmoji().get());
                 int i = NumberUtils.getByString(s);
