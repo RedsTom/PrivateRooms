@@ -4,6 +4,7 @@ import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.commands.CommandPing
 import org.reddev.privateroomsreborn.commands.CommandSetup
 import org.reddev.privateroomsreborn.commands.DefaultCommand
+import org.reddev.privateroomsreborn.commands.ProvCommandInfo
 import org.reddev.privateroomsreborn.commands.config.CommandConfig
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
 import org.reddev.privateroomsreborn.commands.settings.CommandSettings
@@ -24,6 +25,7 @@ class CommandManager {
         commands.put(["config", "c"], new CommandConfig())
         commands.put(["help", "?"], new SSubHelp(cmds: commands))
         commands.put(["setup"], new CommandSetup())
+        commands.put(["info"], new ProvCommandInfo())
     }
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {
@@ -42,16 +44,17 @@ class CommandManager {
             String cmd = args[0].substring(prefix.length())
             args = Arrays.copyOfRange(args, 1, args.length)
             ICommand command = new DefaultCommand()
-            commands.forEach {aliases, executor ->
+            commands.forEach { aliases, executor ->
                 if (aliases.contains(cmd))
-                    command = executor}
+                    command = executor
+            }
             if (CommandUtils.hasPermission(config,
                     event.messageAuthor.asUser().get(),
                     event.server.get(),
                     command.getDescriptor(event.server.get()).permissions)) {
                 command.execute(event, config, prefix + cmd, args)
             } else {
-                event.channel.sendMessage("No Perm !")
+                event.channel.sendMessage(l("errors.no-permission", event.server.get()))
             }
         }
 
@@ -64,9 +67,10 @@ class CommandManager {
         String cmd = args[0]
         args = Arrays.copyOfRange(args, 1, args.length)
         ICommand iCmd = new DefaultCommand()
-        subs.forEach {names, ex ->
+        subs.forEach { names, ex ->
             if (names.contains(cmd))
-                iCmd = ex}
+                iCmd = ex
+        }
         iCmd.execute(event, config, j("%s %s", originCmd, cmd), args)
     }
 }

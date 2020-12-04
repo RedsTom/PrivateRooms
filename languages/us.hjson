@@ -6,6 +6,7 @@
     "errors.no-exists": "<:no:739186219333976084> This command does not exists",
     "errors.incorrect-syntax": "<:no:739186219333976084> Incorrect usage ! Please use : ",
     "errors.no-dm": "<:no:7739186219333976084> The bot does not support DM commands !",
+    "errors.no-permission": "<:no:7739186219333976084> Sorry, but you don't have enough permissions to execute this commande !",
 
     "errors.no-permission.title": "",
     "errors.no-permission.desc": "",

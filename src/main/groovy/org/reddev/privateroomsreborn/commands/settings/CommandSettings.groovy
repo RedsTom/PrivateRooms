@@ -27,13 +27,13 @@ class CommandSettings implements
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
-
         CommandManager.repartSub(subCommands, event, cmd, config, args)
-
     }
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.settings.cmd-desc", guild), usage: "<subcommand>", permissions: [PermissionType.MANAGE_SERVER])
+        return new CommandDescriptor(description: l("cmd.settings.cmd-desc", guild),
+                usage: "<subcommand>",
+                permissions: [PermissionType.MANAGE_SERVER])
     }
 }

@@ -1,25 +1,55 @@
 package org.reddev.privateroomsreborn.utils.channels
 
+import org.javacord.api.DiscordApi
+import org.javacord.api.entity.channel.Channel
+import org.javacord.api.entity.channel.ChannelCategory
+import org.javacord.api.entity.channel.ServerChannel
+import org.javacord.api.entity.channel.ServerChannelBuilder
 import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.permission.Permissions
 import org.javacord.api.entity.server.Server
+import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
+import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 class PrivateChannel {
 
+    long channelId, serverId
     String name
     int userLimit
     List<Long> whitelistedUsers, blacklistedUsers, whitelistedRoles, blacklistedRoles
     boolean hidden, private_
     List<Long> moderators;
 
-    def create() {
+    def create(DiscordApi api) {
+        Server server = api.getServerById(serverId).get()
+        ServerConfig config = ConfigUtils.getServerConfig(server)
+        ChannelCategory category = server.getChannelCategoryById(config.categoryId).get()
+        server.createVoiceChannelBuilder().setCategory(category).setName(name).setUserlimit(userLimit).create().thenAccept { channel ->
+            whitelistedUsers.forEach { userId ->
+                //TODO Récupérer l'utilisateur et lui donner les droits
+            }
+            blacklistedUsers.forEach { userId ->
+                //TODO Récupérer l'utilisateur et lui enlever les droits
+            }
+        }
+    }
+
+    def update() {
+        ServerChannel channel = api.getServerById(serverId).get().getChannelById(channelId).get()
 
     }
 
+    def delete(DiscordApi api, String reason = "No reason provided") {
+        ServerChannel channel = api.getServerById(serverId).get().getChannelById(channelId).get()
+        channel.delete(reason)
+    }
+
     static Optional<PrivateChannel> getFromChannel(ServerConfig config, Server guild, ServerVoiceChannel channel) {
-        if (!channel.category.ifPresent() || channel.category.get().idAsString != config.categoryId) return Optional.empty()
+        if (channel.category.isEmpty() || (channel.category.get().idAsString != config.categoryId)) {
+            return Optional.empty()
+        }
 
         String name = channel.name.stripMargin().stripIndent()
         int userLimit = channel.userLimit.orElse(99)
@@ -64,7 +94,7 @@ class PrivateChannel {
             }
         }
 
-        return Optional.of(new PrivateChannel(blacklistedUsers: blacklistedUsers, blacklistedRoles: blacklistedRoles, whitelistedUsers: whitelistedUsers, whitelistedRoles: whitelistedRoles, userLimit: userLimit, moderators: moderators, name: name, hidden: hidden, private_: private_,))
+        return Optional.of(new PrivateChannel(channelId: channel.id, serverId: channel.server.id, blacklistedUsers: blacklistedUsers, blacklistedRoles: blacklistedRoles, whitelistedUsers: whitelistedUsers, whitelistedRoles: whitelistedRoles, userLimit: userLimit, moderators: moderators, name: name, hidden: hidden, private_: private_,))
     }
 
 }

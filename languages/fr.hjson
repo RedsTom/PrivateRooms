@@ -6,6 +6,7 @@
     "errors.no-exists": "<:no:739186219333976084> Cette commande n'existe pas !",
     "errors.incorrect-syntax": "<:no:739186219333976084> Utilisation incorrecte ! Veuillez utiliser : ",
     "errors.no-dm": "<:no:7739186219333976084> Le bot ne supporte pas les commandes en MP !",
+    "errors.no-permission": "<:no:7739186219333976084> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !",
 
     // Generic command messages
     "cmd.subs.help.cmd-desc": "Sert à afficher l'aide des commandes"
