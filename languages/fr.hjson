@@ -1,0 +1,37 @@
+{
+    "settings.category-name": "Salons Privés",
+    "settings.create-channel-name": "🔐 Créer un salon",
+
+    "errors.error": "Erreur",
+    "errors.no-exists": "<:no:739186219333976084> Cette commande n'existe pas !",
+    "errors.incorrect-syntax": "<:no:739186219333976084> Utilisation incorrecte ! Veuillez utiliser : ",
+    "errors.no-dm": "<:no:7739186219333976084> Le bot ne supporte pas les commandes en MP !",
+
+    // Generic command messages
+    "cmd.subs.help.cmd-desc": "Sert à afficher l'aide des commandes"
+
+    // Ping command
+    "cmd.ping.cmd-desc": "Permet de récupérer le délai du bot",
+
+    "cmd.ping.desc": "Récupère le délai du bot",
+    "cmd.ping.bot-ping": "Ping du bot",
+
+    // Config command
+    "cmd.config.desc": "Configurez votre salon",
+
+    // Settings command
+    // Current
+    "cmd.settings.current.cmd-desc": "Sert à afficher les paramètres actuels du serveur"
+    "cmd.settings.current.title": "Paramètres du serveur",
+
+    // Language
+    "cmd.settings.language.cmd-desc": "Sert à changer la langue du bot"
+    "cmd.settings.language.title": "Langue changée",
+    "cmd.settings.language.desc": "La langue du bot a été changée vers le",
+    "cmd.settings.language.error.language-does-not-exists.desc": "Cette langue n'existe pas !"
+    "cmd.settings.language.error.language-does-not-exists.possibility": "Langues disponibles : ",
+
+    // Help
+    "cmd.settings.help.title": "Aide"
+    "cmd.settings.help.desc": "Aide de la commande"
+}

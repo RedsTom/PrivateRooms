@@ -1,0 +1,37 @@
+plugins {
+    id 'groovy'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+shadowJar {
+    project.configurations.implementation.canBeResolved(true)
+    configurations = [project.configurations.implementation]
+}
+
+run {
+    mainClassName = 'org.reddev.privateroomsreborn.Main'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.reddev.privateroomsreborn.Main'
+    }
+}
+
+group 'org.reddev'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.6'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.javacord:javacord:3.1.1'
+    implementation "org.hjson:hjson:3.0.0"
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
+    implementation 'com.konghq:unirest-java:3.11.04'
+}
+

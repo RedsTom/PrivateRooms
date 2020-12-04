@@ -1,0 +1,40 @@
+{
+    "settings.category-name": "Private Channel",
+    "settings.create-channel-name": "🔐 Create a channel",
+
+    "errors.error": "Error",
+    "errors.no-exists": "<:no:739186219333976084> This command does not exists",
+    "errors.incorrect-syntax": "<:no:739186219333976084> Incorrect usage ! Please use : ",
+    "errors.no-dm": "<:no:7739186219333976084> The bot does not support DM commands !",
+
+    "errors.no-permission.title": "",
+    "errors.no-permission.desc": "",
+
+    // Generic command messages
+    "cmd.subs.help.cmd-desc": "Allows you to show the commands help"
+
+    // Ping command
+    "cmd.ping.desc": "Gets the bot's ping",
+    "cmd.ping.bot-ping": "Bot's ping",
+
+    // Config command
+    "cmd.config.cmd-desc": "Allows you to configure your channel"
+    "cmd.config.desc": "Configure your channel"
+
+    // Settings command
+    "cmd.settings.cmd-desc": "Allows you to configure the server's channel"
+    // Current
+    "cmd.settings.current.cmd-desc": "Allows you to see the current settings of the server"
+    "cmd.settings.current.title": "Server settings",
+
+    // Language
+    "cmd.settings.language.cmd-desc": "Allows you to change the bot's language"
+    "cmd.settings.language.title": "Language changed",
+    "cmd.settings.language.desc": "The language of the bot has been changed to",
+    "cmd.settings.language.error.language-does-not-exists.desc": "This language does not exists !"
+    "cmd.settings.language.error.language-does-not-exists.possibility": "Available languages : ",
+
+    // Help
+    "cmd.settings.help.title": "Help"
+    "cmd.settings.help.desc": "Help of the command"
+}
