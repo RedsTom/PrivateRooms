@@ -10,6 +10,7 @@ import org.javacord.api.entity.permission.Permissions
 import org.javacord.api.entity.permission.Role
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
+import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
@@ -105,7 +106,7 @@ class PrivateChannel {
         channel.delete(reason)
     }
 
-    static Optional<PrivateChannel> getFromChannel(ServerConfig config, Server guild, ServerVoiceChannel channel) {
+    static Optional<PrivateChannel> getFromChannel(BotConfig bConfig, ServerConfig config, Server guild, ServerVoiceChannel channel) {
         if (channel.category.isEmpty() || (channel.category.get().idAsString != config.categoryId)) {
             return Optional.empty()
         }

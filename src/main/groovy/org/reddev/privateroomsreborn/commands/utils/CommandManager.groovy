@@ -25,6 +25,11 @@ class CommandManager {
         commands.put(["config", "c"], new CommandConfig())
         commands.put(["help", "?"], new SSubHelp(cmds: commands))
         commands.put(["setup"], new CommandSetup())
+        // TODO Système de preset :
+        /*
+         * %preset save : Enregistre le preset dans (presets/{random uuid}.json) et donne l'uuid à l'utilisateur
+         * %preset load <uuid> : Charge le preset dans le salon actuel
+         */
     }
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {
@@ -42,19 +47,7 @@ class CommandManager {
             String prefix = CommandUtils.getPrefix(config, event.server.get())
             String cmd = args[0].substring(prefix.length())
             args = Arrays.copyOfRange(args, 1, args.length)
-            ICommand command = new DefaultCommand()
-            commands.forEach { aliases, executor ->
-                if (aliases.contains(cmd))
-                    command = executor
-            }
-            if (CommandUtils.hasPermission(config,
-                    event.messageAuthor.asUser().get(),
-                    event.server.get(),
-                    command.getDescriptor(event.server.get()).permissions)) {
-                command.execute(event, config, prefix + cmd, args)
-            } else {
-                event.channel.sendMessage(l("errors.no-permission", event.server.get()))
-            }
+            dispatchCommand(commands, cmd, config, event, prefix + cmd, args)
         }
 
     }
@@ -65,11 +58,23 @@ class CommandManager {
         }
         String cmd = args[0]
         args = Arrays.copyOfRange(args, 1, args.length)
+        dispatchCommand(subs, cmd, config, event, originCmd, args)
+    }
+
+    private static void dispatchCommand(Map<List<String>, ICommand> commands, String input, BotConfig config, MessageCreateEvent event, String originCmd, String[] args) {
+        String cmd
         ICommand iCmd = new DefaultCommand()
-        subs.forEach { names, ex ->
-            if (names.contains(cmd))
+        commands.forEach { names, ex ->
+            if (names.contains(input))
                 iCmd = ex
         }
-        iCmd.execute(event, config, j("%s %s", originCmd, cmd), args)
+        if (CommandUtils.hasPermission(config,
+                event.messageAuthor.asUser().get(),
+                event.server.get(),
+                iCmd.getDescriptor(event.server.get()).permissions)) {
+            iCmd.execute(event, config, j("%s %s", originCmd, input), args)
+        } else {
+            event.channel.sendMessage(l("errors.no-permission", event.server.get()))
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.reddev.privateroomsreborn.commands.config
 
+import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.commands.config.subs.SSubName
@@ -9,6 +10,9 @@ import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.utils.ServerConfig
+import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
+import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
@@ -25,8 +29,30 @@ class CommandConfig implements ICommand {
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
 
-        CommandManager.repartSub(subCommands, event, cmd, config, args)
+        Optional<ServerVoiceChannel> potentialVoiceChannel = event.messageAuthor.connectedVoiceChannel
+        if (potentialVoiceChannel.isEmpty()) {
+            event.channel.sendMessage(l("cmd.config.error.not-in-voice-channel", event.server.get()))
+            return
+        }
+        ServerConfig serverConfig = ConfigUtils.getServerConfig(event.server.get())
+        ServerVoiceChannel voiceChannel = potentialVoiceChannel.get()
+        Optional<PrivateChannel> potentialPrivateChannel = PrivateChannel.getFromChannel(
+                config,
+                serverConfig,
+                event.server.get(),
+                voiceChannel
+        )
+        if (potentialPrivateChannel.isEmpty() || voiceChannel.category.get().idAsString != serverConfig.categoryId) {
+            event.channel.sendMessage(l("cmd.config.error.not-a-private-room", event.server.get()))
+            return
+        }
+        PrivateChannel privateRoom = potentialPrivateChannel.get()
+        if (!privateRoom.moderators.contains(event.messageAuthor.id)) {
+            event.channel.sendMessage(l("cmd.config.error.not-moderator", event.server.get()))
+            return
+        }
 
+        CommandManager.repartSub(subCommands, event, cmd, config, args)
     }
 
     @Override
