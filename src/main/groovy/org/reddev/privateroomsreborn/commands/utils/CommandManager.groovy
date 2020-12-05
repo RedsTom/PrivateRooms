@@ -4,7 +4,7 @@ import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.commands.CommandPing
 import org.reddev.privateroomsreborn.commands.CommandSetup
 import org.reddev.privateroomsreborn.commands.DefaultCommand
-import org.reddev.privateroomsreborn.commands.ProvCommandInfo
+
 import org.reddev.privateroomsreborn.commands.config.CommandConfig
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
 import org.reddev.privateroomsreborn.commands.settings.CommandSettings
@@ -25,7 +25,6 @@ class CommandManager {
         commands.put(["config", "c"], new CommandConfig())
         commands.put(["help", "?"], new SSubHelp(cmds: commands))
         commands.put(["setup"], new CommandSetup())
-        commands.put(["info"], new ProvCommandInfo())
     }
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {

@@ -26,7 +26,7 @@ class PrivateChannel {
     boolean hidden, private_
     List<Long> moderators
 
-    def create(DiscordApi api, Consumer<Void> then) {
+    def create(DiscordApi api, Consumer<Void> then = { it -> }) {
         Server server = api.getServerById(serverId).get()
         ServerConfig config = ConfigUtils.getServerConfig(server)
         ChannelCategory category = server.getChannelCategoryById(config.categoryId).get()
@@ -36,11 +36,19 @@ class PrivateChannel {
         }
     }
 
-    def update(DiscordApi api, Consumer<Void> then) {
+    def update(DiscordApi api, Consumer<Void> then = { it -> }) {
         Server server = api.getServerById(serverId).get()
-        ServerChannel channel = server.getChannelById(channelId).get()
+        ServerVoiceChannel channel = server.getVoiceChannelById(channelId).get()
         this.channelId = channel.id
         ServerVoiceChannelUpdater updater = channel.createUpdater()
+        updater.setName(name)
+        updater.setUserLimit(userLimit)
+        if (private_) {
+            updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.CONNECT)))
+        }
+        if (hidden) {
+            updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.READ_MESSAGES)))
+        }
         whitelistedUsers.forEach { userId ->
             User user = server.getMemberById(userId).get()
             updater.addPermissionOverwrite(user, Permissions.fromBitmask(bitmask(PermissionType.CONNECT, PermissionType.PRIORITY_SPEAKER), bitmask()))
@@ -83,9 +91,10 @@ class PrivateChannel {
                     Permissions.fromBitmask(bitmask(
                             PermissionType.MOVE_MEMBERS),
                             bitmask()
-                    ))
-
+                    )
+            )
         }
+
         updater.update().thenAccept {
             then.accept()
         }
@@ -103,11 +112,11 @@ class PrivateChannel {
 
         String name = channel.name.stripMargin().stripIndent()
         int userLimit = channel.userLimit.orElse(99)
-        List<Long> whitelistedUsers = new ArrayList<>(),
-                   blacklistedUsers = new ArrayList<>(),
-                   whitelistedRoles = new ArrayList<>(),
-                   blacklistedRoles = new ArrayList<>(),
-                   moderators = new ArrayList<>()
+        List<Long> whitelistedUsers = [],
+                   blacklistedUsers = [],
+                   whitelistedRoles = [],
+                   blacklistedRoles = [],
+                   moderators = []
         boolean hidden = false, private_ = false
 
         /*
@@ -118,21 +127,24 @@ class PrivateChannel {
          */
 
         channel.overwrittenRolePermissions.forEach { roleId, permission ->
-            if (!guild.getAllowedPermissions(guild.everyoneRole.users[0]).contains(PermissionType.CONNECT)) {
-                hidden = true
-                if (!guild.getAllowedPermissions(guild.everyoneRole.users[0]).contains(PermissionType.READ_MESSAGES)) {
+            if (roleId == guild.everyoneRole.id) {
+                if (permission.deniedPermissions.contains(PermissionType.CONNECT)) {
                     private_ = true
+                    if (permission.deniedPermissions.contains(PermissionType.READ_MESSAGES)) {
+                        hidden = true
+                    }
                 }
-            }
-            if (permission.allowedPermission.contains(PermissionType.CONNECT)
-                    && !permission.deniedPermissions.contains(PermissionType.SPEAK)
-                    && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)
-                    && !blacklistedRoles.contains(roleId)) {
-                whitelistedRoles.add(roleId)
-            }
-            if (permission.deniedPermissions.contains(PermissionType.CONNECT)
-                    && !whitelistedRoles.contains(roleId)) {
-                blacklistedRoles.add(roleId)
+            } else {
+                if (permission.allowedPermission.contains(PermissionType.CONNECT)
+                        && !permission.deniedPermissions.contains(PermissionType.SPEAK)
+                        && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)
+                        && !blacklistedRoles.contains(roleId)) {
+                    whitelistedRoles.add(roleId)
+                }
+                if (permission.deniedPermissions.contains(PermissionType.CONNECT)
+                        && !whitelistedRoles.contains(roleId)) {
+                    blacklistedRoles.add(roleId)
+                }
             }
         }
         channel.overwrittenUserPermissions.forEach { userId, permission ->
@@ -151,20 +163,20 @@ class PrivateChannel {
             }
         }
 
-        return Optional.of(
-                new PrivateChannel(
-                        channelId: channel.id,
-                        serverId: channel.server.id,
-                        blacklistedUsers: blacklistedUsers,
-                        blacklistedRoles: blacklistedRoles,
-                        whitelistedUsers: whitelistedUsers,
-                        whitelistedRoles: whitelistedRoles,
-                        userLimit: userLimit,
-                        moderators: moderators,
-                        name: name,
-                        hidden: hidden,
-                        private_: private_,
-                )
+        def pChannel = new PrivateChannel(
+                channelId: channel.id,
+                serverId: channel.server.id,
+                blacklistedUsers: blacklistedUsers,
+                blacklistedRoles: blacklistedRoles,
+                whitelistedUsers: whitelistedUsers,
+                whitelistedRoles: whitelistedRoles,
+                userLimit: userLimit,
+                moderators: moderators,
+                name: name,
+                hidden: hidden,
+                private_: private_,
+        )
+        return Optional.of(pChannel
         )
     }
 

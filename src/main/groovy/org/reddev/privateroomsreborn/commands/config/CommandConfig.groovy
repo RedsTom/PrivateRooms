@@ -2,6 +2,7 @@ package org.reddev.privateroomsreborn.commands.config
 
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
+import org.reddev.privateroomsreborn.commands.config.subs.SSubName
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
 import org.reddev.privateroomsreborn.commands.settings.subs.SSubLanguage
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
@@ -18,6 +19,7 @@ class CommandConfig implements ICommand {
     CommandConfig() {
         subCommands = new HashMap<>()
         subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "config"))
+        subCommands.put(["name"], new SSubName())
     }
 
     @Override

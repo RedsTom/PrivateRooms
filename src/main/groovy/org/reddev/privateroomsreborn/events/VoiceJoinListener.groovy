@@ -25,6 +25,7 @@ class VoiceJoinListener implements ServerVoiceChannelMemberJoinListener {
                     whitelistedRoles: [],
                     blacklistedUsers: [],
                     whitelistedUsers: [],
+                    moderators: [],
                     serverId: server.id,
             )
             channel.create(event.api, {
