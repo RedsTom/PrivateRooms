@@ -5,6 +5,7 @@ import org.hjson.JsonValue
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
+import org.reddev.privateroomsreborn.events.VoiceJoinListener
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.general.LangUtils
 
@@ -21,6 +22,7 @@ class Main {
             DiscordApi api = new DiscordApiBuilder().setToken(config.token).login().join()
 
             api.addMessageCreateListener { CommandManager.onMessage(it, config) }
+            api.addServerVoiceChannelMemberJoinListener(new VoiceJoinListener())
             api.updateActivity("${config.defaultPrefix}help", "https://twitch.tv/mr_redstom")
 
         }

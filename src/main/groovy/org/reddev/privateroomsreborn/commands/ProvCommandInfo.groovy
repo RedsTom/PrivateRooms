@@ -9,6 +9,13 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 class ProvCommandInfo implements ICommand {
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
-        event.channel.sendMessage(PrivateChannel.getFromChannel(ConfigUtils.getServerConfig(event.server.get()), event.server.get(), event.messageAuthor.getConnectedVoiceChannel().get()).get().toString())
+        event.channel.sendMessage(
+                PrivateChannel.getFromChannel(
+                        ConfigUtils.getServerConfig(
+                                event.server.get()),
+                        event.server.get(),
+                        event.messageAuthor.getConnectedVoiceChannel().get()
+                ).get().toString()
+        )
     }
 }

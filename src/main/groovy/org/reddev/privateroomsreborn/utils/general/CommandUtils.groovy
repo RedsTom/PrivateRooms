@@ -26,12 +26,17 @@ class CommandUtils {
         if (isAdmin(config, user)) {
             return true
         }
+        def bitmask = bitmask(permissionTypes)
+
+        return (guild.getPermissions(user).allowedBitmask & bitmask) == bitmask
+    }
+
+    static int bitmask(PermissionType... permissionTypes) {
         int bitmask = 0x0
         for (def permissionType in permissionTypes) {
             bitmask = bitmask + permissionType.value
         }
-
-        return (guild.getPermissions(user).allowedBitmask & bitmask) == bitmask
+        return bitmask
     }
 
     static boolean isAdmin(BotConfig config, User user) {
