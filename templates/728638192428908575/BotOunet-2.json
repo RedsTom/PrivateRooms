@@ -1,0 +1,18 @@
+{
+  "serverId": 728638192428908575,
+  "name": "🔓 BotOunet\u0027s channel",
+  "userLimit": 99,
+  "whitelistedUsers": [
+    772270462889492490
+  ],
+  "blacklistedUsers": [],
+  "whitelistedRoles": [],
+  "blacklistedRoles": [
+    765583768558895156
+  ],
+  "moderators": [
+    718860760482185228
+  ],
+  "hidden": false,
+  "private": false
+}
