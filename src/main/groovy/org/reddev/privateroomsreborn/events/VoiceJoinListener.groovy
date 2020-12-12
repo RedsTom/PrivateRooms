@@ -21,14 +21,17 @@ class VoiceJoinListener implements ServerVoiceChannelMemberJoinListener {
             PrivateChannel channel = new PrivateChannel(
                     name: "🔓 ${event.user.getDisplayName(server)}'s channel",
                     userLimit: 99,
-                    moderators: Arrays.asList(event.user.id),
+                    blacklistedRoles: [],
+                    whitelistedRoles: [],
+                    blacklistedUsers: [],
+                    whitelistedUsers: [],
+                    moderators: [],
                     serverId: server.id,
             )
-            channel.create(event.api).thenAccept {
-                println "After : Moved"
+            channel.create(event.api, {
                 ServerVoiceChannel voiceChannel = server.getVoiceChannelById(channel.channelId).get()
                 event.user.move(voiceChannel)
-            }
+            })
         }
     }
 }

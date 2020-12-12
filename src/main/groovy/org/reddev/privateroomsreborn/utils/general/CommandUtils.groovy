@@ -1,20 +1,11 @@
 package org.reddev.privateroomsreborn.utils.general
 
-import org.javacord.api.entity.channel.TextChannel
-import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.permission.Permissions
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
-import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.api.commands.ICommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
-
-import java.awt.Color
-
-import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
-import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
 class CommandUtils {
 
@@ -57,15 +48,4 @@ class CommandUtils {
         return rt
     }
 
-    static void sendBadUsage(MessageCreateEvent event, String cmd, ICommand command) {
-        event.channel.sendMessage(
-                new EmbedBuilder()
-                        .setTitle(l("errors.incorrect-syntax", event.server.get()))
-                        .setColor(Color.RED)
-                        .addField(
-                                j("``%s %s``",
-                                        cmd,
-                                        command.getDescriptor(event.server.get()).usage), "** **")
-        )
-    }
 }

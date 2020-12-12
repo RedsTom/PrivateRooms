@@ -5,8 +5,8 @@
     "errors.error": "Erreur",
     "errors.no-exists": "<:no:739186219333976084> Cette commande n'existe pas !",
     "errors.incorrect-syntax": "<:no:739186219333976084> Utilisation incorrecte ! Veuillez utiliser : ",
-    "errors.no-dm": "<:no:739186219333976084> Le bot ne supporte pas les commandes en MP !",
-    "errors.no-permission": "<:no:739186219333976084> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !",
+    "errors.no-dm": "<:no:7739186219333976084> Le bot ne supporte pas les commandes en MP !",
+    "errors.no-permission": "<:no:7739186219333976084> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !",
 
     // Generic command messages
     "cmd.subs.help.cmd-desc": "Sert à afficher l'aide des commandes"
@@ -17,10 +17,10 @@
     "cmd.ping.desc": "Récupère le délai du bot",
     "cmd.ping.bot-ping": "Ping du bot",
 
-    // CONFIG
+    // Config command
     "cmd.config.desc": "Configurez votre salon",
 
-    // SETTINGS
+    // Settings command
     // Current
     "cmd.settings.current.cmd-desc": "Sert à afficher les paramètres actuels du serveur"
     "cmd.settings.current.title": "Paramètres du serveur",
@@ -31,14 +31,6 @@
     "cmd.settings.language.desc": "La langue du bot a été changée vers le",
     "cmd.settings.language.error.language-does-not-exists.desc": "Cette langue n'existe pas !"
     "cmd.settings.language.error.language-does-not-exists.possibility": "Langues disponibles : ",
-
-    // PRESETS
-    "cmd.preset.save.success": "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`",
-    "cmd.preset.save.error.already-exists": "<:no:739186219333976084> Le nom `%s` existe déjà sur ce serveur !",
-    "cmd.preset.save.error.no-argument": "<:no:739186219333976084> Veuillez préciser un nom de preset !",
-
-    "cmd.preset.load.success": "<:yes:739186219338170421> Le preset `%s` a bien été chargé",
-    "cmd.preset.load.error.absent": "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !",
 
     // Help
     "cmd.settings.help.title": "Aide"

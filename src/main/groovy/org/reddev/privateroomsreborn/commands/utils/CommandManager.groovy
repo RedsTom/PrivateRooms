@@ -7,7 +7,6 @@ import org.reddev.privateroomsreborn.commands.DefaultCommand
 
 import org.reddev.privateroomsreborn.commands.config.CommandConfig
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
-import org.reddev.privateroomsreborn.commands.preset.CommandPreset
 import org.reddev.privateroomsreborn.commands.settings.CommandSettings
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.ICommand
@@ -23,11 +22,9 @@ class CommandManager {
     static {
         commands.put(["ping", "p?"], new CommandPing())
         commands.put(["settings", "parameters"], new CommandSettings())
-        commands.put(["config", "c", "configure", "c!"], new CommandConfig())
+        commands.put(["config", "c"], new CommandConfig())
         commands.put(["help", "?"], new SSubHelp(cmds: commands))
-        commands.put(["setup", "s!"], new CommandSetup())
-        commands.put(["preset", "p", "template", "t"], new CommandPreset())
-        commands.put(["info"], new ProvCommandInfo())
+        commands.put(["setup"], new CommandSetup())
         // TODO Système de preset :
         /*
          * %preset save : Enregistre le preset dans (presets/{random uuid}.json) et donne l'uuid à l'utilisateur
@@ -37,9 +34,8 @@ class CommandManager {
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {
 
-        if (event.message.author.botUser) {
+        if (event.message.author.botUser)
             return
-        }
         if (event.message.groupMessage) {
             event.channel.sendMessage(l("errors.no-dm", "en"))
             return
@@ -62,7 +58,6 @@ class CommandManager {
         }
         String cmd = args[0]
         args = Arrays.copyOfRange(args, 1, args.length)
-        originCmd = Arrays.copyOfRange(originCmd.split(" "), 0, originCmd.split(" ").length - 1).join(" ")
         dispatchCommand(subs, cmd, config, event, originCmd, args)
     }
 

@@ -9,7 +9,6 @@ import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.ICommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
-import org.reddev.privateroomsreborn.utils.general.CommandUtils
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 import org.reddev.privateroomsreborn.utils.general.ListUtils
 import org.reddev.privateroomsreborn.utils.general.UnirestUtils
@@ -25,7 +24,16 @@ class SSubLanguage implements ICommand {
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
         ServerConfig sConfig = ConfigUtils.getServerConfig(event.server.get())
         if (args.length != 1) {
-            CommandUtils.sendBadUsage(event, cmd, this)
+            event.channel.sendMessage(
+                    new EmbedBuilder()
+                            .setTitle(l("errors.incorrect-syntax", event.server.get()))
+                            .setColor(Color.RED)
+                            .addField(
+                                    j("``%s%s %s``",
+                                            sConfig.getCustomPrefix(config),
+                                            cmd,
+                                            getDescriptor(event.server.get()).usage), "** **")
+            )
             return
         }
 

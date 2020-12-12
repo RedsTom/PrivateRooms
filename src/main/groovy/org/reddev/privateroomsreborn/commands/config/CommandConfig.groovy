@@ -23,7 +23,7 @@ class CommandConfig implements ICommand {
     CommandConfig() {
         subCommands = new HashMap<>()
         subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "config"))
-        subCommands.put(["name", "rename"], new SSubName())
+        subCommands.put(["name"], new SSubName())
     }
 
     @Override

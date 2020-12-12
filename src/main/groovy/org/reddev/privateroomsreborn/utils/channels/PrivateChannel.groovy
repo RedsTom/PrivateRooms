@@ -1,7 +1,5 @@
 package org.reddev.privateroomsreborn.utils.channels
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.channel.ChannelCategory
 import org.javacord.api.entity.channel.ServerChannel
@@ -16,57 +14,34 @@ import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
-import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 import static org.reddev.privateroomsreborn.utils.general.CommandUtils.bitmask
 
 class PrivateChannel {
 
-    long channelId
-
-    @Expose
-    long serverId
-    @Expose
+    long channelId, serverId
     String name
-    @Expose
-    int userLimit = 99
-    @Expose
-    List<Long> whitelistedUsers = [], blacklistedUsers = [], whitelistedRoles = [], blacklistedRoles = [], moderators = []
-    @Expose
-    boolean hidden = false
-    @Expose
-    @SerializedName("private")
-    boolean private_ = false
+    int userLimit
+    List<Long> whitelistedUsers, blacklistedUsers, whitelistedRoles, blacklistedRoles
+    boolean hidden, private_
+    List<Long> moderators
 
-    /**
-     * Method that creates the channel with default parameters
-     * @param api Discord bot's instance
-     * @return The CompletableFuture to execute actions after
-     */
-    CompletableFuture<Void> create(DiscordApi api) {
+    def create(DiscordApi api, Consumer<Void> then = { it -> }) {
         Server server = api.getServerById(serverId).get()
-
-        server.createVoiceChannelBuilder().setName("Channel creating...").create().thenAccept({
+        ServerConfig config = ConfigUtils.getServerConfig(server)
+        ChannelCategory category = server.getChannelCategoryById(config.categoryId).get()
+        server.createVoiceChannelBuilder().setCategory(category).setName(name).setUserlimit(userLimit).create().thenAccept {
             this.channelId = it.id
-            this.update(api)
-        })
+            update(api, then)
+        }
     }
 
-    /**
-     * Method that configures the channel with the correct params
-     * @param api Discord bot's instance
-     * @return The CompletableFuture to execute actions after
-     */
-    CompletableFuture<Void> update(DiscordApi api) {
+    def update(DiscordApi api, Consumer<Void> then = { it -> }) {
         Server server = api.getServerById(serverId).get()
         ServerVoiceChannel channel = server.getVoiceChannelById(channelId).get()
         this.channelId = channel.id
-
         ServerVoiceChannelUpdater updater = channel.createUpdater()
-
-        ServerConfig config = ConfigUtils.getServerConfig(server)
-        ChannelCategory category = server.getChannelCategoryById(config.categoryId).get()
-        updater.setCategory(category)
         updater.setName(name)
         updater.setUserLimit(userLimit)
         if (private_) {
@@ -76,11 +51,11 @@ class PrivateChannel {
             updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.READ_MESSAGES)))
         }
         whitelistedUsers.forEach { userId ->
-            User user = api.getUserById(userId).get()
+            User user = server.getMemberById(userId).get()
             updater.addPermissionOverwrite(user, Permissions.fromBitmask(bitmask(PermissionType.CONNECT, PermissionType.PRIORITY_SPEAKER), bitmask()))
         }
         blacklistedUsers.forEach { userId ->
-            User user = api.getUserById(userId).get()
+            User user = server.getMemberById(userId).get()
             updater.addPermissionOverwrite(user,
                     Permissions.fromBitmask(
                             bitmask(),
@@ -112,7 +87,7 @@ class PrivateChannel {
             )
         }
         moderators.forEach { userId ->
-            User user = api.getUserById(userId).get()
+            User user = server.getMemberById(userId).get()
             updater.addPermissionOverwrite(user,
                     Permissions.fromBitmask(bitmask(
                             PermissionType.MOVE_MEMBERS),
@@ -120,28 +95,17 @@ class PrivateChannel {
                     )
             )
         }
-        return updater.update()
+
+        updater.update().thenAccept {
+            then.accept()
+        }
     }
 
-
-    /**
-     * A method to delete the {@link PrivateChannel}
-     * @param api Discord bot's instance
-     * @param reason Reason of the deletion
-     */
-    void delete(DiscordApi api, String reason = "No reason provided") {
+    def delete(DiscordApi api, String reason = "No reason provided") {
         ServerChannel channel = api.getServerById(serverId).get().getChannelById(channelId).get()
         channel.delete(reason)
     }
 
-    /**
-     * A method to get a {@link PrivateChannel} from a {@link ServerVoiceChannel}
-     * @param bConfig Config of the bot
-     * @param config Config of the server
-     * @param guild Guild of the channel
-     * @param channel Channel of the PrivateRoom to get
-     * @return The{@link PrivateChannel} got from the {@link ServerVoiceChannel}
-     */
     static Optional<PrivateChannel> getFromChannel(BotConfig bConfig, ServerConfig config, Server guild, ServerVoiceChannel channel) {
         if (channel.category.isEmpty() || (channel.category.get().idAsString != config.categoryId)) {
             return Optional.empty()
@@ -174,10 +138,12 @@ class PrivateChannel {
             } else {
                 if (permission.allowedPermission.contains(PermissionType.CONNECT)
                         && !permission.deniedPermissions.contains(PermissionType.SPEAK)
-                        && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)) {
+                        && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)
+                        && !blacklistedRoles.contains(roleId)) {
                     whitelistedRoles.add(roleId)
                 }
-                if (permission.deniedPermissions.contains(PermissionType.CONNECT)) {
+                if (permission.deniedPermissions.contains(PermissionType.CONNECT)
+                        && !whitelistedRoles.contains(roleId)) {
                     blacklistedRoles.add(roleId)
                 }
             }
@@ -186,12 +152,14 @@ class PrivateChannel {
             if (permission.allowedPermission.contains(PermissionType.MOVE_MEMBERS)) {
                 moderators.add(userId)
             }
-            if (permission.deniedPermissions.contains(PermissionType.READ_MESSAGES)) {
+            if (permission.deniedPermissions.contains(PermissionType.READ_MESSAGES)
+                    && !blacklistedUsers.contains(userId)) {
                 blacklistedUsers.add(userId)
             }
             if (permission.allowedPermission.contains(PermissionType.CONNECT)
                     && !permission.deniedPermissions.contains(PermissionType.SPEAK)
-                    && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)) {
+                    && permission.allowedPermission.contains(PermissionType.PRIORITY_SPEAKER)
+                    && !blacklistedUsers.contains(userId)) {
                 whitelistedUsers.add(userId)
             }
         }
@@ -209,28 +177,11 @@ class PrivateChannel {
                 hidden: hidden,
                 private_: private_,
         )
-        return Optional.of(pChannel)
+        return Optional.of(pChannel
+        )
     }
 
-    /**
-     * Resets the channel options
-     */
-    void reset() {
-        userLimit = 99
-        name = ""
-        whitelistedUsers = []
-        whitelistedRoles = []
-        blacklistedUsers = []
-        blacklistedRoles = []
-        moderators = []
-        hidden = false
-        private_ = false
-    }
 
-    /**
-     * Permits to print the channel
-     * @return The channel stringified
-     */
     @Override
     String toString() {
         return "PrivateChannel{" +
@@ -247,6 +198,5 @@ class PrivateChannel {
                 ",\n moderators=" + moderators +
                 '\n}'
     }
-
 }
 

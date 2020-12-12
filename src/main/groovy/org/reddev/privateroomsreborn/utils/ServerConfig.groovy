@@ -4,35 +4,13 @@ class ServerConfig {
 
     private String customPrefix, language, createChannelId, categoryId;
     private boolean disabled;
-    private List<Long> whitelistedVoiceChannels = []
 
-    ServerConfig(String customPrefix, String language, String createChannelId, String categoryId, boolean disabled, List<Long> whitelistedVoiceChannels) {
+    ServerConfig(String customPrefix, String language, String createChannelId, String categoryId, boolean disabled) {
         this.customPrefix = customPrefix
         this.language = language
         this.createChannelId = createChannelId
         this.categoryId = categoryId
         this.disabled = disabled
-        this.whitelistedVoiceChannels = whitelistedVoiceChannels;
-    }
-
-    String getCustomPrefix() {
-        return customPrefix
-    }
-
-    boolean getDisabled() {
-        return disabled
-    }
-
-    void setDisabled(boolean disabled) {
-        this.disabled = disabled
-    }
-
-    List<Long> getWhitelistedVoiceChannels() {
-        return whitelistedVoiceChannels
-    }
-
-    void setWhitelistedVoiceChannels(List<Long> whitelistedVoiceChannels) {
-        this.whitelistedVoiceChannels = whitelistedVoiceChannels
     }
 
     String getCustomPrefix(BotConfig config) {

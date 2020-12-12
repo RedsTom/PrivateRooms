@@ -33,8 +33,5 @@ dependencies {
     implementation "org.hjson:hjson:3.0.0"
     implementation 'com.moandjiezana.toml:toml4j:0.7.2'
     implementation 'com.konghq:unirest-java:3.11.04'
-    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
-
-sourceCompatibility = targetCompatibility = '1.8'

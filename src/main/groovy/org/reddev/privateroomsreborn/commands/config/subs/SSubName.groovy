@@ -21,9 +21,9 @@ class SSubName implements ICommand {
                 event.messageAuthor.connectedVoiceChannel.get()
         ).get()
         channel.name = "🔒 ${args.join(" ")}"
-        channel.update(event.api).thenAcceptAsync {
+        channel.update(event.api, {
             event.channel.sendMessage("Nom changé !")
-        }
+        })
 
     }
 
