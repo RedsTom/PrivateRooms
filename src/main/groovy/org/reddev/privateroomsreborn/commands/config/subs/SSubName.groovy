@@ -3,14 +3,14 @@ package org.reddev.privateroomsreborn.commands.config.subs
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class SSubName implements ICommand {
+class SSubName implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

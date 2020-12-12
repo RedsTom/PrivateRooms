@@ -2,19 +2,18 @@ package org.reddev.privateroomsreborn.commands
 
 
 import org.javacord.api.entity.message.embed.EmbedBuilder
-import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 
 import java.awt.*
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class CommandPing implements ICommand {
+class CommandPing implements TCommand {
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
         event.channel.sendMessage(new EmbedBuilder()

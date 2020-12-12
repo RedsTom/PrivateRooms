@@ -1,12 +1,12 @@
 package org.reddev.privateroomsreborn.commands.settings.subs
 
-import kong.unirest.Unirest
+
 import org.hjson.JsonValue
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
@@ -19,7 +19,7 @@ import java.awt.*
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class SSubLanguage implements ICommand {
+class SSubLanguage implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

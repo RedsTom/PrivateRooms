@@ -5,7 +5,7 @@ import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.utils.BotConfig
 
-trait ICommand {
+trait TCommand {
 
     abstract void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args)
 

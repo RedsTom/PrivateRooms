@@ -4,7 +4,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
@@ -14,9 +14,9 @@ import java.awt.Color
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class SSubHelp implements ICommand {
+class SSubHelp implements TCommand {
 
-    Map<List<String>, ICommand> cmds
+    Map<List<String>, TCommand> cmds
     String cmdName = ""
 
     @Override

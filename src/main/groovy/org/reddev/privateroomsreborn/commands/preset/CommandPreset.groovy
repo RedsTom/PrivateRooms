@@ -4,7 +4,7 @@ import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
 import org.reddev.privateroomsreborn.commands.preset.subs.SSubLoad
 import org.reddev.privateroomsreborn.commands.preset.subs.SSubSave
@@ -16,15 +16,15 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class CommandPreset implements ICommand {
+class CommandPreset implements TCommand {
 
-    private Map<List<String>, ICommand> subCommands
+    private Map<List<String>, TCommand> subCommands
 
     CommandPreset() {
         subCommands = new HashMap<>()
         subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "preset"))
         subCommands.put(["save"], new SSubSave())
-        subCommands.put(["load"],new SSubLoad())
+        subCommands.put(["load"], new SSubLoad())
     }
 
     @Override

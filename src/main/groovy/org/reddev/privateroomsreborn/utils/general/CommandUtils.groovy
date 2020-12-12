@@ -1,13 +1,12 @@
 package org.reddev.privateroomsreborn.utils.general
 
-import org.javacord.api.entity.channel.TextChannel
+
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.permission.PermissionType
-import org.javacord.api.entity.permission.Permissions
 import org.javacord.api.entity.server.Server
 import org.javacord.api.entity.user.User
 import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 
@@ -57,7 +56,7 @@ class CommandUtils {
         return rt
     }
 
-    static void sendBadUsage(MessageCreateEvent event, String cmd, ICommand command) {
+    static void sendBadUsage(MessageCreateEvent event, String cmd, TCommand command) {
         event.channel.sendMessage(
                 new EmbedBuilder()
                         .setTitle(l("errors.incorrect-syntax", event.server.get()))

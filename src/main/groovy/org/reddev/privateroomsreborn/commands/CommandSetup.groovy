@@ -6,7 +6,7 @@ import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.channel.ServerVoiceChannelBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
@@ -14,7 +14,7 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
 class CommandSetup implements
-        ICommand {
+        TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

@@ -1,11 +1,11 @@
 package org.reddev.privateroomsreborn.commands.settings.subs
 
-import org.apache.groovy.groovysh.Command
+
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
@@ -14,7 +14,7 @@ import java.awt.Color
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class SSubCurrent implements ICommand {
+class SSubCurrent implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig bConfig, String cmd, String[] args) {

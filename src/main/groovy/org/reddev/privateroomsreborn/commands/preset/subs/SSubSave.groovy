@@ -1,12 +1,11 @@
 package org.reddev.privateroomsreborn.commands.preset.subs
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.Main
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
@@ -15,7 +14,7 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class SSubSave implements ICommand {
+class SSubSave implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

@@ -10,7 +10,7 @@ import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
 import org.reddev.privateroomsreborn.commands.preset.CommandPreset
 import org.reddev.privateroomsreborn.commands.settings.CommandSettings
 import org.reddev.privateroomsreborn.utils.BotConfig
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
@@ -18,7 +18,7 @@ import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
 class CommandManager {
 
-    private static final Map<List<String>, ICommand> commands = new HashMap<>();
+    private static final Map<List<String>, TCommand> commands = new HashMap<>()
 
     static {
         commands.put(["ping", "p?"], new CommandPing())
@@ -28,11 +28,6 @@ class CommandManager {
         commands.put(["setup", "s!"], new CommandSetup())
         commands.put(["preset", "p", "template", "t"], new CommandPreset())
         commands.put(["info"], new ProvCommandInfo())
-        // TODO Système de preset :
-        /*
-         * %preset save : Enregistre le preset dans (presets/{random uuid}.json) et donne l'uuid à l'utilisateur
-         * %preset load <uuid> : Charge le preset dans le salon actuel
-         */
     }
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {
@@ -56,7 +51,7 @@ class CommandManager {
 
     }
 
-    static void repartSub(Map<List<String>, ICommand> subs, MessageCreateEvent event, String originCmd, BotConfig config, String[] args) {
+    static void repartSub(Map<List<String>, TCommand> subs, MessageCreateEvent event, String originCmd, BotConfig config, String[] args) {
         if (args.length <= 0) {
             args = ["help"]
         }
@@ -66,9 +61,9 @@ class CommandManager {
         dispatchCommand(subs, cmd, config, event, originCmd, args)
     }
 
-    private static void dispatchCommand(Map<List<String>, ICommand> commands, String input, BotConfig config, MessageCreateEvent event, String originCmd, String[] args) {
+    private static void dispatchCommand(Map<List<String>, TCommand> commands, String input, BotConfig config, MessageCreateEvent event, String originCmd, String[] args) {
         String cmd
-        ICommand iCmd = new DefaultCommand()
+        TCommand iCmd = new DefaultCommand()
         commands.forEach { names, ex ->
             if (names.contains(input))
                 iCmd = ex

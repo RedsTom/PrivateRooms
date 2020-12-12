@@ -4,21 +4,21 @@ import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.commands.config.subs.SSubName
+import org.reddev.privateroomsreborn.commands.config.subs.SSubUserLimit
 import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
-import org.reddev.privateroomsreborn.commands.settings.subs.SSubLanguage
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.ICommand
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class CommandConfig implements ICommand {
+class CommandConfig implements TCommand {
 
-    private Map<List<String>, ICommand> subCommands
+    private Map<List<String>, TCommand> subCommands
 
     CommandConfig() {
         subCommands = new HashMap<>()
