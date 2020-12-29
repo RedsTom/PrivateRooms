@@ -3,6 +3,8 @@ package org.reddev.privateroomsreborn
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import groovy.transform.CompileStatic
+import org.javacord.api.entity.activity.ActivityType
+import org.javacord.api.entity.user.UserStatus
 import org.reddev.privateroomsreborn.events.VoiceLeaveListener
 
 import static org.reddev.privateroomsreborn.utils.ETerminalColors.*
@@ -25,6 +27,7 @@ class Main {
             .create()
 
     static void main(String[] args) {
+
         BotConfig config = new BotConfig()
         if (initHjsonConfig(config)) {
             LangUtils.createLangFiles(config)
@@ -34,7 +37,8 @@ class Main {
             api.addMessageCreateListener { CommandManager.onMessage(it, config) }
             api.addServerVoiceChannelMemberJoinListener(new VoiceJoinListener())
             api.addServerVoiceChannelMemberLeaveListener(new VoiceLeaveListener())
-            api.updateActivity("${config.defaultPrefix}help", 'https://twitch.tv/mr_redstom')
+            api.updateActivity(ActivityType.LISTENING, "${config.defaultPrefix}help | " + api.owner.get().discriminatedName)
+            api.updateStatus(UserStatus.DO_NOT_DISTURB)
         }
     }
 

@@ -3,9 +3,9 @@ package org.reddev.privateroomsreborn.commands.settings
 import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
-import org.reddev.privateroomsreborn.commands.settings.subs.SSubCurrent
-import org.reddev.privateroomsreborn.commands.settings.subs.SSubLanguage
+import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
+import org.reddev.privateroomsreborn.commands.settings.subs.SCurrent
+import org.reddev.privateroomsreborn.commands.settings.subs.SLanguage
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
@@ -20,9 +20,9 @@ class CommandSettings implements
 
     CommandSettings() {
         subCommands = new HashMap<>()
-        subCommands.put(["language", "lang", "locale"], new SSubLanguage())
-        subCommands.put(["current", "config"], new SSubCurrent())
-        subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "settings"))
+        subCommands.put(["language", "lang", "locale"], new SLanguage())
+        subCommands.put(["current", "config"], new SCurrent())
+        subCommands.put(["help", "?"], new SubHelp(cmds: subCommands, cmdName: "settings"))
     }
 
     @Override

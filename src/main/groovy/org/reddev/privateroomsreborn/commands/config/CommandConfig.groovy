@@ -3,9 +3,10 @@ package org.reddev.privateroomsreborn.commands.config
 import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.commands.config.subs.SSubName
-import org.reddev.privateroomsreborn.commands.config.subs.SSubUserLimit
-import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
+import org.reddev.privateroomsreborn.commands.config.subs.CName
+import org.reddev.privateroomsreborn.commands.config.subs.CUserLimit
+import org.reddev.privateroomsreborn.commands.config.subs.CWhitelist
+import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
@@ -22,9 +23,16 @@ class CommandConfig implements TCommand {
 
     CommandConfig() {
         subCommands = new HashMap<>()
-        subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "config"))
-        subCommands.put(["name", "rename"], new SSubName())
+        subCommands.put(["help", "?"], new SubHelp(cmds: subCommands, cmdName: "config"))
+        subCommands.put(["name", "rename"], new CName())
+        subCommands.put(["userlimit", "user-limit", "limit"], new CUserLimit())
+        subCommands.put(["whitelist", "wl"], new CWhitelist())
     }
+
+    /*
+
+
+     */
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

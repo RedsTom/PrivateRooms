@@ -19,7 +19,7 @@ import java.awt.*
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class SSubLanguage implements TCommand {
+class SLanguage implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {

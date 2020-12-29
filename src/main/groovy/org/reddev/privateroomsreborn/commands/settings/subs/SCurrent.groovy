@@ -14,7 +14,7 @@ import java.awt.Color
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class SSubCurrent implements TCommand {
+class SCurrent implements TCommand {
 
     @Override
     void execute(MessageCreateEvent event, BotConfig bConfig, String cmd, String[] args) {

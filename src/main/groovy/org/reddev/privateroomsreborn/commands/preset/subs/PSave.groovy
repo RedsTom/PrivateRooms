@@ -14,7 +14,8 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
-class SSubLoad implements TCommand {
+class PSave implements TCommand {
+
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
 
@@ -29,13 +30,11 @@ class SSubLoad implements TCommand {
                 event.messageAuthor.connectedVoiceChannel.get()).get()
 
         Gson gson = Main.GSON
-        String name = args.join(" ")
-        ConfigUtils.loadTemplate(gson, event.server.get(), name, channel).thenAccept { correct ->
-            if (correct) {
-                event.channel.sendMessage(j(l("cmd.preset.load.success", event.server.get()), name))
-            } else {
-                event.channel.sendMessage(j(l("cmd.preset.load.error.absent", event.server.get()), name))
-            }
+        String jsonOutput = gson.toJson(channel)
+        if (ConfigUtils.saveTemplate(gson, event.server.get(), args.join(" "), jsonOutput)) {
+            event.channel.sendMessage(j(l("cmd.preset.save.success", event.server.get()), args.join(" ")))
+        } else {
+            event.channel.sendMessage(j(l("cmd.preset.save.error.already-exists", event.server.get()), args.join(" ")))
         }
     }
 

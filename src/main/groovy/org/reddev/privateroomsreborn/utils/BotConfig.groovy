@@ -7,7 +7,7 @@ class BotConfig {
     String token = ""
     String defaultPrefix = ""
     JsonArray languages
-    Map<String, String> botOps = new HashMap<>();
+    Map<String, String> botOps = new HashMap<>()
 
     @Override
     String toString() {

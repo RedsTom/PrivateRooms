@@ -4,8 +4,10 @@ import org.javacord.api.entity.channel.ChannelCategory
 import org.javacord.api.entity.channel.ChannelCategoryBuilder
 import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.channel.ServerVoiceChannelBuilder
+import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
+import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
@@ -21,6 +23,11 @@ class CommandSetup implements
 
         init(event.server.get())
 
+    }
+
+    @Override
+    CommandDescriptor getDescriptor(Server guild) {
+        return new CommandDescriptor(permissions: [PermissionType.MANAGE_CHANNELS])
     }
 
     static def init(Server guild) {
@@ -51,9 +58,12 @@ class CommandSetup implements
 
         if (config.categoryId || config.createChannelId) {
             Optional<ChannelCategory> category = guild.getChannelCategoryById(config.categoryId)
-            category.ifPresent {it.delete()}
+            category.ifPresent {
+                it.channels.forEach { it.delete() }
+                it.delete()
+            }
             Optional<ServerVoiceChannel> channel = guild.getVoiceChannelById(config.createChannelId)
-            channel.ifPresent {it.delete()}
+            channel.ifPresent { it.delete() }
         }
 
         ConfigUtils.update(guild, config)

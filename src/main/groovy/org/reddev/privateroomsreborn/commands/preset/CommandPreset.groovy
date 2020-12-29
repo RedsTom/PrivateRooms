@@ -5,9 +5,9 @@ import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
-import org.reddev.privateroomsreborn.commands.gensubs.SSubHelp
-import org.reddev.privateroomsreborn.commands.preset.subs.SSubLoad
-import org.reddev.privateroomsreborn.commands.preset.subs.SSubSave
+import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
+import org.reddev.privateroomsreborn.commands.preset.subs.PLoad
+import org.reddev.privateroomsreborn.commands.preset.subs.PSave
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
@@ -22,9 +22,9 @@ class CommandPreset implements TCommand {
 
     CommandPreset() {
         subCommands = new HashMap<>()
-        subCommands.put(["help", "?"], new SSubHelp(cmds: subCommands, cmdName: "preset"))
-        subCommands.put(["save"], new SSubSave())
-        subCommands.put(["load"], new SSubLoad())
+        subCommands.put(["help", "?"], new SubHelp(cmds: subCommands, cmdName: "preset"))
+        subCommands.put(["save"], new PSave())
+        subCommands.put(["load"], new PLoad())
     }
 
     @Override
