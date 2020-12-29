@@ -100,7 +100,15 @@ cmd:
   user-limit:
     description: "Adds an user limit to your channel (0 to disable)"
     success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
-
+  public:
+    description: "Makes the actual private room public"
+    success: "<:yes:739186219338170421> The channel has been make public"
+  private:
+    description: "Makes the actual private room private"
+    success: "<:yes:739186219338170421> The channel has been make private"
+  hide:
+    description: "Hides the actual private room"
+    success: "<:yes:739186219338170421> The channel has been hidden"
 
   # Settings command
   settings:

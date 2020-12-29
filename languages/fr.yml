@@ -100,7 +100,15 @@ cmd:
     user-limit:
       description: "Ajoute une limite d'utilisateurs à votre salon (0 pour désactiver)"
       success: "<:yes:739186219338170421> La limite d'utilisateur du salon a bien été définie à **%s**"
-
+    public:
+      description: "Rend le salon privé actuel public"
+      success: "<:yes:739186219338170421> Le salon a bien été rendu public"
+    private:
+      description: "Rend le salon privé actuel non-accessible"
+      success: "<:yes:739186219338170421> Le salon a bien été rendu privé"
+    hide:
+      description: "Cache le salon privé actuel"
+      success: "<:yes:739186219338170421> Le salon a bien été caché"
 
   # Settings command
   settings:
