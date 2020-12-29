@@ -39,7 +39,7 @@ class RoleBlacklistCommands {
             new MatchRoleQuery(event.channel, roles).then { role ->
                 channel.blacklistedRoles.add(role.id)
                 channel.update(event.api).thenAccept {
-                    event.channel.sendMessage(j(l("cmd.config.blacklist.add.role.success", event.server.get()), role.mentionTag))
+                    event.channel.sendMessage(j(l("cmd.config.blacklist.add.role.success", event.server.get()), role.name))
                 }
             }.start()
         }
@@ -74,7 +74,7 @@ class RoleBlacklistCommands {
             new MatchRoleQuery(event.channel, roles).then { role ->
                 channel.blacklistedRoles.remove(role.id)
                 channel.update(event.api).thenAccept {
-                    event.channel.sendMessage(j(l("cmd.config.blacklist.remove.role.success", event.server.get()), role.mentionTag))
+                    event.channel.sendMessage(j(l("cmd.config.blacklist.remove.role.success", event.server.get()), role.name))
                 }
             }.start()
 

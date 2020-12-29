@@ -39,7 +39,7 @@ class RoleWhitelistCommands {
             new MatchRoleQuery(event.channel, roles).then { role ->
                 channel.whitelistedRoles.add(role.id)
                 channel.update(event.api).thenAccept {
-                    event.channel.sendMessage(j(l("cmd.config.whitelist.add.role.success", event.server.get()), role.mentionTag))
+                    event.channel.sendMessage(j(l("cmd.config.whitelist.add.role.success", event.server.get()), role.name))
                 }
             }.start()
         }
@@ -74,7 +74,7 @@ class RoleWhitelistCommands {
             new MatchRoleQuery(event.channel, roles).then { role ->
                 channel.whitelistedRoles.remove(role.id)
                 channel.update(event.api).thenAccept {
-                    event.channel.sendMessage(j(l("cmd.config.whitelist.remove.role.success", event.server.get()), role.mentionTag))
+                    event.channel.sendMessage(j(l("cmd.config.whitelist.remove.role.success", event.server.get()), role.name))
                 }
             }.start()
 

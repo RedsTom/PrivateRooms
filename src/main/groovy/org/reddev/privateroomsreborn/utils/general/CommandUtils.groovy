@@ -102,12 +102,12 @@ class CommandUtils {
      */
     static Optional<User> getUserFromMessage(MessageCreateEvent event, TCommand command, String cmdName, String[] args) {
         // If there is no mentions or if there is no arguments
-        if (event.message.mentionedUsers.size() == 0 || args.length == 0) {
+        if (event.message.mentionedUsers.size() == 0 && args.length == 0) {
             sendBadUsage(event, cmdName, command)
             return Optional.empty()
         }
         // If there is more than one mention or if there is more than one argument
-        if (event.message.mentionedUsers.size() > 1 || args.length > 1) {
+        if (event.message.mentionedUsers.size() > 1 || args.length >= 2) {
             sendBadUsage(event, cmdName, command)
             return Optional.empty()
         }
@@ -119,7 +119,8 @@ class CommandUtils {
         // If there's not : search for the user
         Optional<User> potentialUser = event.server.get().getMemberById(args[0])
         if (potentialUser.isEmpty()) {
-            event.channel.sendMessage(l("cmd.config.cannot-find-user", event.server.get()))
+            event.channel.sendMessage(j(l("cmd.config.error.cannot-find-user", event.server.get()), args[0]))
+            return Optional.empty()
         }
         return potentialUser
     }

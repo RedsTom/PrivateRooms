@@ -22,6 +22,7 @@ class CommandSetup implements
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
 
         init(event.server.get())
+        event.channel.sendMessage(l("cmd.setup.success", event.server.get()))
 
     }
 
@@ -59,7 +60,7 @@ class CommandSetup implements
         if (config.categoryId || config.createChannelId) {
             Optional<ChannelCategory> category = guild.getChannelCategoryById(config.categoryId)
             category.ifPresent {
-                it.channels.forEach { it.delete() }
+                it.channels.forEach { if (it instanceof ServerVoiceChannel && !config.whitelistedVoiceChannels.contains(it.id)) it.delete() }
                 it.delete()
             }
             Optional<ServerVoiceChannel> channel = guild.getVoiceChannelById(config.createChannelId)

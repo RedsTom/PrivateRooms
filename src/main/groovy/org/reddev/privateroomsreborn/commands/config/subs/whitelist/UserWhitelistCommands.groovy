@@ -32,7 +32,7 @@ class UserWhitelistCommands {
             User mentionedUser = potentialUser.get()
             channel.whitelistedUsers.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
-                event.channel.sendMessage(j(l("cmd.config.whitelist.add.user.success", event.server.get()), mentionedUser.mentionTag))
+                event.channel.sendMessage(j(l("cmd.config.whitelist.add.user.success", event.server.get()), mentionedUser.discriminatedName))
             }
         }
 
@@ -58,7 +58,7 @@ class UserWhitelistCommands {
             User mentionedUser = potentialUser.get()
             channel.whitelistedUsers.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
-                event.channel.sendMessage(j(l("cmd.config.whitelist.remove.user.success", event.server.get()), mentionedUser.mentionTag))
+                event.channel.sendMessage(j(l("cmd.config.whitelist.remove.user.success", event.server.get()), mentionedUser.discriminatedName))
             }
 
         }

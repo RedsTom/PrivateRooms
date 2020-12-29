@@ -20,7 +20,7 @@ class SCurrent implements TCommand {
 
         ServerConfig config = ConfigUtils.getServerConfig(event.server.get())
         EmbedBuilder builder = new EmbedBuilder()
-                .setTitle(l("cmd.settings.embed.title", event.server.get()))
+                .setTitle(l("cmd.settings.current.embed.title", event.server.get()))
                 .setColor(Color.YELLOW)
                 .addField("Custom Prefix", "```" + config.getCustomPrefix(bConfig) + "```", true)
                 .addField("Language", "```" + config.language + "```", true)

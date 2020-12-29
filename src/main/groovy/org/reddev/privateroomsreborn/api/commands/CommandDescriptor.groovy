@@ -7,5 +7,6 @@ class CommandDescriptor {
     String description = "NOT SET"
     String usage = ""
     PermissionType[] permissions = []
+    boolean hidden = false
 
 }

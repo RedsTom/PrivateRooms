@@ -32,7 +32,7 @@ class UserBlacklistCommands {
             User mentionedUser = potentialUser.get()
             channel.blacklistedUsers.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
-                event.channel.sendMessage(j(l("cmd.config.blacklist.add.user.success", event.server.get()), mentionedUser.mentionTag))
+                event.channel.sendMessage(j(l("cmd.config.blacklist.add.user.success", event.server.get()), mentionedUser.discriminatedName))
             }
         }
 
@@ -58,7 +58,7 @@ class UserBlacklistCommands {
             User mentionedUser = potentialUser.get()
             channel.blacklistedUsers.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
-                event.channel.sendMessage(j(l("cmd.config.blacklist.remove.user.success", event.server.get()), mentionedUser.mentionTag))
+                event.channel.sendMessage(j(l("cmd.config.blacklist.remove.user.success", event.server.get()), mentionedUser.discriminatedName))
             }
 
         }

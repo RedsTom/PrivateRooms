@@ -10,6 +10,7 @@ import org.reddev.privateroomsreborn.utils.general.CommandUtils
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
+import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
 class CUserLimit implements
         TCommand {
@@ -32,7 +33,7 @@ class CUserLimit implements
                 event.messageAuthor.connectedVoiceChannel.get()).get()
         channel.userLimit = userLimit
         channel.update(event.api).thenAccept {
-            event.channel.sendMessage(l("cmd.config.user-limit.success", event.server.get()))
+            event.channel.sendMessage(j(l("cmd.config.user-limit.success", event.server.get()), userLimit))
         }
     }
 

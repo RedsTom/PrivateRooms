@@ -11,8 +11,6 @@ class LangUtils {
     static void updateLanguageCache(BotConfig config) {
         for (String lang in config.languages) {
             YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(getLanguageFile(lang))
-            println(yamlConfiguration.getString("test"))
-            println(yamlConfiguration.getString("tests.success"))
             languageCache.put(lang, yamlConfiguration)
         }
     }

@@ -33,14 +33,16 @@ class SubHelp implements TCommand {
                     .setColor(Color.GREEN)
 
             cmds.forEach { name, executor ->
-                def usage = executor.getDescriptor(event.server.get()).getUsage()
-                builder.addField("${cmdSplit.join(" ")} ${prefix}${name[0]} ${usage.isEmpty() ? "" : "`${usage}`"}", """
+                if (!executor.getDescriptor(event.server.get()).hidden) {
+                    def usage = executor.getDescriptor(event.server.get()).getUsage()
+                    builder.addField("${cmdSplit.join(" ")} ${prefix}${name[0]} ${usage.isEmpty() ? "" : "`${usage}`"}", """
                 | ${executor.getDescriptor(event.server.get()).description}
                 |
                 | > **${l("cmd.help.embed.aliases", event.server.get())}**
                 | `${name.join("`, `")}`
                 | ~~------------------------------~~
                 """.stripMargin(), true)
+                }
             }
             if (cmdName) cmdName -= " "
 
@@ -53,6 +55,6 @@ class SubHelp implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.help.description", guild))
+        return new CommandDescriptor(description: l("cmd.help.description", guild), hidden: true)
     }
 }

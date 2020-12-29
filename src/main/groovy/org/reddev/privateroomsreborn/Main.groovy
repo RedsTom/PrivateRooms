@@ -80,7 +80,10 @@ class Main {
             config.token = configuration.getString("token")
             config.defaultPrefix = configuration.getString("prefix")
             config.languages = configuration.getStringList("languages")
-            config.botOps = configuration.getConfigurationSection("bot-ops").getMapValues(false)
+            config.botOps = new HashMap<>()
+            configuration.getConfigurationSection("bot-ops").getValues(false).keySet().forEach {
+                config.botOps.put(it, configuration.getConfigurationSection("bot-ops").getString(it))
+            }
             return true
         }
     }

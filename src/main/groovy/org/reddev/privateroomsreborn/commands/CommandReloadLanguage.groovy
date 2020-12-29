@@ -21,11 +21,12 @@ class CommandReloadLanguage implements TCommand {
         }
 
         LangUtils.updateLanguageCache(config)
+        event.channel.sendMessage(l("cmd.reload-languages.success", event.server.get()))
 
     }
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.reload-language.description", guild))
+        return new CommandDescriptor(description: l("cmd.reload-language.description", guild), hidden: true)
     }
 }

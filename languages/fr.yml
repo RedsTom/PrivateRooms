@@ -1,7 +1,3 @@
-test: "Testing..."
-tests:
-  success: "Success !"
-
 # General settings of the bot
 settings:
   category-name: "Salons Privés"
@@ -25,6 +21,16 @@ cmd:
       description: "Aide de la commande"
       aliases: "Autres noms :"
 
+  # Setup command
+  setup:
+    description: "Mets en place la catégorie et le salon pour créer un salon privé"
+    success: "<:yes:739186219338170421> La catégorie et le salon ont été créés"
+
+  # Reload language command
+  reload-languages:
+    description: "Reloads the languages files"
+    success: "<:yes:739186219338170421> Les fichiers de langue ont été rechargés"
+
   # Ping command
   ping:
     description: "Récupère le délai du bot"
@@ -33,11 +39,56 @@ cmd:
   # Config command
   config:
     description: "Configure le salon vocal actuel"
+    error:
+      not-in-voice-channel: "<:no:739186219333976084> Vous n'êtes pas dans un salon vocal"
+      not-a-private-room: "<:no:739186219333976084> Vous n'êtes pas dans un salon privé"
+      not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon"
+      cannot-find-user: "<:no:739186219333976084> Impossible de trouver l'utilisateur avec l'id **``%s``**"
     # Sub commands
     whitelist:
+      description: "Gère la list blanche de votre salon"
+      show:
+        description: "Affiche la liste blanche de votre salon"
+        title: "Liste blanche"
+        no-value-present: "Pas d'entrées"
       add:
+        role:
+          description: "Ajoute un role à la liste blanche de votre salon"
+          success: "<:yes:739186219338170421> Le role **``%s``** a bien été ajouté à la liste blanche du salon"
         user:
-          sucess: "<:yes:739186219338170421> L'utilisateur **%s** a bien été ajouté à la liste blanche du salon"
+          description: "Ajoute un utilisateur à la liste blanche de votre salon"
+          success: "<:yes:739186219338170421> L'utilisateur **``%s``** a bien été ajouté à la liste blanche du salon"
+      remove:
+        role:
+          description: "Retire un role de la liste blanche de votre salon"
+          success: "<:yes:739186219338170421> Le role **``%s``** a bien été retiré de la liste blanche du salon"
+        user:
+          description: "Retire un utilisateur de la liste blanche de votre salon"
+          success: "<:yes:739186219338170421> L'utilisateur  **``%s``** a bien été retiré de la liste blanche du salon"
+    blacklist:
+      description: "Gère la list noire de votre salon"
+      show:
+        description: "Affiche la liste noire de votre salon"
+        title: "Liste noire"
+        no-value-present: "Pas d'entrées"
+      add:
+        role:
+          description: "Ajoute un role à la liste noire de votre salon"
+          success: "<:yes:739186219338170421> Le role **``%s``** a bien été ajouté à la liste noire du salon"
+        user:
+          description: "Ajoute un utilisateur à la liste noire de votre salon"
+          success: "<:yes:739186219338170421> L'utilisateur **``%s``** a bien été ajouté à la liste noire du salon"
+      remove:
+        role:
+          description: "Retire un role de la liste noire de votre salon"
+          success: "<:yes:739186219338170421> Le role **``%s``** a bien été retiré de la liste noire du salon"
+        user:
+          description: "Retire un utilisateur de la liste noire de votre salon"
+          success: "<:yes:739186219338170421> L'utilisateur  **``%s``** a bien été retiré de la liste noire du salon"
+    user-limit:
+      description: "Ajoute une limite d'utilisateurs à votre salon (0 pour désactiver)"
+      success: "<:yes:739186219338170421> La limite d'utilisateur du salon a bien été définie à **%s**"
+
 
   # Settings command
   settings:
@@ -56,6 +107,9 @@ cmd:
       embed:
         title: "Langue changée"
         description: "La langue du bot a été changée vers le"
+    wvc:
+      description: "Ajoute un salon à la liste des salons ne se supprimant pas automatiquement"
+      success: "<:yes:739186219338170421> Le salon `%s` a bien été ajouté à la liste des salons ne se supprimant pas automatiquement"
 
   # Preset command
   preset:
@@ -67,42 +121,7 @@ cmd:
         no-argument: "<:no:739186219333976084> Veuillez préciser un nom de preset !"
       success: "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`"
     load:
-      description: ""
+      description: "Charge les paramètres du salon selon un preset enregistré précédemment"
       success: "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
       error:
         absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
-
-#
-#  {
-#    // Ping command
-#    "cmd.ping.cmd-desc": "Récupère le délai du bot"
-#
-#      "cmd.ping.desc": "Récupère le délai du bot"
-#      "cmd.ping.bot-ping": "Ping du bot"
-#
-#      // CONFIG
-#      "cmd.config.desc": "Configurez votre salon"
-#
-#      "cmd.config.whitelist.add.success": "<:yes:739186219338170421> L'utilisateur **%s** a bien été ajouté à la liste blanche du salon"
-#
-#      // SETTINGS
-#      // Current
-#      "cmd.settings.current.description": "Affiche les paramètres actuels du serveur"
-#      "cmd.settings.current.title": "Paramètres du serveur"
-#
-#      // Language
-#      "cmd.settings.language.description": "Change la langue du bot"
-#      "cmd.settings.language.title": "Langue changée"
-#      "cmd.settings.language.desc": "La langue du bot a été changée vers le"
-#      "cmd.settings.language.error.language-does-not-exists.desc": "Cette langue n'existe pas !"
-#      "cmd.settings.language.error.language-does-not-exists.possibility": "Langues disponibles : "
-#
-#      // PRESETS
-#      "cmd.preset.save.success": "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`"
-#      "cmd.preset.save.error.already-exists": "<:no:739186219333976084> Le nom `%s` existe déjà sur ce serveur !"
-#      "cmd.preset.save.error.no-argument": "<:no:739186219333976084> Veuillez préciser un nom de preset !"
-#
-#      "cmd.preset.load.success": "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
-#      "cmd.preset.load.error.absent": "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
-#
-#  }

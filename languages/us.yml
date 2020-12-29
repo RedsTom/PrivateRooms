@@ -1,7 +1,3 @@
-test: "Testing..."
-tests:
-  success: "Success !"
-
 # General settings of the bot
 settings:
   category-name: "Private Channel"
@@ -25,6 +21,16 @@ cmd:
       description: "Help of the command"
       aliases: "Aliases :"
 
+  # Setup command
+  setup:
+    description: "Set up the category and the channel to create a private room"
+    success: "<:yes:739186219338170421> The category and the channel has been created"
+
+  # Reload language command
+  reload-languages:
+    description: "Reloads the languages files"
+    success: "<:yes:739186219338170421> The languages files has been reloaded"
+
   # Ping command
   ping:
     description: "Gets the bot's ping"
@@ -33,6 +39,9 @@ cmd:
   # Config command
   config:
     description: "Configures your actual private room"
+    error:
+      not-in-voice-channel: "<:no:739186219333976084> You are not in a voice channel"
+      not-a-private-room: "<:no:739186219333976084> You are not in a private room"
     # Sub commands
     whitelist:
       add:
@@ -56,6 +65,9 @@ cmd:
       embed:
         title: "Language changed"
         description: "The bot's language has been set to"
+    wvc:
+      description: "Adds a channel to the non-deleting channels list"
+      success: "<:yes:739186219338170421> The channel `%s` has been added to the non-deleting channels"
 
   # Preset command
   preset:
