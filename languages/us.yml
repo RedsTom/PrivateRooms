@@ -85,9 +85,21 @@ cmd:
         user:
           description: "Removes an user from the blacklist of your channel"
           success: "<:yes:739186219338170421> The user **`%s`** has been removed from the blacklist of your channel"
-    user-limit:
-      description: "Adds an user limit to your channel (0 to disable)"
-      success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
+    moderators:
+      description: "Manages the moderators of your channel"
+      show:
+        description: "Shows the list of the moderators of your channel"
+        title: "Moderators list"
+        no-value-present: "No entry"
+      add:
+        description: "Adds an user to the moderators list"
+        success: "<:yes:739186219338170421> The user **`%s`** has been added to the moderators of your channel"
+      remove:
+        description: "Removes an user from the moderators list"
+        success: "<:yes:739186219338170421> The user **`%s`** has been removed to the moderators of your channel"
+  user-limit:
+    description: "Adds an user limit to your channel (0 to disable)"
+    success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
 
 
   # Settings command

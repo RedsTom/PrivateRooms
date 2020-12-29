@@ -56,7 +56,7 @@ class UserWhitelistCommands {
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
             if (potentialUser.isEmpty()) return
             User mentionedUser = potentialUser.get()
-            channel.whitelistedUsers.add(mentionedUser.id)
+            channel.whitelistedUsers.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {
                 event.channel.sendMessage(j(l("cmd.config.whitelist.remove.user.success", event.server.get()), mentionedUser.discriminatedName))
             }

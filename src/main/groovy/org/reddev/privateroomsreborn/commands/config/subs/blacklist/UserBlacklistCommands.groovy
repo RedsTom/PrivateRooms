@@ -56,7 +56,7 @@ class UserBlacklistCommands {
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
             if (potentialUser.isEmpty()) return
             User mentionedUser = potentialUser.get()
-            channel.blacklistedUsers.add(mentionedUser.id)
+            channel.blacklistedUsers.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {
                 event.channel.sendMessage(j(l("cmd.config.blacklist.remove.user.success", event.server.get()), mentionedUser.discriminatedName))
             }

@@ -85,6 +85,18 @@ cmd:
         user:
           description: "Retire un utilisateur de la liste noire de votre salon"
           success: "<:yes:739186219338170421> L'utilisateur  **``%s``** a bien été retiré de la liste noire du salon"
+    moderators:
+      description: "Gère les modérateurs de votre salon"
+      show:
+        description: "Affiche la liste des modérateurs de votre salon"
+        title: "Liste des modérateurs"
+        no-value-present: "Pas d'entrées"
+      add:
+        description: "Ajoute un utilisateur à la liste des modérateurs"
+        success: "<:yes:739186219338170421> L'utilisateur **`%s`** a bien été ajouté à la liste des modérateurs"
+      remove:
+        description: "Retire un utilisateur de la liste des modérateurs"
+        success: "<:yes:739186219338170421> L'utilisateur **`%s`** a bien été retiré de la liste des modérateurs"
     user-limit:
       description: "Ajoute une limite d'utilisateurs à votre salon (0 pour désactiver)"
       success: "<:yes:739186219338170421> La limite d'utilisateur du salon a bien été définie à **%s**"

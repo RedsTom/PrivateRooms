@@ -8,6 +8,7 @@ import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.commands.config.subs.CBlacklist
+import org.reddev.privateroomsreborn.commands.config.subs.CModeration
 import org.reddev.privateroomsreborn.commands.config.subs.CName
 import org.reddev.privateroomsreborn.commands.config.subs.CUserLimit
 import org.reddev.privateroomsreborn.commands.config.subs.CWhitelist
@@ -32,6 +33,7 @@ class CommandConfig implements TCommand {
         subCommands.put(["userlimit", "user-limit", "limit"], new CUserLimit())
         subCommands.put(["whitelist", "wl"], new CWhitelist())
         subCommands.put(["blacklist", "bl"], new CBlacklist())
+        subCommands.put(["moderators", "mods", "md"], new CModeration())
     }
 
     @Override
