@@ -2,13 +2,11 @@ package org.reddev.privateroomsreborn.commands.config.subs.whitelist
 
 import org.javacord.api.entity.permission.Role
 import org.javacord.api.entity.server.Server
-import org.javacord.api.entity.user.User
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
-import org.reddev.privateroomsreborn.utils.general.CommandUtils
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 import org.reddev.privateroomsreborn.utils.general.MatchRoleQuery
 

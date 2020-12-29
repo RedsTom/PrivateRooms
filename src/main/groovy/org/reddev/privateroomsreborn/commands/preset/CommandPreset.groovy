@@ -59,6 +59,6 @@ class CommandPreset implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor()
+        return new CommandDescriptor(description: l("cmd.preset.description", guild), usage: "<subcommand>")
     }
 }

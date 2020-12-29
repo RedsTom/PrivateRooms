@@ -2,8 +2,8 @@ package org.reddev.privateroomsreborn.utils
 
 class ServerConfig {
 
-    private String customPrefix, language, createChannelId, categoryId;
-    private boolean disabled;
+    private String customPrefix, language, createChannelId, categoryId
+    private boolean disabled
     private List<Long> whitelistedVoiceChannels = []
 
     ServerConfig(String customPrefix, String language, String createChannelId, String categoryId, boolean disabled, List<Long> whitelistedVoiceChannels) {
@@ -12,7 +12,7 @@ class ServerConfig {
         this.createChannelId = createChannelId
         this.categoryId = categoryId
         this.disabled = disabled
-        this.whitelistedVoiceChannels = whitelistedVoiceChannels;
+        this.whitelistedVoiceChannels = whitelistedVoiceChannels
     }
 
     String getCustomPrefix() {

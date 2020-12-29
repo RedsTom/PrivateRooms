@@ -3,14 +3,15 @@ package org.reddev.privateroomsreborn.commands.config
 import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
+import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
+import org.reddev.privateroomsreborn.api.commands.TCommand
+import org.reddev.privateroomsreborn.commands.config.subs.CBlacklist
 import org.reddev.privateroomsreborn.commands.config.subs.CName
 import org.reddev.privateroomsreborn.commands.config.subs.CUserLimit
 import org.reddev.privateroomsreborn.commands.config.subs.CWhitelist
 import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
-import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
@@ -27,12 +28,8 @@ class CommandConfig implements TCommand {
         subCommands.put(["name", "rename"], new CName())
         subCommands.put(["userlimit", "user-limit", "limit"], new CUserLimit())
         subCommands.put(["whitelist", "wl"], new CWhitelist())
+        subCommands.put(["blacklist", "bl"], new CBlacklist())
     }
-
-    /*
-
-
-     */
 
     @Override
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
@@ -65,7 +62,7 @@ class CommandConfig implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.config.cmd-desc", guild), usage: "<subcommand>")
+        return new CommandDescriptor(description: l("cmd.config.description", guild), usage: "<subcommand>")
     }
 
 }

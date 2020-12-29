@@ -41,6 +41,6 @@ class PLoad implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(usage: "<name>")
+        return new CommandDescriptor(usage: "<name>", description: l("cmd.preset.load.description", guild))
     }
 }

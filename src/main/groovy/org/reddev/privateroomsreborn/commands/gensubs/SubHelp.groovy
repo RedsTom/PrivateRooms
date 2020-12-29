@@ -6,11 +6,10 @@ import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
-import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
-import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
-import java.awt.Color
+import java.awt.*
+import java.util.List
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j

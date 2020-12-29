@@ -5,6 +5,8 @@ import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
+import org.reddev.privateroomsreborn.commands.config.subs.blacklist.RoleBlacklistCommands
+import org.reddev.privateroomsreborn.commands.config.subs.blacklist.UserBlacklistCommands
 import org.reddev.privateroomsreborn.commands.config.subs.whitelist.RoleWhitelistCommands
 import org.reddev.privateroomsreborn.commands.config.subs.whitelist.UserWhitelistCommands
 import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
@@ -18,18 +20,18 @@ import java.util.List
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
-class CWhitelist implements TCommand {
+class CBlacklist implements TCommand {
 
     private Map<List<String>, TCommand> subCommands
 
-    CWhitelist() {
+    CBlacklist() {
         subCommands = new HashMap<>()
         subCommands.put(["help", "?"], new SubHelp(cmds: subCommands, cmdName: "config whitelist"))
-        subCommands.put(["add", "+", "add-user", "+u"], new UserWhitelistCommands.WLUserAdd())
-        subCommands.put(["remove", "-", "remove-user", "-u"], new UserWhitelistCommands.WLUserRemove())
-        subCommands.put(["show", "=", "show-users", "=u", "show-roles", "=r"], new WLShow())
-        subCommands.put(["add-role", "+r", "add-r"], new RoleWhitelistCommands.WLRoleAdd())
-        subCommands.put(["remove-role", "-r", "remove-r"], new RoleWhitelistCommands.WLRoleRemove())
+        subCommands.put(["add", "+", "add-user", "+u"], new UserBlacklistCommands.BLUserAdd())
+        subCommands.put(["remove", "-", "remove-user", "-u"], new UserBlacklistCommands.BLUserRemove())
+        subCommands.put(["show", "=", "show-users", "=u", "show-roles", "=r"], new BLShow())
+        subCommands.put(["add-role", "+r", "add-r"], new RoleBlacklistCommands.BLRoleAdd())
+        subCommands.put(["remove-role", "-r", "remove-r"], new RoleBlacklistCommands.BLRoleRemove())
     }
 
     @Override
@@ -39,10 +41,10 @@ class CWhitelist implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.config.whitelist.description", guild))
+        return new CommandDescriptor(description: l("cmd.config.blacklist.description", guild))
     }
 
-    static class WLShow implements TCommand {
+    static class BLShow implements TCommand {
 
         @Override
         void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
@@ -55,23 +57,23 @@ class CWhitelist implements TCommand {
             ).get()
 
             EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setTitle(l("cmd.config.whitelist.show.title", event.server.get()))
+                    .setTitle(l("cmd.config.blacklist.show.title", event.server.get()))
                     .setColor(Color.GREEN)
 
             List<String> users = new ArrayList<>()
-            channel.whitelistedUsers.forEach { users.add(event.api.getUserById(it).get().discriminatedName) }
-            embedBuilder.addField("Utilisateurs :", users.size() > 0 ? "`" + users.join("`, `") + "`" : l("cmd.config.whitelist.show.no-value-present", event.server.get()))
+            channel.blacklistedUsers.forEach { users.add(event.api.getUserById(it).get().discriminatedName) }
+            embedBuilder.addField("Utilisateurs :", users.size() > 0 ? "`" + users.join("`, `") + "`" : l("cmd.config.blacklist.show.no-value-present", event.server.get()))
 
             List<String> roles = new ArrayList<>()
-            channel.whitelistedRoles.forEach { roles.add(event.server.get().getRoleById(it).get().name) }
-            embedBuilder.addField("Roles :", roles.size() > 0 ? "`" + roles.join("`, `") + "`" : l("cmd.config.whitelist.show.no-value-present", event.server.get()))
+            channel.blacklistedRoles.forEach { roles.add(event.server.get().getRoleById(it).get().name) }
+            embedBuilder.addField("Roles :", roles.size() > 0 ? "`" + roles.join("`, `") + "`" : l("cmd.config.blacklist.show.no-value-present", event.server.get()))
 
             event.channel.sendMessage(embedBuilder)
         }
 
         @Override
         CommandDescriptor getDescriptor(Server guild) {
-            return new CommandDescriptor(description: l("cmd.config.whitelist.show.description", guild))
+            return new CommandDescriptor(description: l("cmd.config.blacklist.show.description", guild))
         }
     }
 }

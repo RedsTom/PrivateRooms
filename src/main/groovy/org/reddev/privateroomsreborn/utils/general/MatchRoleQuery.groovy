@@ -52,13 +52,16 @@ class MatchRoleQuery implements Runnable {
             getTextChannel().sendMessage(j(l("cmd.config.utils.match_role_query.too_much_results", getTextChannel().asServerChannel().get().getServer()), getTextChannel().asServerChannel().get().getServer()))
             return
         }
+        if (roleMatches.size() == 1) {
+            thenConsumer.accept(roleMatches.get(0))
+            return
+        }
 
         EmbedBuilder eb = new EmbedBuilder()
                 .setTitle(j(l("cmd.config.utils.match_role_query.results_found", getTextChannel().asServerChannel().get().getServer()), getRoleMatches().size()))
 
         roleMatches.forEach { role ->
-            eb.addField(NumberUtils.getByNumber(getRoleMatches().indexOf(role)) + " " + role.getName(),
-                    /*"||" + getRoleMatches().indexOf(role) + " " + role.getName() + "||"*/ "** **")
+            eb.addField(NumberUtils.getByNumber(getRoleMatches().indexOf(role)) + " " + role.getName(), "** **")
             if (role.getColor().isPresent()) eb.setColor(role.getColor().get())
         }
 

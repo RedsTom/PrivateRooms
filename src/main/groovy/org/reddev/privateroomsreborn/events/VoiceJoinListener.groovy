@@ -1,6 +1,6 @@
 package org.reddev.privateroomsreborn.events
 
-import org.javacord.api.entity.channel.Channel
+
 import org.javacord.api.entity.channel.ServerVoiceChannel
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.channel.server.voice.ServerVoiceChannelMemberJoinEvent

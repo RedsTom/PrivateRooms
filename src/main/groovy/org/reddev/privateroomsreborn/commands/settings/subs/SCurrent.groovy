@@ -1,6 +1,5 @@
 package org.reddev.privateroomsreborn.commands.settings.subs
 
-
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
@@ -10,7 +9,7 @@ import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
-import java.awt.Color
+import java.awt.*
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
@@ -35,6 +34,6 @@ class SCurrent implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.settings.current.cmd-desc", guild))
+        return new CommandDescriptor(description: l("cmd.settings.current.description", guild))
     }
 }

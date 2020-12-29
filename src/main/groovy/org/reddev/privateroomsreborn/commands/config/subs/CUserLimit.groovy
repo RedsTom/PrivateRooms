@@ -38,6 +38,6 @@ class CUserLimit implements
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        new CommandDescriptor(usage: "<user limit>")
+        new CommandDescriptor(usage: "<user limit>", description: l("cmd.user-limit.description", guild))
     }
 }

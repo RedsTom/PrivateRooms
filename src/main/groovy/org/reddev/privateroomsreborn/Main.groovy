@@ -3,20 +3,19 @@ package org.reddev.privateroomsreborn
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import groovy.transform.CompileStatic
-import org.javacord.api.entity.activity.ActivityType
-import org.javacord.api.entity.user.UserStatus
-import org.reddev.privateroomsreborn.events.VoiceLeaveListener
-
-import static org.reddev.privateroomsreborn.utils.ETerminalColors.*
-
 import org.hjson.JsonObject
 import org.hjson.JsonValue
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
+import org.javacord.api.entity.activity.ActivityType
+import org.javacord.api.entity.user.UserStatus
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.events.VoiceJoinListener
+import org.reddev.privateroomsreborn.events.VoiceLeaveListener
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.general.LangUtils
+
+import static org.reddev.privateroomsreborn.utils.ETerminalColors.*
 
 @CompileStatic
 class Main {
@@ -31,6 +30,7 @@ class Main {
         BotConfig config = new BotConfig()
         if (initHjsonConfig(config)) {
             LangUtils.createLangFiles(config)
+            LangUtils.updateLanguageCache(config)
 
             DiscordApi api = new DiscordApiBuilder().setToken(config.token).login().join()
 
@@ -84,7 +84,10 @@ class Main {
             JsonObject obj = JsonValue.readHjson(lines).asObject()
             config.token = obj.getString('token', '')
             config.defaultPrefix = obj.getString('prefix', '%')
-            config.languages = obj.get('languages').asArray()
+            config.languages = new ArrayList<>()
+            for (def language in obj.get('languages').asArray()) {
+                config.languages.add(language.asString())
+            }
             obj.get('bot-ops').asObject().forEach { member ->
                 config.botOps[member.name] = member.value.asString()
             }

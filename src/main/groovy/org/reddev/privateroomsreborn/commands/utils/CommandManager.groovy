@@ -1,19 +1,18 @@
 package org.reddev.privateroomsreborn.commands.utils
 
 import org.javacord.api.event.message.MessageCreateEvent
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.commands.CommandPing
+import org.reddev.privateroomsreborn.commands.CommandReloadLanguage
 import org.reddev.privateroomsreborn.commands.CommandSetup
 import org.reddev.privateroomsreborn.commands.DefaultCommand
-
 import org.reddev.privateroomsreborn.commands.config.CommandConfig
 import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
 import org.reddev.privateroomsreborn.commands.preset.CommandPreset
 import org.reddev.privateroomsreborn.commands.settings.CommandSettings
 import org.reddev.privateroomsreborn.utils.BotConfig
-import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
 
-import static org.reddev.privateroomsreborn.utils.general.LangUtils.getLang
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
@@ -28,7 +27,7 @@ class CommandManager {
         commands.put(["help", "?"], new SubHelp(cmds: commands))
         commands.put(["setup", "s!"], new CommandSetup())
         commands.put(["preset", "p", "template", "t"], new CommandPreset())
-        commands.put(["info"], new ProvCommandInfo())
+        commands.put(["reload-language"], new CommandReloadLanguage())
     }
 
     static void onMessage(MessageCreateEvent event, BotConfig config) {

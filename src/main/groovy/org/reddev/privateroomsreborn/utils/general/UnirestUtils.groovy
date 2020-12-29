@@ -9,7 +9,7 @@ class UnirestUtils {
     static String getCountryName(String countryCode) {
         HttpResponse<JsonNode> response = Unirest.get("https://restcountries.eu/rest/v2/alpha/${countryCode}")
                 .asJson()
-        return response.getBody().getObject().getJSONArray("languages").getJSONObject(0).getString("nativeName");
+        return response.getBody().getObject().getJSONArray("languages").getJSONObject(0).getString("nativeName")
     }
 
     static String getCountryFlag(String countryCode) {

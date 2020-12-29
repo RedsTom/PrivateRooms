@@ -32,10 +32,10 @@ class SLanguage implements TCommand {
 
         String language = args[0]
 
-        if (!ListUtils.contains(config.languages, JsonValue.valueOf(language))) {
+        if (!config.languages.contains(JsonValue.valueOf(language))) {
             event.channel.sendMessage(new EmbedBuilder()
                     .setTitle(j("%s !", l("errors.error", event.server.get())))
-                    .setDescription(l("cmd.settings.language.error.language-does-not-exists.desc", event.server.get()))
+                    .setDescription(l("cmd.settings.language.error.language-does-not-exists.description", event.server.get()))
                     .addField(l("cmd.settings.language.error.language-does-not-exists.possibility", event.server.get()), j("`%s`", config.languages.join("`, `").replace("\"", "")))
                     .setColor(Color.RED)
             )
@@ -56,7 +56,7 @@ class SLanguage implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(usage: "<lang>", description: l("cmd.settings.language.cmd-desc", guild))
+        return new CommandDescriptor(usage: "<lang>", description: l("cmd.settings.language.description", guild))
     }
 
 }

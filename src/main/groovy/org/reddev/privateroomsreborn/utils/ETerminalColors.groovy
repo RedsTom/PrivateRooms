@@ -27,7 +27,7 @@ enum ETerminalColors {
     LIGHT_CYAN("\u001b[96m"),
     WHITE("\u001b[97m");
 
-    private String seq;
+    private String seq
 
     ETerminalColors(String seq) {
         this.seq = seq

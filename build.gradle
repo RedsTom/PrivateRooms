@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.moandjiezana.toml:toml4j:0.7.2'
     implementation 'com.konghq:unirest-java:3.11.04'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.vdurmont:emoji-java:5.1.1'
 }
 
 

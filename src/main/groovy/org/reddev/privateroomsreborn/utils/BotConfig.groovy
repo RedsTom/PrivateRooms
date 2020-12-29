@@ -1,12 +1,10 @@
 package org.reddev.privateroomsreborn.utils
 
-import org.hjson.JsonArray
-
 class BotConfig {
 
     String token = ""
     String defaultPrefix = ""
-    JsonArray languages
+    List<String> languages
     Map<String, String> botOps = new HashMap<>()
 
     @Override

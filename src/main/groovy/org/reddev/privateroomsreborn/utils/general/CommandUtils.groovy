@@ -1,6 +1,5 @@
 package org.reddev.privateroomsreborn.utils.general
 
-
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
@@ -10,7 +9,7 @@ import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 
-import java.awt.Color
+import java.awt.*
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 import static org.reddev.privateroomsreborn.utils.general.StringUtils.j

@@ -27,7 +27,7 @@ class CommandSetup implements
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(permissions: [PermissionType.MANAGE_CHANNELS])
+        return new CommandDescriptor(permissions: [PermissionType.MANAGE_CHANNELS], description: l("cmd.setup.description", guild))
     }
 
     static def init(Server guild) {
@@ -67,9 +67,5 @@ class CommandSetup implements
         }
 
         ConfigUtils.update(guild, config)
-    }
-
-    static def update(Server guild) {
-
     }
 }

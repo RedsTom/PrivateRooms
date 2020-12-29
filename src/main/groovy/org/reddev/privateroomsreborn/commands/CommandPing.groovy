@@ -1,12 +1,11 @@
 package org.reddev.privateroomsreborn.commands
 
-
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
-import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
 import org.reddev.privateroomsreborn.api.commands.TCommand
+import org.reddev.privateroomsreborn.utils.BotConfig
 
 import java.awt.*
 
@@ -30,6 +29,6 @@ class CommandPing implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.ping.desc", guild))
+        return new CommandDescriptor(description: l("cmd.ping.description", guild))
     }
 }

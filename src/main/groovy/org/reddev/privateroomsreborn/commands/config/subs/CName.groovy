@@ -22,7 +22,7 @@ class CName implements TCommand {
         ).get()
         channel.name = "🔒 ${args.join(" ")}"
         channel.update(event.api).thenAcceptAsync {
-            event.channel.sendMessage("Nom changé !")
+            event.channel.sendMessage(l("cmd.config.name.success", event.server.get()))
         }
 
     }
@@ -31,8 +31,8 @@ class CName implements TCommand {
     CommandDescriptor getDescriptor(Server guild) {
         return new CommandDescriptor(
                 permissions: [],
-                description: l("cmd.config.name.desc", guild),
-                usage: "<new name>"
+                description: l("cmd.config.name.description", guild),
+                usage: "<name>"
         )
     }
 }

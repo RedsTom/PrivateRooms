@@ -3,13 +3,13 @@ package org.reddev.privateroomsreborn.commands.settings
 import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
+import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
+import org.reddev.privateroomsreborn.api.commands.TCommand
 import org.reddev.privateroomsreborn.commands.gensubs.SubHelp
 import org.reddev.privateroomsreborn.commands.settings.subs.SCurrent
 import org.reddev.privateroomsreborn.commands.settings.subs.SLanguage
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
-import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
-import org.reddev.privateroomsreborn.api.commands.TCommand
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
 
@@ -32,7 +32,7 @@ class CommandSettings implements
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.settings.cmd-desc", guild),
+        return new CommandDescriptor(description: l("cmd.settings.description", guild),
                 usage: "<subcommand>",
                 permissions: [PermissionType.MANAGE_SERVER])
     }
