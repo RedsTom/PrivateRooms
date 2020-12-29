@@ -3,7 +3,7 @@ build/
 .classpath
 .project
 
-config.hjson
+config.yml
 
 servers/
 templates/

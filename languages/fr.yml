@@ -1,0 +1,108 @@
+test: "Testing..."
+tests:
+  success: "Success !"
+
+# General settings of the bot
+settings:
+  category-name: "Salons Privés"
+  create-channel-name: "🔐 Créer un salon"
+
+# Errors that can happen
+errors:
+  error: "Erreur"
+  no-exists: "<:no:739186219333976084> Cette commande n'existe pas !"
+  incorrect-syntax: "<:no:739186219333976084> Utilisation incorrecte ! Veuillez utiliser : "
+  no-dm: "<:no:739186219333976084> Le bot ne supporte pas les commandes en MP !"
+  no-permission: "<:no:739186219333976084> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !"
+
+# Command messages
+cmd:
+  # Help commands
+  help:
+    description: "Affiche l'aide des commandes"
+    embed:
+      title: "Aide"
+      description: "Aide de la commande"
+      aliases: "Autres noms :"
+
+  # Ping command
+  ping:
+    description: "Récupère le délai du bot"
+    bot-ping: "Ping du bot"
+
+  # Config command
+  config:
+    description: "Configure le salon vocal actuel"
+    # Sub commands
+    whitelist:
+      add:
+        user:
+          sucess: "<:yes:739186219338170421> L'utilisateur **%s** a bien été ajouté à la liste blanche du salon"
+
+  # Settings command
+  settings:
+    description: "Configure le bot à l'échelle du serveur"
+    # Sub commands
+    current:
+      description: "Affiche les paramètres actuels du serveur"
+      embed:
+        title: "Paramètres actuels du serveur"
+    language:
+      description: "Change la langue du bot"
+      error:
+        language-does-not-exists:
+          description: "Cette langue n'existe pas !"
+          possibilities: "Langues disponibles : "
+      embed:
+        title: "Langue changée"
+        description: "La langue du bot a été changée vers le"
+
+  # Preset command
+  preset:
+    description: "Gère les preset du serveur actuel"
+    save:
+      description: "Sauvegarde les paramètres actuels du salon sous un nom, afin de pouvoir être rechargé par la suite"
+      error:
+        already-exists: "<:no:739186219333976084> Le nom `%s` existe déjà sur ce serveur !"
+        no-argument: "<:no:739186219333976084> Veuillez préciser un nom de preset !"
+      success: "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`"
+    load:
+      description: ""
+      success: "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
+      error:
+        absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
+
+#
+#  {
+#    // Ping command
+#    "cmd.ping.cmd-desc": "Récupère le délai du bot"
+#
+#      "cmd.ping.desc": "Récupère le délai du bot"
+#      "cmd.ping.bot-ping": "Ping du bot"
+#
+#      // CONFIG
+#      "cmd.config.desc": "Configurez votre salon"
+#
+#      "cmd.config.whitelist.add.success": "<:yes:739186219338170421> L'utilisateur **%s** a bien été ajouté à la liste blanche du salon"
+#
+#      // SETTINGS
+#      // Current
+#      "cmd.settings.current.description": "Affiche les paramètres actuels du serveur"
+#      "cmd.settings.current.title": "Paramètres du serveur"
+#
+#      // Language
+#      "cmd.settings.language.description": "Change la langue du bot"
+#      "cmd.settings.language.title": "Langue changée"
+#      "cmd.settings.language.desc": "La langue du bot a été changée vers le"
+#      "cmd.settings.language.error.language-does-not-exists.desc": "Cette langue n'existe pas !"
+#      "cmd.settings.language.error.language-does-not-exists.possibility": "Langues disponibles : "
+#
+#      // PRESETS
+#      "cmd.preset.save.success": "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`"
+#      "cmd.preset.save.error.already-exists": "<:no:739186219333976084> Le nom `%s` existe déjà sur ce serveur !"
+#      "cmd.preset.save.error.no-argument": "<:no:739186219333976084> Veuillez préciser un nom de preset !"
+#
+#      "cmd.preset.load.success": "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
+#      "cmd.preset.load.error.absent": "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
+#
+#  }

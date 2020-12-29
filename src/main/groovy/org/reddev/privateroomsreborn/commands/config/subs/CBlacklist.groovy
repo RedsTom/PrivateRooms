@@ -41,7 +41,7 @@ class CBlacklist implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.config.blacklist.description", guild))
+        return new CommandDescriptor(description: l("cmd.config.blacklist.description", guild), usage: "<subcommand>")
     }
 
     static class BLShow implements TCommand {

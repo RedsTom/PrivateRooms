@@ -24,17 +24,18 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://jitpack.io/'
+    }
 }
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.6'
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
     implementation 'org.javacord:javacord:3.1.1'
-    implementation "org.hjson:hjson:3.0.0"
-    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
     implementation 'com.konghq:unirest-java:3.11.04'
-    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.vdurmont:emoji-java:5.1.1'
+    implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
 }
 
 

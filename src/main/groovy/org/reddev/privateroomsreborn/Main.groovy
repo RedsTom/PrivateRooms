@@ -3,8 +3,6 @@ package org.reddev.privateroomsreborn
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import groovy.transform.CompileStatic
-import org.hjson.JsonObject
-import org.hjson.JsonValue
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.activity.ActivityType
@@ -14,6 +12,7 @@ import org.reddev.privateroomsreborn.events.VoiceJoinListener
 import org.reddev.privateroomsreborn.events.VoiceLeaveListener
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.general.LangUtils
+import org.simpleyaml.configuration.file.YamlConfiguration
 
 import static org.reddev.privateroomsreborn.utils.ETerminalColors.*
 
@@ -43,12 +42,12 @@ class Main {
     }
 
     static boolean initHjsonConfig(BotConfig config) {
-        File configFile = new File(System.getProperty('user.dir'), 'config.hjson')
+        File configFile = new File(System.getProperty('user.dir'), 'config.yml')
 
         if (!configFile.exists()) {
             println(c("""
                     | -------------------------------------------------------------------------------------
-                    | $DEFAULT[${YELLOW}WARNING$DEFAULT] ${CYAN}File ${BLUE}config.hjson$CYAN not found ! Creating it...
+                    | $DEFAULT[${YELLOW}WARNING$DEFAULT] ${CYAN}File ${BLUE}config.yml$CYAN not found ! Creating it...
                     | $DEFAULT[${YELLOW}WARNING$DEFAULT] ${RED}The bot will not start because of the certain error that will happen$DEFAULT
                     | -------------------------------------------------------------------------------------
                     """.stripMargin()))
@@ -57,17 +56,16 @@ class Main {
                     new FileWriter(configFile)
             )
             String defaultConfig = '''
-|{
-|       "token": "TOKEN HERE", # Enter here the token of your bot
-|       "prefix": "%",                                                          # Prefix of the bot
-|       "languages": [                                                          # -------------- Languages --------------
-|         "us", "fr"                                                            # Enter here your languages
-|       ],                                                                      #
-|       "bot-ops": {                                                            # -------------- Admins of the bot --------------
-|         "723471302123323434": "9999"                                          # Enter the ID of the op as key and the tag as value
-|       }
-|}
-'''.stripMargin()
+                    |# Token of the bot
+                    |token: TOKEN HERE
+                    |prefix: %
+                    |languages:
+                    |   - us
+                    |   - fr
+                    |# Admins of the bot
+                    |bot-ops:
+                    |   # Enter the ID of the op as key, and the discriminator as value
+            '''.stripMargin()
 
             defaultConfig.readLines().forEach { line ->
                 writer.write(line)
@@ -78,19 +76,11 @@ class Main {
             writer.close()
             return false
         } else {
-            BufferedReader reader = new BufferedReader(new FileReader(configFile))
-            String lines = reader.readLines().join('\n')
-
-            JsonObject obj = JsonValue.readHjson(lines).asObject()
-            config.token = obj.getString('token', '')
-            config.defaultPrefix = obj.getString('prefix', '%')
-            config.languages = new ArrayList<>()
-            for (def language in obj.get('languages').asArray()) {
-                config.languages.add(language.asString())
-            }
-            obj.get('bot-ops').asObject().forEach { member ->
-                config.botOps[member.name] = member.value.asString()
-            }
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile)
+            config.token = configuration.getString("token")
+            config.defaultPrefix = configuration.getString("prefix")
+            config.languages = configuration.getStringList("languages")
+            config.botOps = configuration.getConfigurationSection("bot-ops").getMapValues(false)
             return true
         }
     }

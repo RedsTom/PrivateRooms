@@ -1,0 +1,73 @@
+test: "Testing..."
+tests:
+  success: "Success !"
+
+# General settings of the bot
+settings:
+  category-name: "Private Channel"
+  create-channel-name: "🔐 Create a channel"
+
+# Errors that can happen
+errors:
+  error: "Error"
+  no-exists: "<:no:739186219333976084> This command does not exist"
+  incorrect-syntax: "<:no:739186219333976084> Incorrect usage ! Please use : "
+  no-dm: "<:no:739186219333976084> The bot does not support DM commands !"
+  no-permission: "<:no:739186219333976084> Sorry, but you don't have enough permissions to execute this command !"
+
+# Command messages
+cmd:
+  # Help commands
+  help:
+    description: "Shows the commands' help"
+    embed:
+      title: "Help"
+      description: "Help of the command"
+      aliases: "Aliases :"
+
+  # Ping command
+  ping:
+    description: "Gets the bot's ping"
+    bot-ping: "Bot's ping"
+
+  # Config command
+  config:
+    description: "Configures your actual private room"
+    # Sub commands
+    whitelist:
+      add:
+        user:
+          sucess: "<:yes:739186219338170421> The user **%s** has been added to your channel's whitelist"
+
+  # Settings command
+  settings:
+    description: "Configures the bot specifically for the current server"
+    # Sub commands
+    current:
+      description: "Shows the current settings of the serveur"
+      embed:
+        title: "Actual server settings"
+    language:
+      description: "Changes the bot's language"
+      error:
+        language-does-not-exists:
+          description: "This language does not exist !"
+          possibilities: "Available languages : "
+      embed:
+        title: "Language changed"
+        description: "The bot's language has been set to"
+
+  # Preset command
+  preset:
+    description: "Manages the presets of the actual server"
+    save:
+      description: "Saves the settings of your channel to a file"
+      error:
+        already-exists: "<:no:739186219333976084> The preset `%s` already exists on this server !"
+        no-argument: "<:no:739186219333976084> Please precise the preset name !"
+      success: "<:yes:739186219338170421> The preset has been saved as `%s`"
+    load:
+      description: ""
+      success: "<:yes:739186219338170421> The preset `%s` has been loaded"
+      error:
+        absent: "<:no:739186219333976084> The preset `%s` does not exist on this server !"

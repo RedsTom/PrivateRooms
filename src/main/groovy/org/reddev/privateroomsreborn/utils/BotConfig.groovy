@@ -5,7 +5,7 @@ class BotConfig {
     String token = ""
     String defaultPrefix = ""
     List<String> languages
-    Map<String, String> botOps = new HashMap<>()
+    Map<String, Object> botOps = new HashMap<>()
 
     @Override
     String toString() {

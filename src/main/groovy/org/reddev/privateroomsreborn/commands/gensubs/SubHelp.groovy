@@ -28,8 +28,8 @@ class SubHelp implements TCommand {
             def prefix = cmdSplit.size() == 0 ? CommandUtils.getPrefix(config, event.server.get()) : ""
 
             EmbedBuilder builder = new EmbedBuilder()
-                    .setTitle(j("%s", l("cmd.help.title", event.server.get())))
-                    .setDescription(cmdSplit.size() == 0 ? "" : j("%s `%s`", l("cmd.help.desc", event.server.get()), cmdSplit.join(" ")))
+                    .setTitle(j("%s", l("cmd.help.embed.title", event.server.get())))
+                    .setDescription(cmdSplit.size() == 0 ? "" : j("%s `%s`", l("cmd.help.embed.description", event.server.get()), cmdSplit.join(" ")))
                     .setColor(Color.GREEN)
 
             cmds.forEach { name, executor ->
@@ -37,7 +37,7 @@ class SubHelp implements TCommand {
                 builder.addField("${cmdSplit.join(" ")} ${prefix}${name[0]} ${usage.isEmpty() ? "" : "`${usage}`"}", """
                 | ${executor.getDescriptor(event.server.get()).description}
                 |
-                | > **${l("cmd.help.aliases", event.server.get())}**
+                | > **${l("cmd.help.embed.aliases", event.server.get())}**
                 | `${name.join("`, `")}`
                 | ~~------------------------------~~
                 """.stripMargin(), true)
@@ -53,6 +53,6 @@ class SubHelp implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.subs.help.cmd-desc", guild))
+        return new CommandDescriptor(description: l("cmd.help.description", guild))
     }
 }

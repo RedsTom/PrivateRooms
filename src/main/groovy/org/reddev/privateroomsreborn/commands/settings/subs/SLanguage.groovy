@@ -1,7 +1,5 @@
 package org.reddev.privateroomsreborn.commands.settings.subs
 
-
-import org.hjson.JsonValue
 import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
@@ -11,7 +9,6 @@ import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.general.CommandUtils
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
-import org.reddev.privateroomsreborn.utils.general.ListUtils
 import org.reddev.privateroomsreborn.utils.general.UnirestUtils
 
 import java.awt.*
@@ -32,11 +29,11 @@ class SLanguage implements TCommand {
 
         String language = args[0]
 
-        if (!config.languages.contains(JsonValue.valueOf(language))) {
+        if (!config.languages.contains(language)) {
             event.channel.sendMessage(new EmbedBuilder()
                     .setTitle(j("%s !", l("errors.error", event.server.get())))
                     .setDescription(l("cmd.settings.language.error.language-does-not-exists.description", event.server.get()))
-                    .addField(l("cmd.settings.language.error.language-does-not-exists.possibility", event.server.get()), j("`%s`", config.languages.join("`, `").replace("\"", "")))
+                    .addField(l("cmd.settings.language.error.language-does-not-exists.possibilities", event.server.get()), j("`%s`", config.languages.join("`, `").replace("\"", "")))
                     .setColor(Color.RED)
             )
             return
@@ -44,9 +41,9 @@ class SLanguage implements TCommand {
         sConfig.setLanguage(language)
         ConfigUtils.update(event.server.get(), sConfig)
         event.channel.sendMessage(new EmbedBuilder()
-                .setTitle(l("cmd.settings.language.title", event.server.get()))
+                .setTitle(l("cmd.settings.language.embed.title", event.server.get()))
                 .setDescription(j("%s `%s`",
-                        l("cmd.settings.language.desc", event.server.get()),
+                        l("cmd.settings.language.embed.description", event.server.get()),
                         UnirestUtils.getCountryName(language).capitalize()
                 ))
                 .setThumbnail(UnirestUtils.getCountryFlag(language))

@@ -39,7 +39,7 @@ class CWhitelist implements TCommand {
 
     @Override
     CommandDescriptor getDescriptor(Server guild) {
-        return new CommandDescriptor(description: l("cmd.config.whitelist.description", guild))
+        return new CommandDescriptor(description: l("cmd.config.whitelist.description", guild), usage: "<subcommand>")
     }
 
     static class WLShow implements TCommand {
