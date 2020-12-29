@@ -42,11 +42,53 @@ cmd:
     error:
       not-in-voice-channel: "<:no:739186219333976084> You are not in a voice channel"
       not-a-private-room: "<:no:739186219333976084> You are not in a private room"
+      not-moderator: "<:no:739186219333976084> You're not a moderator in this channel"
+      cannot-find-user: "<:no:739186219333976084> Unable to find the user with the id **`%s`**"
     # Sub commands
     whitelist:
+      description: "Manages the whitelist of your channel"
+      show:
+        description: "Shows the whitelist of your channel"
+        title: "Whitelist"
+        no-value-present: "No entry"
       add:
+        role:
+          description: "Adds a role to the whitelist of your channel"
+          success: "<:yes:739186219338170421> The role **`%s`** has been added to the whitelist of your channel"
         user:
-          sucess: "<:yes:739186219338170421> The user **%s** has been added to your channel's whitelist"
+          description: "Adds an user to the whitelist of your channel"
+          success: "<:yes:739186219338170421> The user **%s** has been added to your channel's whitelist"
+      remove:
+        role:
+          description: "Removes a role from the whitelist of your channel"
+          success: "<:yes:739186219338170421> The role **`%s`** has been removed from the whitelist of your channel"
+        user:
+          description: "Removes an user from the whitelist of your channel"
+          success: "<:yes:739186219338170421> The user **`%s`** has been removed from the whitelist of your channel"
+    blacklist:
+      description: "Manages the blacklist of your channel"
+      show:
+        description: "Shows the blacklist of your channel"
+        title: "Blacklist"
+        no-value-present: "No entry"
+      add:
+        role:
+          description: "Adds a role to the blacklist of your channel"
+          success: "<:yes:739186219338170421> The role **`%s`** has been added to the blacklist of your channel"
+        user:
+          description: "Adds an user to the blacklist of your channel"
+          success: "<:yes:739186219338170421> The user **%s** has been added to your channel's blacklist"
+      remove:
+        role:
+          description: "Removes a role from the blacklist of your channel"
+          success: "<:yes:739186219338170421> The role **`%s`** has been removed from the blacklist of your channel"
+        user:
+          description: "Removes an user from the blacklist of your channel"
+          success: "<:yes:739186219338170421> The user **`%s`** has been removed from the blacklist of your channel"
+    user-limit:
+      description: "Adds an user limit to your channel (0 to disable)"
+      success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
+
 
   # Settings command
   settings:
@@ -79,7 +121,7 @@ cmd:
         no-argument: "<:no:739186219333976084> Please precise the preset name !"
       success: "<:yes:739186219338170421> The preset has been saved as `%s`"
     load:
-      description: ""
+      description: "Loads the settings of the channel based on a previous-saved preset"
       success: "<:yes:739186219338170421> The preset `%s` has been loaded"
       error:
         absent: "<:no:739186219333976084> The preset `%s` does not exist on this server !"

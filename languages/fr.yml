@@ -28,7 +28,7 @@ cmd:
 
   # Reload language command
   reload-languages:
-    description: "Reloads the languages files"
+    description: "Recharge les fichiers de langue"
     success: "<:yes:739186219338170421> Les fichiers de langue ont été rechargés"
 
   # Ping command
