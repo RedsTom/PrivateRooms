@@ -12,7 +12,7 @@ import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 class VoiceJoinListener implements ServerVoiceChannelMemberJoinListener {
     @Override
     void onServerVoiceChannelMemberJoin(ServerVoiceChannelMemberJoinEvent event) {
-        Server server = event.server;
+        Server server = event.server
         ServerConfig config = ConfigUtils.getServerConfig(server)
 
         if (event.channel.idAsString == config.createChannelId && event.channel.category.isPresent() && event.channel.category.get().idAsString == config.categoryId) {
@@ -25,7 +25,6 @@ class VoiceJoinListener implements ServerVoiceChannelMemberJoinListener {
                     serverId: server.id,
             )
             channel.create(event.api).thenAccept {
-                println "After : Moved"
                 ServerVoiceChannel voiceChannel = server.getVoiceChannelById(channel.channelId).get()
                 event.user.move(voiceChannel)
             }
