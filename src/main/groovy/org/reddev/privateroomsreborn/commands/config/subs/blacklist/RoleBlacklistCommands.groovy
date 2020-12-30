@@ -75,9 +75,9 @@ class RoleBlacklistCommands {
                 channel.blacklistedRoles.remove(role.id)
                 channel.update(event.api).thenAccept {
                     event.channel.sendMessage(j(l("cmd.config.blacklist.remove.role.success", event.server.get()), role.name))
+                    channel.clear(event.messageAuthor.connectedVoiceChannel.get(), role)
                 }
             }.start()
-
         }
 
         @Override

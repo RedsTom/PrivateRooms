@@ -84,8 +84,8 @@ class CModeration implements TCommand {
             channel.moderators.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {
                 event.channel.sendMessage(j(l("cmd.config.moderators.remove.success", event.server.get()), mentionedUser.discriminatedName))
+                channel.clear(event.messageAuthor.connectedVoiceChannel.get(), mentionedUser)
             }
-
         }
 
         @Override

@@ -59,7 +59,9 @@ class UserBlacklistCommands {
             channel.blacklistedUsers.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {
                 event.channel.sendMessage(j(l("cmd.config.blacklist.remove.user.success", event.server.get()), mentionedUser.discriminatedName))
+                channel.clear(event.messageAuthor.connectedVoiceChannel.get(), mentionedUser)
             }
+
 
         }
 

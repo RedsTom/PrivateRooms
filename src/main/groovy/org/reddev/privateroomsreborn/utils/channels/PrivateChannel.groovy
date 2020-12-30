@@ -3,6 +3,8 @@ package org.reddev.privateroomsreborn.utils.channels
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.javacord.api.DiscordApi
+import org.javacord.api.entity.DiscordEntity
+import org.javacord.api.entity.Permissionable
 import org.javacord.api.entity.channel.ChannelCategory
 import org.javacord.api.entity.channel.ServerChannel
 import org.javacord.api.entity.channel.ServerVoiceChannel
@@ -50,6 +52,10 @@ class PrivateChannel {
             this.channelId = it.id
             this.update(api)
         })
+    }
+
+    static <T extends DiscordEntity & Permissionable> CompletableFuture<Void> clear(ServerVoiceChannel channel, T permissible) {
+        return channel.createUpdater().removePermissionOverwrite(permissible).update()
     }
 
     /**

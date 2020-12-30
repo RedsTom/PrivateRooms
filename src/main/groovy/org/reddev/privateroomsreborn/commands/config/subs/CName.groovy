@@ -9,6 +9,7 @@ import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
+import static org.reddev.privateroomsreborn.utils.general.StringUtils.j
 
 class CName implements TCommand {
 
@@ -22,7 +23,7 @@ class CName implements TCommand {
         ).get()
         channel.name = "🔒 ${args.join(" ")}"
         channel.update(event.api).thenAcceptAsync {
-            event.channel.sendMessage(l("cmd.config.name.success", event.server.get()))
+            event.channel.sendMessage(j(l("cmd.config.name.success", event.server.get()), channel.name))
         }
 
     }
