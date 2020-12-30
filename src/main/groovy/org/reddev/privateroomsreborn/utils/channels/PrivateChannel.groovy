@@ -75,6 +75,9 @@ class PrivateChannel {
         if (hidden) {
             updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.READ_MESSAGES)))
         }
+        if (!private_ && !hidden) {
+            updater.removePermissionOverwrite(server.everyoneRole)
+        }
         whitelistedUsers.forEach { userId ->
             User user = api.getUserById(userId).get()
             updater.addPermissionOverwrite(user, Permissions.fromBitmask(bitmask(PermissionType.CONNECT, PermissionType.PRIORITY_SPEAKER), bitmask()))
