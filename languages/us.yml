@@ -110,7 +110,7 @@ cmd:
     description: "Makes the actual private room private"
     success: "<:yes:739186219338170421> The channel has been make private"
   hide:
-    description: "Hides the actual private room">
+    description: "Hides the actual private room"
     success: "<:yes:739186219338170421> The channel has been hidden"
 
   # Settings command
