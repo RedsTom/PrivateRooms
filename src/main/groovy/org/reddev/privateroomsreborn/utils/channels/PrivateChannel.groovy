@@ -124,7 +124,9 @@ class PrivateChannel {
             User user = api.getUserById(userId).get()
             updater.addPermissionOverwrite(user,
                     Permissions.fromBitmask(bitmask(
-                            PermissionType.MOVE_MEMBERS),
+                            PermissionType.MOVE_MEMBERS,
+                            PermissionType.CONNECT,
+                            PermissionType.SEND_MESSAGES),
                             bitmask()
                     )
             )
