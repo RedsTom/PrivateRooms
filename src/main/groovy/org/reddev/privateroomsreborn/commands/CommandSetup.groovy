@@ -60,6 +60,7 @@ class CommandSetup implements
         if (config.categoryId || config.createChannelId) {
             Optional<ChannelCategory> category = guild.getChannelCategoryById(config.categoryId)
             category.ifPresent {
+                if (!config.whitelistedVoiceChannels) config.whitelistedVoiceChannels = []
                 it.channels.forEach { if (it instanceof ServerVoiceChannel && !config.whitelistedVoiceChannels.contains(it.id)) it.delete() }
                 it.delete()
             }
