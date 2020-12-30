@@ -46,7 +46,7 @@ class CommandConfig implements TCommand {
     void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
 
         Optional<ServerVoiceChannel> potentialVoiceChannel = event.messageAuthor.connectedVoiceChannel
-        if (potentialVoiceChannel.isEmpty()) {
+        if (!potentialVoiceChannel.isPresent()) {
             event.channel.sendMessage(l("cmd.config.error.not-in-voice-channel", event.server.get()))
             return
         }
@@ -58,7 +58,7 @@ class CommandConfig implements TCommand {
                 event.server.get(),
                 voiceChannel
         )
-        if (potentialPrivateChannel.isEmpty() || voiceChannel.category.get().idAsString != serverConfig.categoryId) {
+        if (!potentialPrivateChannel.isPresent() || voiceChannel.category.get().idAsString != serverConfig.categoryId) {
             event.channel.sendMessage(l("cmd.config.error.not-a-private-room", event.server.get()))
             return
         }

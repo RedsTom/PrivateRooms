@@ -28,7 +28,7 @@ class SAddWVC implements TCommand {
             return
         }
         Optional<ServerVoiceChannel> oChannel = event.server.get().getVoiceChannelById(args[0])
-        if (oChannel.isEmpty()) {
+        if (!oChannel.isPresent()) {
             CommandUtils.sendBadUsage(event, cmd, this)
             return
         }

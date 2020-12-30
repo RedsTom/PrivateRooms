@@ -4,7 +4,7 @@ class ServerConfig {
 
     private String customPrefix, language, createChannelId, categoryId
     private boolean disabled
-    private List<Long> whitelistedVoiceChannels = []
+    private List<Long> whitelistedVoiceChannels = [123456789]
 
     ServerConfig(String customPrefix, String language, String createChannelId, String categoryId, boolean disabled, List<Long> whitelistedVoiceChannels) {
         this.customPrefix = customPrefix

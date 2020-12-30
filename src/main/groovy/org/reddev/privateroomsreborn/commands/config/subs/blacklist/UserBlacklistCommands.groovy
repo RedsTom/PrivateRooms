@@ -28,7 +28,7 @@ class UserBlacklistCommands {
             ).get()
 
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
-            if (potentialUser.isEmpty()) return
+            if (!potentialUser.isPresent()) return
             User mentionedUser = potentialUser.get()
             channel.blacklistedUsers.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
@@ -54,7 +54,7 @@ class UserBlacklistCommands {
             ).get()
 
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
-            if (potentialUser.isEmpty()) return
+            if (!potentialUser.isPresent()) return
             User mentionedUser = potentialUser.get()
             channel.blacklistedUsers.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {

@@ -53,7 +53,7 @@ class CModeration implements TCommand {
             ).get()
 
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
-            if (potentialUser.isEmpty()) return
+            if (!potentialUser.isPresent()) return
             User mentionedUser = potentialUser.get()
             channel.moderators.add(mentionedUser.id)
             channel.update(event.api).thenAccept {
@@ -79,7 +79,7 @@ class CModeration implements TCommand {
             ).get()
 
             Optional<User> potentialUser = CommandUtils.getUserFromMessage(event, this, cmd, args)
-            if (potentialUser.isEmpty()) return
+            if (!potentialUser.isPresent()) return
             User mentionedUser = potentialUser.get()
             channel.moderators.remove(mentionedUser.id)
             channel.update(event.api).thenAccept {

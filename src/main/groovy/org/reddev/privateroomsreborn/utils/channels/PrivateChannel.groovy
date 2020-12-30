@@ -143,7 +143,7 @@ class PrivateChannel {
      * @return The{@link PrivateChannel} got from the {@link ServerVoiceChannel}
      */
     static Optional<PrivateChannel> getFromChannel(BotConfig bConfig, ServerConfig config, Server guild, ServerVoiceChannel channel) {
-        if (channel.category.isEmpty() || (channel.category.get().idAsString != config.categoryId)) {
+        if (!channel.category.isPresent() || (channel.category.get().idAsString != config.categoryId)) {
             return Optional.empty()
         }
 

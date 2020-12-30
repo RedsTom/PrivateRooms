@@ -145,3 +145,4 @@ cmd:
       success: "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
       error:
         absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
+        not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon !"

@@ -65,6 +65,7 @@ class Main {
                     |# Admins of the bot
                     |bot-ops:
                     |   # Enter the ID of the op as key, and the discriminator as value
+                    |723471302123323434: "0135"
             '''.stripMargin()
 
             defaultConfig.readLines().forEach { line ->

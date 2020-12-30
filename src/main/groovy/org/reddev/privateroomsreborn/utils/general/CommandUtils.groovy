@@ -118,7 +118,7 @@ class CommandUtils {
 
         // If there's not : search for the user
         Optional<User> potentialUser = event.server.get().getMemberById(args[0])
-        if (potentialUser.isEmpty()) {
+        if (!potentialUser.isPresent()) {
             event.channel.sendMessage(j(l("cmd.config.error.cannot-find-user", event.server.get()), args[0]))
             return Optional.empty()
         }
