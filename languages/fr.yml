@@ -97,6 +97,9 @@ cmd:
       remove:
         description: "Retire un utilisateur de la liste des modérateurs"
         success: "<:yes:739186219338170421> L'utilisateur **`%s`** a bien été retiré de la liste des modérateurs"
+    name:
+      description: "Change le nom de votre salon"
+      success: "<:yes:739186219338170421> Le nom de votre salon a bien été changé pour **`%s`**"
     user-limit:
       description: "Ajoute une limite d'utilisateurs à votre salon (0 pour désactiver)"
       success: "<:yes:739186219338170421> La limite d'utilisateur du salon a bien été définie à **%s**"
@@ -134,6 +137,10 @@ cmd:
   # Preset command
   preset:
     description: "Gère les preset du serveur actuel"
+    error:
+      not-in-voice-channel: "<:no:739186219333976084> Vous n'êtes pas dans un salon vocal"
+      not-a-private-room: "<:no:739186219333976084> Vous n'êtes pas dans un salon privé"
+      not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon"
     save:
       description: "Sauvegarde les paramètres actuels du salon sous un nom, afin de pouvoir être rechargé par la suite"
       error:

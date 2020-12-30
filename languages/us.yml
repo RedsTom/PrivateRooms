@@ -97,6 +97,9 @@ cmd:
       remove:
         description: "Removes an user from the moderators list"
         success: "<:yes:739186219338170421> The user **`%s`** has been removed to the moderators of your channel"
+  name:
+    description: "Changes the name of your channel"
+    success: "<:yes:739186219338170421> The name of your channel has been set to **`%s`**"
   user-limit:
     description: "Adds an user limit to your channel (0 to disable)"
     success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
@@ -107,12 +110,16 @@ cmd:
     description: "Makes the actual private room private"
     success: "<:yes:739186219338170421> The channel has been make private"
   hide:
-    description: "Hides the actual private room"
+    description: "Hides the actual private room">
     success: "<:yes:739186219338170421> The channel has been hidden"
 
   # Settings command
   settings:
     description: "Configures the bot specifically for the current server"
+    error:
+      not-in-voice-channel: "<:no:739186219333976084> You are not in a voice channel"
+      not-a-private-room: "<:no:739186219333976084> You are not in a private room"
+      not-moderator: "<:no:739186219333976084> You're not a moderator in this channel"
     # Sub commands
     current:
       description: "Shows the current settings of the serveur"
