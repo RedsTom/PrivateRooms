@@ -151,5 +151,5 @@ cmd:
       description: "Charge les paramètres du salon selon un preset enregistré précédemment"
       success: "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
       error:
-        absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur ce serveur !"
+        absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur pour cet utilisateur !"
         not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon !"

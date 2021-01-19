@@ -151,5 +151,5 @@ cmd:
       description: "Loads the settings of the channel based on a previous-saved preset"
       success: "<:yes:739186219338170421> The preset `%s` has been loaded"
       error:
-        absent: "<:no:739186219333976084> The preset `%s` does not exist on this server !"
+        absent: "<:no:739186219333976084> The preset `%s` does not exist for this user !"
         not-moderator: "<:no:739186219333976084> You're not a moderator in this channel !"
