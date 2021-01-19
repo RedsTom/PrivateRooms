@@ -38,7 +38,7 @@ class ConfigUtils {
             newChannel.serverId = channel.serverId
             newChannel.channelId = channel.channelId
             channel.reset()
-            newChannel.update(server.api)
+            newChannel.update(user.api)
             return true
         }
     }
