@@ -30,8 +30,10 @@ class PLoad implements TCommand {
 
         Gson gson = Main.GSON
         String name = args.join(" ")
-        ConfigUtils.loadTemplate(gson, event.server.get(), name, channel).thenAccept { correct ->
+        ConfigUtils.loadTemplate(gson, event.messageAuthor, name, channel).thenAccept { correct ->
             if (correct) {
+                channel.moderators.add(event.messageAuthor.id)
+                channel.update(event.api)
                 event.channel.sendMessage(j(l("cmd.preset.load.success", event.server.get()), name))
             } else {
                 event.channel.sendMessage(j(l("cmd.preset.load.error.absent", event.server.get()), name))

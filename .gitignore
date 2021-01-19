@@ -3,6 +3,9 @@ build/
 .classpath
 .project
 
+languages.tar.gz
+languages.zip
+
 config.yml
 
 servers/

@@ -1,6 +1,7 @@
 package org.reddev.privateroomsreborn.commands.preset
 
 import org.javacord.api.entity.channel.ServerVoiceChannel
+import org.javacord.api.entity.permission.PermissionType
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.api.commands.CommandDescriptor
@@ -12,6 +13,7 @@ import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
+import org.reddev.privateroomsreborn.utils.general.CommandUtils
 import org.reddev.privateroomsreborn.utils.general.ConfigUtils
 
 import static org.reddev.privateroomsreborn.utils.general.LangUtils.l
@@ -48,8 +50,10 @@ class CommandPreset implements TCommand {
             return
         }
         PrivateChannel privateRoom = potentialPrivateChannel.get()
-        if (!privateRoom.moderators.contains(event.messageAuthor.id)) {
-            event.channel.sendMessage(l("cmd.preset.error.not-moderator", event.server.get()))
+        if (!privateRoom.moderators.contains(event.messageAuthor.id)
+                && !CommandUtils.hasPermission(config, event.messageAuthor.asUser().get(), event.server.get(), PermissionType.ADMINISTRATOR)
+                && !CommandUtils.isAdmin(config, event.messageAuthor.asUser().get())) {
+            event.channel.sendMessage(l("cmd.config.error.not-moderator", event.server.get()))
             return
         }
 

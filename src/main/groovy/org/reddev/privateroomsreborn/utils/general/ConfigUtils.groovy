@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonWriter
 import com.moandjiezana.toml.Toml
 import com.moandjiezana.toml.TomlWriter
+import org.javacord.api.entity.message.MessageAuthor
 import org.javacord.api.entity.server.Server
 import org.reddev.privateroomsreborn.utils.ServerConfig
 import org.reddev.privateroomsreborn.utils.channels.PrivateChannel
@@ -12,10 +13,10 @@ import java.util.concurrent.CompletableFuture
 
 class ConfigUtils {
 
-    static boolean saveTemplate(Gson gson, Server server, String name, String content) {
-        def serverFolder = createTemplateFolder(server)
+    static boolean saveTemplate(Gson gson, MessageAuthor user, String name, String content) {
+        def userFolder = createTemplateFolder(user)
 
-        File file = new File(serverFolder, "${name}.json")
+        File file = new File(userFolder, "${name}.json")
         if (file.exists()) return false
         file.createNewFile()
         JsonWriter writer = gson.newJsonWriter(new FileWriter(file))
@@ -25,11 +26,11 @@ class ConfigUtils {
         return true
     }
 
-    static CompletableFuture<Boolean> loadTemplate(Gson gson, Server server, String name, PrivateChannel channel) {
+    static CompletableFuture<Boolean> loadTemplate(Gson gson, MessageAuthor user, String name, PrivateChannel channel) {
         CompletableFuture.supplyAsync {
-            def serverFolder = createTemplateFolder(server)
+            def userFolder = createTemplateFolder(user)
 
-            File file = new File(serverFolder, "${name}.json")
+            File file = new File(userFolder, "${name}.json")
             if (!file.exists()) {
                 return false
             }
@@ -100,10 +101,10 @@ class ConfigUtils {
         writer.write(config, getServerConfigFile(guild))
     }
 
-    static File createTemplateFolder(Server server) {
+    static File createTemplateFolder(MessageAuthor user) {
         File templatesFolder = new File(System.getProperty("user.dir"), "templates/")
         if (!templatesFolder.exists()) templatesFolder.mkdir()
-        File serverFolder = new File(templatesFolder, "${server.id}/")
+        File serverFolder = new File(templatesFolder, "${user.id}/")
         if (!serverFolder.exists()) serverFolder.mkdir()
         serverFolder
     }

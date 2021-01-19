@@ -1,6 +1,5 @@
 package org.reddev.privateroomsreborn.commands.preset.subs
 
-import com.google.gson.Gson
 import org.javacord.api.entity.server.Server
 import org.javacord.api.event.message.MessageCreateEvent
 import org.reddev.privateroomsreborn.Main
@@ -31,7 +30,7 @@ class PSave implements TCommand {
 
         Gson gson = Main.GSON
         String jsonOutput = gson.toJson(channel)
-        if (ConfigUtils.saveTemplate(gson, event.server.get(), args.join(" "), jsonOutput)) {
+        if (ConfigUtils.saveTemplate(gson, event.messageAuthor, args.join(" "), jsonOutput)) {
             event.channel.sendMessage(j(l("cmd.preset.save.success", event.server.get()), args.join(" ")))
         } else {
             event.channel.sendMessage(j(l("cmd.preset.save.error.already-exists", event.server.get()), args.join(" ")))
