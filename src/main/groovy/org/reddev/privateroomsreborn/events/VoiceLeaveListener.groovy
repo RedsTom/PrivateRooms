@@ -10,14 +10,11 @@ class VoiceLeaveListener implements ServerVoiceChannelMemberLeaveListener {
     void onServerVoiceChannelMemberLeave(ServerVoiceChannelMemberLeaveEvent event) {
         ServerConfig config = ConfigUtils.getServerConfig(event.server)
         if (!event.channel.category.isPresent()) return
-
-        event.channel.category.ifPresent {
-            if (event.channel.connectedUsers.size() == 0) {
-                if (event.channel.category.get().idAsString == config.categoryId
-                        && !config.whitelistedVoiceChannels.contains(event.channel.id)
-                        && event.channel.idAsString != config.createChannelId) {
-                    event.channel.delete("No longer users in channel")
-                }
+        if (event.channel.connectedUsers.size() == 0) {
+            if (event.channel.category.get().idAsString == config.categoryId
+                    && !config.whitelistedVoiceChannels.contains(event.channel.id)
+                    && event.channel.idAsString != config.createChannelId) {
+                event.channel.delete("No longer users in channel")
             }
         }
     }
