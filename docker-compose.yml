@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  pgsql:
+    image: postgres:14.4-alpine
+    volumes:
+      - ./data/pgsql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - database
+
+networks:
+  database:
+    driver: bridge

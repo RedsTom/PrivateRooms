@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'io.freefair.lombok' version '6.5.0.3'
+}
+
+group 'me.redstom'
+version '1.0-SNAPSHOT'
+def mainClass = 'me.redstom.privaterooms.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.dv8tion:JDA:5.0.0-alpha.18'
+
+    implementation 'org.springframework:spring-context:5.3.22'
+
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
+    implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation 'org.postgresql:postgresql:42.4.2'
+    implementation 'org.springframework.data:spring-data-jpa:2.7.2'
+    implementation 'org.hibernate:hibernate-core:5.6.10.Final'
+//    implementation 'org.hibernate:hibernate-entitymanager:5.6.10.Final'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+    implementation 'ch.qos.logback:logback-classic:1.2.8'
+}
+
+application {
+    mainClassName mainClass
+}
+
+compileJava {
+    manifest {
+        attributes 'Main-Class': mainClass
+    }
+}
