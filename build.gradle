@@ -8,6 +8,8 @@ group 'me.redstom'
 version '1.0-SNAPSHOT'
 def mainClass = 'me.redstom.privaterooms.Main'
 
+sourceCompatibility = targetCompatibility = '18'
+
 repositories {
     mavenCentral()
 }
