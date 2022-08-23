@@ -23,11 +23,10 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.4.2'
     implementation 'org.springframework.data:spring-data-jpa:2.7.2'
     implementation 'org.hibernate:hibernate-core:5.6.10.Final'
-//    implementation 'org.hibernate:hibernate-entitymanager:5.6.10.Final'
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'org.apache.commons:commons-dbcp2:2.9.0'
-    implementation 'ch.qos.logback:logback-classic:1.2.8'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 }
 
 application {
@@ -35,6 +34,8 @@ application {
 }
 
 compileJava {
+    options.encoding = 'UTF-8'
+
     manifest {
         attributes 'Main-Class': mainClass
     }
