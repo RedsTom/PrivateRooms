@@ -21,6 +21,9 @@ public class Role {
 
     private long discordId;
 
+    @Transient
+    private net.dv8tion.jda.api.entities.Role discordRole;
+
     @ManyToOne
     private Guild guild;
 

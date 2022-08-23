@@ -1,7 +1,9 @@
 package me.redstom.privaterooms.util;
 
+import com.google.common.collect.Lists;
 import com.moandjiezana.toml.Toml;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.db.entity.Guild;
 import me.redstom.privaterooms.db.repository.GuildRepository;
 import org.springframework.stereotype.Component;
@@ -10,12 +12,13 @@ import java.io.File;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MigrationManager {
 
     private final GuildRepository guildRepository;
 
     public void run() {
-        System.out.println("""
+        Lists.newArrayList("""
           --------------------------------------------------------------
           Detected old private rooms config and saves !
           Those are not supported anymore ! Starting migration...
@@ -25,19 +28,19 @@ public class MigrationManager {
            - The templates
            - The server configurations
           --------------------------------------------------------------
-          """);
+          """.split("\n")
+        ).forEach(log::info);
 
         this.migrateServers();
     }
 
     private void migrateServers() {
-        System.out.println("----------------------------------------------------");
-        System.out.println("Migrating servers...");
+        log.info("Migrating servers...");
 
         File serverFolder = new File("servers");
 
         if (!serverFolder.exists()) {
-            System.out.println("No servers found, skipping migration...");
+            log.info("No servers found, skipping migration...");
             return;
         }
 
@@ -49,7 +52,7 @@ public class MigrationManager {
             String createChannelId = toml.getString("createChannelId", "0");
 
             if (categoryId.isEmpty() || createChannelId.isEmpty()) {
-                System.out.println("Skipping server " + serverId + " because it is not fully configured...");
+                log.debug("Skipping server " + serverId + " because it is not fully configured...");
                 continue;
             }
 
@@ -60,10 +63,10 @@ public class MigrationManager {
               .build();
 
             guildRepository.save(guild);
-            System.out.println("Migrated server " + serverId);
+            log.debug("Migrated server " + serverId);
         }
 
-        System.out.println("Servers migration finished !");
-        System.out.println("----------------------------------------------------");
+        log.info("Servers migration finished !");
+        log.info("--------------------------------------------------------------");
     }
 }

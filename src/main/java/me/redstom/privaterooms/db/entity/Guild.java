@@ -23,6 +23,9 @@ public class Guild {
     @Column(nullable = false)
     private long discordId;
 
+    @Transient
+    private net.dv8tion.jda.api.entities.Guild discordGuild;
+
     private long categoryId;
     private long createChannelId;
 

@@ -3,6 +3,7 @@ package me.redstom.privaterooms.db.services;
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.db.entity.Guild;
 import me.redstom.privaterooms.db.repository.GuildRepository;
+import net.dv8tion.jda.api.JDA;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,19 +11,36 @@ import org.springframework.stereotype.Service;
 public class GuildService {
 
     private final GuildRepository guildRepository;
+    private final JDA client;
 
     public Guild init(long discordId) {
         Guild g = Guild.builder()
           .discordId(discordId)
           .build();
 
+        return save(g);
+    }
+
+    public Guild rawOf(long discordId) {
+        return guildRepository
+          .findByDiscordId(discordId)
+          .orElseGet(() -> init(discordId));
+    }
+
+    public Guild save(Guild g) {
+        net.dv8tion.jda.api.entities.Guild guild = client.getGuildById(g.discordId());
+        g.discordGuild(guild);
+
         return guildRepository.save(g);
     }
 
     public Guild of(long discordId) {
-        return guildRepository
-          .findByDiscordId(discordId)
-          .orElseGet(() -> init(discordId));
+        Guild g = rawOf(discordId);
+
+        net.dv8tion.jda.api.entities.Guild guild = client.getGuildById(g.discordId());
+        g.discordGuild(guild);
+
+        return g;
     }
 
     public void registerChannelsFor(Guild guild, long categoryId, long createChannelId) {

@@ -31,11 +31,19 @@ public class UserService {
     }
 
     public User save(User u) {
+        net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
+          .complete();
+        u.discordUser(user);
+
         return userRepository.save(u);
     }
 
     public User of(long discordId) {
         User u = rawOf(discordId);
+
+        net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
+          .complete();
+        u.discordUser(user);
 
         return u;
     }
