@@ -42,7 +42,9 @@ bin/
 .DS_Store
 
 .env
-config.toml
 data/
 .idea/
-
+servers/
+templates/
+languages/
+config*
