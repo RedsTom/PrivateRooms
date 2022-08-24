@@ -93,13 +93,11 @@ public class MigrationManager {
                 continue;
             }
 
-            Guild guild = guildService.of(serverId)
-              .toBuilder()
+            guildService.update(serverId, g -> g
               .categoryId(Long.parseLong(categoryId))
               .createChannelId(Long.parseLong(createChannelId))
-              .build();
+            );
 
-            guildService.save(guild);
             log.debug("Migrated server " + serverId);
         }
 

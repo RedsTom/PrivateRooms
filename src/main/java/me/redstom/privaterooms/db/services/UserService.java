@@ -16,12 +16,10 @@ public class UserService {
     private final JDA client;
 
     public User init(long userId) {
-        User u = User.builder()
+        return userRepository.save(User.builder()
           .discordId(userId)
           .templates(new ArrayList<>())
-          .build();
-
-        return save(u);
+          .build());
     }
 
     public User rawOf(long userId) {
@@ -30,20 +28,11 @@ public class UserService {
           .orElseGet(() -> init(userId));
     }
 
-    public User save(User u) {
-        return userRepository.save(u);
-    }
-
     public User of(long discordId) {
-        User u = rawOf(discordId);
-        return of(u);
+        return of(rawOf(discordId));
     }
 
     public User of(User u) {
-        net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
-          .complete();
-        u.discordUser(user);
-
-        return u;
+        return u.discordUser(client.retrieveUserById(u.discordId()).complete());
     }
 }

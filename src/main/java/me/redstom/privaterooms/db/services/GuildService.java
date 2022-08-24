@@ -6,6 +6,8 @@ import me.redstom.privaterooms.db.repository.GuildRepository;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.stereotype.Service;
 
+import java.util.function.UnaryOperator;
+
 @Service
 @RequiredArgsConstructor
 public class GuildService {
@@ -14,11 +16,9 @@ public class GuildService {
     private final JDA client;
 
     public Guild init(long discordId) {
-        Guild g = Guild.builder()
+        return guildRepository.save(Guild.builder()
           .discordId(discordId)
-          .build();
-
-        return save(g);
+          .build());
     }
 
     public Guild rawOf(long discordId) {
@@ -27,26 +27,19 @@ public class GuildService {
           .orElseGet(() -> init(discordId));
     }
 
-    public Guild save(Guild g) {
-        return guildRepository.save(g);
-    }
-
     public Guild of(long discordId) {
-        Guild g = rawOf(discordId);
-        return of(g);
+        return of(rawOf(discordId));
     }
 
     public Guild of(Guild g) {
-        net.dv8tion.jda.api.entities.Guild guild = client.getGuildById(g.discordId());
-        g.discordGuild(guild);
-
-        return g;
+        return g.discordGuild(client.getGuildById(g.discordId()));
     }
 
-    public void registerChannelsFor(Guild guild, long categoryId, long createChannelId) {
-        guild.categoryId(categoryId);
-        guild.createChannelId(createChannelId);
+    public Guild update(long guildId, UnaryOperator<Guild> update) {
+        return guildRepository.save(update.apply(of(guildId)));
+    }
 
-        guildRepository.save(guild);
+    public Guild update(Guild g, UnaryOperator<Guild> update) {
+        return guildRepository.save(update.apply(g));
     }
 }

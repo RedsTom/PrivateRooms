@@ -14,12 +14,10 @@ public class RoleService {
     private final GuildService guildService;
 
     public Role init(Guild g, long roleId) {
-        Role r = Role.builder()
+        return roleRepository.save(Role.builder()
           .discordId(roleId)
           .guild(g)
-          .build();
-
-        return save(r);
+          .build());
     }
 
     public Role rawOf(Guild g, long roleId) {
@@ -28,21 +26,12 @@ public class RoleService {
           .orElseGet(() -> init(g, roleId));
     }
 
-    public Role save(Role r) {
-        return roleRepository.save(r);
-    }
-
     public Role of(Guild g, long discordId) {
-        Role r = rawOf(g, discordId);
-        return of(r);
+        return of(rawOf(g, discordId));
     }
 
     public Role of(Role r) {
         Guild g = guildService.of(r.guild());
-
-        net.dv8tion.jda.api.entities.Role role = g.discordGuild().getRoleById(r.discordId());
-        r.discordRole(role);
-
-        return r;
+        return r.discordRole(g.discordGuild().getRoleById(r.discordId()));
     }
 }
