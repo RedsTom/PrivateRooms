@@ -36,7 +36,10 @@ public class GuildService {
 
     public Guild of(long discordId) {
         Guild g = rawOf(discordId);
+        return of(g);
+    }
 
+    public Guild of(Guild g) {
         net.dv8tion.jda.api.entities.Guild guild = client.getGuildById(g.discordId());
         g.discordGuild(guild);
 

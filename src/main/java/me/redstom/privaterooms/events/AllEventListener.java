@@ -1,6 +1,8 @@
 package me.redstom.privaterooms.events;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.redstom.privaterooms.util.MigrationManager;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -8,21 +10,27 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 @RegisterListener
+@RequiredArgsConstructor
 @Slf4j
 public class AllEventListener extends ListenerAdapter {
 
-    @Autowired
-    private List<ICommand> commands;
+    private final List<ICommand> commands;
+    private final MigrationManager migrationManager;
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         log.info("Ready !");
         log.info("Logged in as {}", event.getJDA().getSelfUser().getAsTag());
+
+        if (Files.exists(Path.of("config.yml"))) {
+            migrationManager.run();
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.redstom.privaterooms;
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.util.Config;
 import me.redstom.privaterooms.util.command.ICommand;
 import net.dv8tion.jda.api.JDA;
@@ -29,6 +30,8 @@ import java.util.List;
 @Configuration
 @ComponentScan(basePackages = {"me.redstom.privaterooms.*", "me.redstom.privaterooms"})
 @EnableJpaRepositories("me.redstom.privaterooms.*")
+
+@Slf4j
 public class Main {
 
     public static void main(String[] args) {
@@ -60,8 +63,8 @@ public class Main {
             TomlWriter writer = new TomlWriter();
             writer.write(config, configFile);
 
-            System.err.println("Config file created at " + configFile.getAbsolutePath());
-            System.err.println("Please fill in the config file and restart the bot");
+            log.error("Config file created at " + configFile.getAbsolutePath());
+            log.error("Please fill in the config file and restart the bot");
 
             System.exit(1);
         }

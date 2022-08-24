@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Guild {
@@ -20,7 +20,7 @@ public class Guild {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private long discordId;
 
     @Transient

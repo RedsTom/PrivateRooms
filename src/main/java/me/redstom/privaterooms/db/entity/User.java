@@ -21,6 +21,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private long discordId;
 
     @Transient

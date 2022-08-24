@@ -21,7 +21,7 @@ public class UserService {
           .templates(new ArrayList<>())
           .build();
 
-        return save(u);
+        return save(u, false);
     }
 
     public User rawOf(long userId) {
@@ -30,17 +30,26 @@ public class UserService {
           .orElseGet(() -> init(userId));
     }
 
-    public User save(User u) {
-        net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
-          .complete();
-        u.discordUser(user);
+    public User save(User u, boolean shallRetrieve) {
+        if(shallRetrieve) {
+            net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
+              .complete();
+            u.discordUser(user);
+        }
 
         return userRepository.save(u);
     }
 
+    public User save(User u) {
+        return save(u, true);
+    }
+
     public User of(long discordId) {
         User u = rawOf(discordId);
+        return of(u);
+    }
 
+    public User of(User u) {
         net.dv8tion.jda.api.entities.User user = client.retrieveUserById(u.discordId())
           .complete();
         u.discordUser(user);
