@@ -29,9 +29,6 @@ public class RoleService {
     }
 
     public Role save(Role r) {
-        net.dv8tion.jda.api.entities.Role role = r.guild().discordGuild().getRoleById(r.discordId());
-        r.discordRole(role);
-
         return roleRepository.save(r);
     }
 

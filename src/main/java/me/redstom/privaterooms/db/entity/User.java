@@ -25,7 +25,7 @@ public class User {
     private long discordId;
 
     @Transient
-    private transient net.dv8tion.jda.api.entities.User discordUser;
+    private net.dv8tion.jda.api.entities.User discordUser;
 
     @OneToMany
     private List<Template> templates;

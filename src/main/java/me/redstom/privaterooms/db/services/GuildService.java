@@ -28,9 +28,6 @@ public class GuildService {
     }
 
     public Guild save(Guild g) {
-        net.dv8tion.jda.api.entities.Guild guild = client.getGuildById(g.discordId());
-        g.discordGuild(guild);
-
         return guildRepository.save(g);
     }
 
