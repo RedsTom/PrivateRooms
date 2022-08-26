@@ -2,6 +2,7 @@ package me.redstom.privaterooms;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PrivateRooms {
     private final ApplicationContext ctx;
     private final List<ICommand> commands;

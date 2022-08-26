@@ -1,0 +1,43 @@
+ready: Prêt ! Connecté sur $username
+
+template:
+  visibility:
+    PUBLIC: 'Public'
+    PRIVATE: 'Privé'
+    HIDDEN: 'Caché'
+
+commands:
+  template:
+    list:
+      title: Modèles de `$username`
+      no-templates: |
+        **¯\_(ツ)_/¯** *Oups ! Il semble que vous n'ayez pas de modèles*
+        **Vous pouvez en créer un en faisant `/template create <nom>`.**
+      description: |
+        Max users : $max_users
+        Visibility : ${visibility | template.visibility}
+        Whitelist : $whitelist_user utilisateurs et $whitelist_role roles
+        Blacklist : $blacklist_user utilisateurs et $blacklist_role roles
+        Moderators : $moderator_user utilisateurs et $moderator_role roles
+
+  setup:
+    success:
+      title: Configuration terminée
+      description: |
+        ✅ La catégorie et le salon ont été créés. Vous pouvez maintenant créer un salon en rejoignant $channel.
+        
+        ➡ Vous pouvez éditer le nom des salons et les déplacer.
+        ➡ Les salons seront créés dans la catégorie même si le salon "Créer un salon" est déplacé.
+      note: 📝 Les anciens salons ont été supprimés!
+    error:
+      title: Oups! Une erreur est survenue.
+      description: |
+        Détail : `$name`
+        
+        **➡️ Réessayez plus tard.**
+
+  settings:
+    locale:
+      success: |
+        ✅ La langue a bien été mise à jour !
+        ➡ Le bot utilisera désormais le `$locale` pour répondre 😀

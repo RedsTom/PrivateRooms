@@ -1,0 +1,43 @@
+ready: Ready ! Logged in as $username
+
+template:
+  visibility:
+    PUBLIC: 'Public'
+    PRIVATE: 'Private'
+    HIDDEN: 'Hidden'
+
+commands:
+  template:
+    list:
+      title: Templates of `$username`
+      no-templates: |
+        **¯\_(ツ)_/¯** *Unfortunately, it seems that you don't have any template yet.*
+        **You can create one by using the command `/template create <name>`.**
+      description: |
+        Max users : $max_users
+        Visibility : ${visibility | template.visibility}
+        Whitelist : $whitelist_user users and $whitelist_role roles
+        Blacklist : $blacklist_user users and $blacklist_role roles
+        Moderators : $moderator_user users and $moderator_role roles
+
+  setup:
+    success:
+      title: Setup complete
+      description: |
+        ✅ The category and the channel have been created. You can now create rooms by joining $channel.
+        
+        ➡ You can now edit the name of the channels and move them.
+        ➡ The rooms will be created in the category even if the "Create room" channel is moved.
+      note: 📝 The old channels have been deleted!
+    error:
+      title: Oops! An error occurred.
+      description: |
+        Detail : `$name`
+        
+        **➡️ Please try again later.**
+
+  settings:
+    locale:
+      success: |
+        ✅ The locale has been updated.
+        ➡ The bot will now use `$locale` for its responses.

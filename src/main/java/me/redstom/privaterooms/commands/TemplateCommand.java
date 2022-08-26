@@ -1,12 +1,16 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
+import me.redstom.privaterooms.db.entity.Guild;
 import me.redstom.privaterooms.db.entity.Template;
 import me.redstom.privaterooms.db.entity.User;
+import me.redstom.privaterooms.db.services.GuildService;
 import me.redstom.privaterooms.db.services.TemplateService;
 import me.redstom.privaterooms.db.services.UserService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
+import me.redstom.privaterooms.util.i18n.I18n;
+import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -25,6 +29,8 @@ public class TemplateCommand implements ICommand {
 
     private final TemplateService templateService;
     private final UserService userService;
+    private final GuildService guildService;
+    private final I18n i18n;
 
     @Override
     public CommandData command() {
@@ -43,11 +49,11 @@ public class TemplateCommand implements ICommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        switch (event.getSubcommandName()) {
-            case "create" -> this.create(event);
-            case "delete" -> this.delete(event);
-            case "load" -> this.load(event);
-            case "list" -> this.list(event);
+        switch (event.getCommandPath()) {
+            case "template/create" -> this.create(event);
+            case "template/delete" -> this.delete(event);
+            case "template/load" -> this.load(event);
+            case "template/list" -> this.list(event);
         }
     }
 
@@ -63,16 +69,24 @@ public class TemplateCommand implements ICommand {
 
     private void list(SlashCommandInteractionEvent event) {
         User user = userService.of(event.getUser().getIdLong());
+        Guild guild = guildService.of(event.getGuild().getIdLong());
+
+        Translator translator = i18n.of(guild.locale());
 
         List<Template> templates = templateService.getTemplatesOf(user.discordId());
 
         Function<Template, MessageEmbed.Field> templateField = t -> new MessageEmbed.Field(
-          t.name(),
-          "Max users: " + t.maxUsers() + "\n" +
-            "Visibility: " + t.visibility() + " \n" +
-            "Whitelist: " + t.whitelistUsers().size() + "\n" +
-            "Blacklist: " + t.blacklistUsers().size() + "\n" +
-            "Moderators: " + t.moderatorUsers().size(),
+          "`%s` :".formatted(t.name()),
+          translator.get("command.template.description")
+            .with("max_users", t.maxUsers())
+            .with("visibility", t.visibility())
+            .with("whitelist_user", t.whitelistUsers().size())
+            .with("whitelist_role", t.whitelistRoles().size())
+            .with("blacklist_user", t.blacklistUsers().size())
+            .with("blacklist_role", t.blacklistRoles().size())
+            .with("moderator_user", t.moderatorUsers().size())
+            .with("moderator_role", t.moderatorRoles().size())
+            .toString(),
           true
         );
 
@@ -82,14 +96,12 @@ public class TemplateCommand implements ICommand {
           null,
           event.getUser().getAvatarUrl()
         );
-        builder.setTitle("Templates of `%s`".formatted(event.getUser().getName()));
-        builder.setDescription("""
-          **¯\\_(ツ)_/¯** *Unfortunately, it seems that you don't have any template yet.*
-                    
-          **You can create one by using the command `/template create <name>`.**
-          """.stripIndent());
+        builder.setTitle(translator.get("template.list.title")
+          .with("username", event.getUser().getName())
+          .toString()
+        );
+        builder.setDescription(translator.raw("template.list.no-templates"));
         builder.setColor(0x00FF00);
-        builder.setImage(null);
 
         if (templates.size() != 0) builder.setDescription("");
         templates.forEach(t -> builder.addField(templateField.apply(t)));

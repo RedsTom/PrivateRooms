@@ -5,6 +5,8 @@ import me.redstom.privaterooms.db.entity.Guild;
 import me.redstom.privaterooms.db.services.GuildService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
+import me.redstom.privaterooms.util.i18n.I18n;
+import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -20,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SetupCommand implements ICommand {
 
     private final GuildService guildService;
+    private final I18n i18n;
 
     @Override
     public CommandData command() {
@@ -34,6 +37,7 @@ public class SetupCommand implements ICommand {
         ReplyCallbackAction reply = event.deferReply();
 
         Guild guild = guildService.of(event.getGuild().getIdLong());
+        Translator translator = i18n.of(guild.locale());
 
         AtomicBoolean deleted = new AtomicBoolean(false);
         if (guild.categoryId() != 0 || guild.createChannelId() != 0) {
@@ -57,30 +61,34 @@ public class SetupCommand implements ICommand {
           .createVoiceChannel("🔐 Create a room")
           .setUserlimit(1)
           .queue(chan -> {
-              guildService.registerChannelsFor(guild, cat.getIdLong(), chan.getIdLong());
+              guildService.update(guild, g -> g
+                .categoryId(cat.getIdLong())
+                .createChannelId(chan.getIdLong())
+              );
 
               reply.setEphemeral(true)
                 .setEmbeds(new EmbedBuilder()
-                  .setTitle("Setup complete")
-                  .setDescription("""
-                    ✅ The category and the channel have been created. You can now create rooms by joining %s.
-                    
-                    ➡ You can now edit the name of the channels and move them.
-                    ➡ The rooms will be created in the category even if the "Create room" channel is moved.
-                    """.stripIndent().formatted(chan.getAsMention())
+                  .setTitle(translator.raw("commands.setup.success.title"))
+                  .setDescription(translator.get("commands.setup.success.description")
+                    .with("channel", chan.getAsMention())
+                    .toString()
                   )
-                  .setFooter(deleted.get() ? "📝 The old channels have been deleted!" : "")
+                  .setFooter(deleted.get() ? translator.raw("commands.setup.success.note") : "")
                   .setColor(0x00FF00)
                   .build()
                 ).queue();
-          }, err -> error(reply, err)), err -> error(reply, err));
+          }, err -> error(translator, reply, err)), err -> error(translator, reply, err));
     }
 
-    private void error(ReplyCallbackAction reply, Throwable err) {
+    private void error(Translator translator, ReplyCallbackAction reply, Throwable err) {
+
         reply.setEphemeral(true)
           .setEmbeds(new EmbedBuilder()
-            .setTitle("Oops! An error occurred.")
-            .setDescription("Detail : `%s`\n\n**Please try again later.**".formatted(err.getMessage()))
+            .setTitle(translator.raw("commands.setup.error.title"))
+            .setDescription(translator.get("commands.setup.error.description")
+              .with("error", err.getMessage())
+              .toString()
+            )
             .setColor(0xFF0000)
             .build()
           ).queue();

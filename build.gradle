@@ -12,6 +12,7 @@ sourceCompatibility = targetCompatibility = '18'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -19,13 +20,14 @@ dependencies {
 
     implementation 'org.springframework:spring-context:5.3.22'
 
-    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
-    implementation 'com.google.guava:guava:31.1-jre'
-
     implementation 'org.postgresql:postgresql:42.4.2'
     implementation 'org.springframework.data:spring-data-jpa:2.7.2'
     implementation 'org.hibernate:hibernate-core:5.6.10.Final'
     implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
+    implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.8.1'
+    implementation 'com.google.guava:guava:31.1-jre'
 
     implementation 'org.apache.commons:commons-dbcp2:2.9.0'
     implementation 'ch.qos.logback:logback-classic:1.2.11'

@@ -57,10 +57,12 @@ public class MigrationManager {
         this.migrateTemplates();
 
         log.info("Migration finished ! All the data from the files are now in the database !");
-        log.info("Here's your old config.yml : \n{}", new BufferedReader(new FileReader("config.yml"))
+        BufferedReader reader = new BufferedReader(new FileReader("config.yml"));
+        log.info("Here's your old config.yml : \n{}", reader
           .lines()
           .collect(Collectors.joining("\n"))
         );
+        reader.close();
         log.info("The config.yml file will be deleted to prevent any further migration.");
         try {
             Files.deleteIfExists(Path.of("config.yml"));

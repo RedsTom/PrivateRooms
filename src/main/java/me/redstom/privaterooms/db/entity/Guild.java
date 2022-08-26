@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "guilds")
@@ -25,6 +26,10 @@ public class Guild {
 
     @Transient
     private net.dv8tion.jda.api.entities.Guild discordGuild;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Locale locale = Locale.ENGLISH;
 
     private long categoryId;
     private long createChannelId;
