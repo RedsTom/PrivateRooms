@@ -16,7 +16,7 @@ import me.redstom.privaterooms.db.repository.TemplateRepository;
 import me.redstom.privaterooms.db.services.GuildService;
 import me.redstom.privaterooms.db.services.RoleService;
 import me.redstom.privaterooms.db.services.UserService;
-import me.redstom.privaterooms.util.room.RoomState;
+import me.redstom.privaterooms.util.room.RoomVisibility;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -151,8 +151,8 @@ public class MigrationManager {
             boolean _private = obj.get("private").getAsBoolean();
 
             builder.visibility(_private
-              ? RoomState.PRIVATE
-              : hidden ? RoomState.HIDDEN : RoomState.PUBLIC
+              ? RoomVisibility.PRIVATE
+              : hidden ? RoomVisibility.HIDDEN : RoomVisibility.PUBLIC
             );
 
             builder.channelName(obj.get("name").getAsString());

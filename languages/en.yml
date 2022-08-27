@@ -20,6 +20,13 @@ commands:
         Blacklist : $blacklist_user users and $blacklist_role roles
         Moderators : $moderator_user users and $moderator_role roles
 
+  delete:
+    title: Room $room_name deleted
+    description: |
+      **o no** You deleted your room :sob:
+      
+      If it was a mistake, you can create a new one by connecting in <#$create_channel_id>.
+
   setup:
     success:
       title: Setup complete

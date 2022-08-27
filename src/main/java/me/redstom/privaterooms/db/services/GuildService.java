@@ -21,6 +21,10 @@ public class GuildService {
           .build());
     }
 
+    public Guild rawOf(net.dv8tion.jda.api.entities.Guild guild) {
+        return rawOf(guild.getIdLong());
+    }
+
     public Guild rawOf(long discordId) {
         return guildRepository
           .findByDiscordId(discordId)

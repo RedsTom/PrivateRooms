@@ -1,7 +1,7 @@
 package me.redstom.privaterooms.db.entity;
 
 import lombok.*;
-import me.redstom.privaterooms.util.room.RoomState;
+import me.redstom.privaterooms.util.room.RoomVisibility;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,7 +34,7 @@ public class Template {
     private int maxUsers;
 
     @Column(nullable = false)
-    private RoomState visibility;
+    private RoomVisibility visibility;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "template_whitelisted_users")

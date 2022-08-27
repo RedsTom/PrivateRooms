@@ -1,17 +1,17 @@
-package me.redstom.privaterooms.util.room;
+package me.redstom.privaterooms.db.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import me.redstom.privaterooms.db.entity.Template;
+import lombok.Setter;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+
+@Getter
+@Setter
 
 @Builder
 public class Room {
 
-    @Getter
-    private Template descriptor;
-
-    @Getter
     private VoiceChannel channel;
+    private Template template;
 
 }

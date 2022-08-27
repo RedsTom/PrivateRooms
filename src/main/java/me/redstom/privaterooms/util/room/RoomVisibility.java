@@ -1,5 +1,5 @@
 package me.redstom.privaterooms.util.room;
 
-public enum RoomState {
+public enum RoomVisibility {
     PUBLIC, PRIVATE, HIDDEN
 }

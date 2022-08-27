@@ -77,7 +77,7 @@ public class TemplateCommand implements ICommand {
 
         Function<Template, MessageEmbed.Field> templateField = t -> new MessageEmbed.Field(
           "`%s` :".formatted(t.name()),
-          translator.get("command.template.description")
+          translator.get("commands.template.description")
             .with("max_users", t.maxUsers())
             .with("visibility", t.visibility())
             .with("whitelist_user", t.whitelistUsers().size())
@@ -96,11 +96,11 @@ public class TemplateCommand implements ICommand {
           null,
           event.getUser().getAvatarUrl()
         );
-        builder.setTitle(translator.get("template.list.title")
+        builder.setTitle(translator.get("commands.template.list.title")
           .with("username", event.getUser().getName())
           .toString()
         );
-        builder.setDescription(translator.raw("template.list.no-templates"));
+        builder.setDescription(translator.raw("commands.template.list.no-templates"));
         builder.setColor(0x00FF00);
 
         if (templates.size() != 0) builder.setDescription("");

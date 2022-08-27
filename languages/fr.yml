@@ -20,6 +20,13 @@ commands:
         Blacklist : $blacklist_user utilisateurs et $blacklist_role roles
         Moderators : $moderator_user utilisateurs et $moderator_role roles
 
+  delete:
+    title: Room $room_name supprimé
+    description: |
+      **o no** Vous avez supprimé votre room :sob:
+      
+      S'il s'agissait d'une érreur, vous pouvez recréer une room en vous connectant dans <#$create_channel_id>.
+
   setup:
     success:
       title: Configuration terminée

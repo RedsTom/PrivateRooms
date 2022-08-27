@@ -43,7 +43,6 @@ public class ConfigCommand implements ICommand {
           .addSubcommands(
             new SubcommandData("name", "Rename the channel")
               .addOption(OptionType.STRING, "name", "The new name of the channel", true),
-            new SubcommandData("delete", "Delete the channel"),
             new SubcommandData("visibility", "Changes the visibility of the channel")
               .addOptions(new OptionData(OptionType.STRING, "visibility", "The new visibility of the channel", true, false)
                 .addChoice("public", "0")
@@ -60,6 +59,5 @@ public class ConfigCommand implements ICommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         User user = userService.of(event.getUser().getIdLong());
-
     }
 }
