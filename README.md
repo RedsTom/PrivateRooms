@@ -17,7 +17,6 @@ Most of the contributors are part of the staff but the members are also allowed 
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description         | PrivateRooms the vocal chat management system of the Graven - Développement discord server. It can create on-demand vocal chats, allows user to edit those rooms and save the current configuration as a template for an eventual later use of the same configuration |
 | Collaborators       | <img src="https://avatars.githubusercontent.com/u/44524788?v=4" alt="drawing" width="25"/> [RedsTom](https://github.com/RedsTom), <img src="https://avatars.githubusercontent.com/u/43293180?v=4" alt="drawing" width="25"/> [desaleo](https://github.com/desaleao), <img src="https://avatars.githubusercontent.com/u/57500708?v=4" alt="drawing" width="25"/> [baptistedph](https://github.com/baptistedph), <img src="https://avatars.githubusercontent.com/u/42160606?v=4" alt="drawing" width="25"/> [Tom-mp4](https://github.com/Tom-mp4)      |
-| Version             | 3.0                                                                                                                                                                                                                                                                   |
 
 ---
 
