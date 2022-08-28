@@ -21,6 +21,8 @@ package me.redstom.privaterooms;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.redstom.privaterooms.util.command.CommandExecutor;
+import me.redstom.privaterooms.util.command.CommandExecutorRepr;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
@@ -28,15 +30,18 @@ import net.dv8tion.jda.api.JDA;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class PrivateRooms {
     private final ApplicationContext ctx;
-    private final List<ICommand> commands;
     private final JDA client;
+    private final List<ICommand> commands;
+    private final Map<String, CommandExecutorRepr> commandExecutors;
 
 
     @SneakyThrows
@@ -51,6 +56,13 @@ public class PrivateRooms {
             ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
               .filter(a -> a instanceof ICommand)
               .map(a -> (ICommand) a)
+              .peek(a -> Arrays.stream(a.getClass().getMethods())
+                .parallel()
+                .filter(m -> m.getAnnotation(CommandExecutor.class) != null)
+                .forEach(m -> commandExecutors.put(
+                  m.getAnnotation(CommandExecutor.class).value(),
+                  new CommandExecutorRepr(a, m)
+                )))
               .peek(this.commands::add)
               .map(ICommand::command)
               .toList()

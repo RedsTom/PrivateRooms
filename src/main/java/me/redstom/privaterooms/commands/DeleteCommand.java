@@ -43,10 +43,6 @@ public class DeleteCommand implements ICommand {
         return Commands.slash("delete", "Delete the channel");
     }
 
-    @Override
-    public void execute(SlashCommandInteractionEvent event) {
-        // event.getChannel().delete().queue(success -> event.replyEmbeds(successEmbed(event)).queue());
-    }
 
     private MessageEmbed successEmbed(SlashCommandInteractionEvent event) {
 

@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.entity.Model;
 import me.redstom.privaterooms.entities.entity.Room;
+import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.repository.RoomRepository;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
@@ -35,6 +36,7 @@ import net.dv8tion.jda.api.managers.Manager;
 import net.dv8tion.jda.api.managers.channel.concrete.VoiceChannelManager;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -47,6 +49,8 @@ public class RoomService {
     private final JDA client;
     private final RoomRepository roomRepository;
     private final GuildService guildService;
+    private final UserService userService;
+    private final TemplateService templateService;
     private final I18n i18n;
 
     public Room create(Guild g, Member member) {
@@ -74,7 +78,7 @@ public class RoomService {
         ));
 
         g.discordGuild().moveVoiceMember(member, channel).complete();
-        log.info("{} ({}) created a room : \"{}\" on \"{}\" ({})",
+        log.info("\"{}\" ({}) created a room : \"{}\" on \"{}\" ({})",
           member.getEffectiveName(),
           member.getId(),
           name,
@@ -82,13 +86,33 @@ public class RoomService {
           g.discordId()
         );
 
-        return update(room, r -> r);
+        return update(null, room, r -> r);
     }
 
-    public Room update(Room r, UnaryOperator<Room> updated) {
+    public Room update(@Nullable Member issuer, Room room, UnaryOperator<Room> roomUpdater, UnaryOperator<Model> modelUpdater) {
+        return this.update(issuer, room, (r) -> {
+            roomUpdater.apply(r);
+            modelUpdater.apply(r.model());
+            return r;
+        });
+    }
+
+    public Room update(@Nullable Member issuer, Room r, UnaryOperator<Room> updated) {
         Room room = roomRepository.save(updated.apply(r));
         if (room.discordChannel() == null) {
             room = of(r);
+        }
+
+        log.info("\"{}\" issued a modification to room \"{}\" on \"{}\" ({})",
+          issuer == null ? "System" : issuer.getEffectiveName(),
+          room.model().channelName(),
+          room.guild().discordGuild().getName(),
+          room.guild().discordId()
+        );
+
+        if(issuer != null) {
+            User user = userService.of(issuer.getIdLong());
+            templateService.save("restore_" + user.discordId(), user, room.model());
         }
 
         VoiceChannel voiceChannel = room.discordChannel();
@@ -178,5 +202,10 @@ public class RoomService {
     public Room of(Room r) {
         Guild guild = guildService.of(r.guild());
         return r.discordChannel(guild.discordGuild().getVoiceChannelById(r.discordId()));
+    }
+
+    public void delete(Room room) {
+        roomRepository.delete(room);
+        room.discordChannel().delete().queue();
     }
 }

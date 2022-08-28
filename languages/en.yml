@@ -10,6 +10,18 @@ channels:
   default-name: $name's room
 
 commands:
+  config:
+    error:
+      title: Error
+      not-in-voice: |
+        You must be in a voice channel to use this command !
+      not-a-room: |
+        You must be in a room to use this command !
+
+    restore:
+      error:
+        no-template: You don't have a previous configuration to restore
+
   template:
     list:
       title: Templates of `$username`

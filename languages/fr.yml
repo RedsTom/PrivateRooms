@@ -10,6 +10,18 @@ channels:
   default-name: Salon de $name
 
 commands:
+  config:
+    error:
+      title: Erreur
+      not-in-voice: |
+        Vous devez être dans un salon vocal pour exécuter cette commande !
+      not-a-room: |
+        Vous devez être dans un salon pour exécuter cette commande !
+
+    restore:
+      error:
+        no-template: Vous n'avez pas de configuration précédente à restaurer
+
   template:
     list:
       title: Modèles de `$username`

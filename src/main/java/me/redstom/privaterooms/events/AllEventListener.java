@@ -24,21 +24,28 @@ import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.RoomService;
 import me.redstom.privaterooms.util.MigrationManager;
+import me.redstom.privaterooms.util.command.CommandExecutorRepr;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationContext;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 @RegisterListener
 @RequiredArgsConstructor
@@ -46,10 +53,12 @@ import java.util.Locale;
 public class AllEventListener extends ListenerAdapter {
 
     private final List<ICommand> commands;
+    private final Map<String, CommandExecutorRepr> commandExecutors;
     private final MigrationManager migrationManager;
     private final I18n i18n;
     private final GuildService guildService;
     private final RoomService roomService;
+    private final ApplicationContext ctx;
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
@@ -68,9 +77,9 @@ public class AllEventListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        this.commands.stream()
-          .filter(cmd -> event.getCommandPath().startsWith(cmd.command().getName()))
-          .forEach(cmd -> cmd.execute(event));
+        Optional
+          .ofNullable(this.commandExecutors.get(event.getCommandPath()))
+          .ifPresent(repr -> repr.run(event));
     }
 
     @Override
@@ -83,8 +92,21 @@ public class AllEventListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Guild guild = guildService.rawOf(event.getGuild());
-        if(event.getChannelJoined().getIdLong() == guild.createChannelId()) {
+        if (event.getChannelJoined().getIdLong() == guild.createChannelId()) {
             roomService.create(guild, event.getMember());
+        }
+    }
+
+    @Override
+    public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
+        if (event.getChannelLeft().getType() != ChannelType.VOICE) return;
+        if (event.getChannelLeft().getMembers().size() != 0) return;
+
+        Guild guild = guildService.rawOf(event.getGuild());
+        VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();
+
+        if (voiceChannel.getParentCategory().getIdLong() == guild.categoryId()) {
+            roomService.of(event.getChannelLeft().getIdLong()).ifPresent(roomService::delete);
         }
     }
 }

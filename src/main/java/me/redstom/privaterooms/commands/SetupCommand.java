@@ -23,6 +23,7 @@ import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
+import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -50,8 +51,8 @@ public class SetupCommand implements ICommand {
           .setDefaultPermissions(DefaultMemberPermissions.DISABLED);
     }
 
-    @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    @CommandExecutor("setup")
+    public void run(SlashCommandInteractionEvent event) {
         ReplyCallbackAction reply = event.deferReply();
 
         Guild guild = guildService.of(event.getGuild().getIdLong());

@@ -16,19 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.entities.repository;
+package me.redstom.privaterooms.util.command;
 
-import me.redstom.privaterooms.entities.entity.Template;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.lang.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface CommandExecutor {
 
-@Repository
-public interface TemplateRepository extends JpaRepository<Template, Long> {
+    /**
+     * The path of the subcommand.
+     */
+    String value();
 
-    List<Template> findAllByAuthorDiscordId(long authorId);
-
-    Optional<Template> findByAuthorDiscordIdAndName(long discordId, String name);
 }

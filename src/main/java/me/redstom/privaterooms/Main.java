@@ -23,6 +23,7 @@ import com.moandjiezana.toml.TomlWriter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.util.Config;
+import me.redstom.privaterooms.util.command.CommandExecutorRepr;
 import me.redstom.privaterooms.util.command.ICommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -38,12 +39,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.TransactionManager;
 
-import javax.sql.DataSource;
 import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 @ComponentScan(basePackages = {"me.redstom.privaterooms.*", "me.redstom.privaterooms"})
@@ -146,5 +145,10 @@ public class Main {
     @Bean
     public List<ICommand> commands() {
         return new ArrayList<>();
+    }
+
+    @Bean
+    public Map<String, CommandExecutorRepr> commandExecutors() {
+        return new HashMap<>();
     }
 }

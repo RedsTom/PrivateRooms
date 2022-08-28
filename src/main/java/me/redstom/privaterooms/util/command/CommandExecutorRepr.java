@@ -18,31 +18,18 @@
 
 package me.redstom.privaterooms.util.command;
 
-import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
-public interface ICommand {
+import java.lang.reflect.Method;
 
-    /**
-     * The command definition
-     *
-     * @return The command definition
-     */
-    CommandData command();
-
-    /**
-     * Checks if the command is valid.
-     *
-     * @param event The event that triggered the command.
-     * @return True if the command is valid, false otherwise.
-     */
-    default boolean check(SlashCommandInteractionEvent event) { return true; }
-
-    /**
-     * Auto completes the command.
-     * @param event The event that triggered the suggestion demanding.
-     */
-    default void complete(CommandAutoCompleteInteractionEvent event) {}
-
+public record CommandExecutorRepr(ICommand instance, Method method) {
+    public void run(SlashCommandInteractionEvent event) {
+        try {
+            if(instance.check(event)) {
+                method.invoke(instance, event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

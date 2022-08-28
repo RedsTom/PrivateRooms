@@ -19,12 +19,15 @@
 package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
+import me.redstom.privaterooms.entities.entity.Model;
 import me.redstom.privaterooms.entities.entity.Template;
+import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.repository.TemplateRepository;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +46,19 @@ public class TemplateService {
 
     public List<Template> getTemplatesOf(long userId) {
         return templateRepository.findAllByAuthorDiscordId(userId);
+    }
+
+    public Template save(String name, User owner, Model model) {
+        Template template = Template.builder()
+          .name(name)
+          .author(owner)
+          .model(model)
+          .build();
+
+        return templateRepository.save(template);
+    }
+
+    public Optional<Template> load(User owner, String name) {
+        return templateRepository.findByAuthorDiscordIdAndName(owner.discordId(), name);
     }
 }

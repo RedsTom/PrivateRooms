@@ -25,6 +25,7 @@ import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.TemplateService;
 import me.redstom.privaterooms.entities.services.UserService;
+import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.i18n.I18n;
@@ -65,27 +66,21 @@ public class TemplateCommand implements ICommand {
           );
     }
 
-    @Override
-    public void execute(SlashCommandInteractionEvent event) {
-        switch (event.getCommandPath()) {
-            case "template/create" -> this.create(event);
-            case "template/delete" -> this.delete(event);
-            case "template/load" -> this.load(event);
-            case "template/list" -> this.list(event);
-        }
-    }
-
-    private void create(SlashCommandInteractionEvent event) {
+    @CommandExecutor("template/create")
+    public void create(SlashCommandInteractionEvent event) {
 
     }
 
-    private void load(SlashCommandInteractionEvent event) {
+    @CommandExecutor("template/delete")
+    public void load(SlashCommandInteractionEvent event) {
     }
 
-    private void delete(SlashCommandInteractionEvent event) {
+    @CommandExecutor("template/load")
+    public void delete(SlashCommandInteractionEvent event) {
     }
 
-    private void list(SlashCommandInteractionEvent event) {
+    @CommandExecutor("template/list")
+    public void list(SlashCommandInteractionEvent event) {
         User user = userService.of(event.getUser().getIdLong());
         Guild guild = guildService.of(event.getGuild().getIdLong());
 
