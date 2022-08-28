@@ -16,13 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.services;
+package me.redstom.privaterooms.entities.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import me.redstom.privaterooms.entities.entity.Room;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Service
-@RequiredArgsConstructor
-public class RoomService {
+import java.util.Optional;
+
+public interface RoomRepository extends JpaRepository<Room, Long> {
+
+    Optional<Room> findByDiscordId(long discordId);
 
 }

@@ -20,8 +20,8 @@ package me.redstom.privaterooms.commands;
 
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.Guild;
-import me.redstom.privaterooms.db.services.GuildService;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.i18n.I18n;

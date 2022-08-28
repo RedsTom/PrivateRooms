@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.entity;
+package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
 import me.redstom.privaterooms.util.room.RoomVisibility;
@@ -24,8 +24,7 @@ import me.redstom.privaterooms.util.room.RoomVisibility;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "templates")
+@Embeddable
 
 @Getter
 @Setter
@@ -33,49 +32,41 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Template {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @ManyToOne
-    private User author;
-
-    @Column(nullable = false)
-    private String name;
+public class Model {
 
     @Column(nullable = false)
     private String channelName;
 
+    @Builder.Default
     @Column(nullable = false)
-    private int maxUsers;
+    private int maxUsers = 99;
 
+    @Builder.Default
     @Column(nullable = false)
-    private RoomVisibility visibility;
+    private RoomVisibility visibility = RoomVisibility.PUBLIC;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_whitelisted_users")
+    @JoinTable(name = "whitelisted_users")
     @Singular
     private List<User> whitelistUsers;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_blacklisted_users")
+    @JoinTable(name = "blacklisted_users")
     @Singular
     private List<User> blacklistUsers;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_moderator_users")
+    @JoinTable(name = "moderator_users")
     @Singular
     private List<User> moderatorUsers;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_whitelisted_roles")
+    @JoinTable(name = "whitelisted_roles")
     @Singular
     private List<Role> whitelistRoles;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_blacklisted_roles")
+    @JoinTable(name = "blacklisted_roles")
     @Singular
     private List<Role> blacklistRoles;
 
@@ -83,4 +74,5 @@ public class Template {
     @JoinTable(name = "template_moderator_roles")
     @Singular
     private List<Role> moderatorRoles;
+
 }

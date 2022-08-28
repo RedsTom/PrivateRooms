@@ -19,8 +19,7 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.services.GuildService;
-import me.redstom.privaterooms.db.services.RoomService;
+import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.i18n.I18n;
@@ -36,7 +35,6 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 public class DeleteCommand implements ICommand {
 
     private final GuildService guildService;
-    private final RoomService roomService;
 
     private final I18n i18n;
 

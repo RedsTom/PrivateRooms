@@ -16,14 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.services;
+package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.Guild;
-import me.redstom.privaterooms.db.repository.GuildRepository;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.repository.GuildRepository;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -63,5 +64,9 @@ public class GuildService {
 
     public Guild update(Guild g, UnaryOperator<Guild> update) {
         return guildRepository.save(update.apply(g));
+    }
+
+    public void all(Consumer<Guild> consumer) {
+        guildRepository.findAll().forEach(consumer);
     }
 }

@@ -16,20 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.entity;
+package me.redstom.privaterooms.entities.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+
+import javax.persistence.*;
+
+@Table(name = "rooms")
+@Entity
 
 @Getter
 @Setter
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Room {
 
-    private VoiceChannel channel;
-    private Template template;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private long discordId;
+
+    @Transient
+    private VoiceChannel discordChannel;
+
+    @ManyToOne
+    private Guild guild;
+
+    @Embedded
+    private Model model;
 
 }

@@ -16,34 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.entity;
+package me.redstom.privaterooms.entities.repository;
 
-import lombok.*;
+import me.redstom.privaterooms.entities.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import java.util.Optional;
 
-@Entity
-@Table(name = "roles")
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-@Getter
-@Setter
-
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Role {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private long discordId;
-
-    @Transient
-    private net.dv8tion.jda.api.entities.Role discordRole;
-
-    @ManyToOne
-    private Guild guild;
+    Optional<User> findByDiscordId(long discordId);
 
 }

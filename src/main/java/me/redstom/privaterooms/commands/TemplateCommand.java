@@ -19,12 +19,12 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.Guild;
-import me.redstom.privaterooms.db.entity.Template;
-import me.redstom.privaterooms.db.entity.User;
-import me.redstom.privaterooms.db.services.GuildService;
-import me.redstom.privaterooms.db.services.TemplateService;
-import me.redstom.privaterooms.db.services.UserService;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Template;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.entities.services.TemplateService;
+import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.i18n.I18n;
@@ -96,14 +96,14 @@ public class TemplateCommand implements ICommand {
         Function<Template, MessageEmbed.Field> templateField = t -> new MessageEmbed.Field(
           "`%s` :".formatted(t.name()),
           translator.get("commands.template.description")
-            .with("max_users", t.maxUsers())
-            .with("visibility", t.visibility())
-            .with("whitelist_user", t.whitelistUsers().size())
-            .with("whitelist_role", t.whitelistRoles().size())
-            .with("blacklist_user", t.blacklistUsers().size())
-            .with("blacklist_role", t.blacklistRoles().size())
-            .with("moderator_user", t.moderatorUsers().size())
-            .with("moderator_role", t.moderatorRoles().size())
+            .with("max_users", t.model().maxUsers())
+            .with("visibility", t.model().visibility())
+            .with("whitelist_user", t.model().whitelistUsers().size())
+            .with("whitelist_role", t.model().whitelistRoles().size())
+            .with("blacklist_user", t.model().blacklistUsers().size())
+            .with("blacklist_role", t.model().blacklistRoles().size())
+            .with("moderator_user", t.model().moderatorUsers().size())
+            .with("moderator_role", t.model().moderatorRoles().size())
             .toString(),
           true
         );

@@ -19,8 +19,8 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.User;
-import me.redstom.privaterooms.db.services.UserService;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

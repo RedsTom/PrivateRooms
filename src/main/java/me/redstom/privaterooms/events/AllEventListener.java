@@ -20,12 +20,16 @@ package me.redstom.privaterooms.events;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.entities.services.RoomService;
 import me.redstom.privaterooms.util.MigrationManager;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -44,6 +48,8 @@ public class AllEventListener extends ListenerAdapter {
     private final List<ICommand> commands;
     private final MigrationManager migrationManager;
     private final I18n i18n;
+    private final GuildService guildService;
+    private final RoomService roomService;
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
@@ -72,5 +78,13 @@ public class AllEventListener extends ListenerAdapter {
         this.commands.stream()
           .filter(cmd -> event.getCommandPath().startsWith(cmd.command().getName()))
           .forEach(cmd -> cmd.complete(event));
+    }
+
+    @Override
+    public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
+        Guild guild = guildService.rawOf(event.getGuild());
+        if(event.getChannelJoined().getIdLong() == guild.createChannelId()) {
+            roomService.create(guild, event.getMember());
+        }
     }
 }

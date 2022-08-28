@@ -16,41 +16,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.services;
+package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.User;
-import me.redstom.privaterooms.db.repository.UserRepository;
-import net.dv8tion.jda.api.JDA;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Role;
+import me.redstom.privaterooms.entities.repository.RoleRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class RoleService {
 
-    private final UserRepository userRepository;
-    private final JDA client;
+    private final RoleRepository roleRepository;
+    private final GuildService guildService;
 
-    public User init(long userId) {
-        return userRepository.save(User.builder()
-          .discordId(userId)
-          .templates(new ArrayList<>())
+    public Role init(Guild g, long roleId) {
+        return roleRepository.save(Role.builder()
+          .discordId(roleId)
+          .guild(g)
           .build());
     }
 
-    public User rawOf(long userId) {
-        return userRepository
-          .findByDiscordId(userId)
-          .orElseGet(() -> init(userId));
+    public Role rawOf(Guild g, long roleId) {
+        return roleRepository
+          .findByDiscordId(roleId)
+          .orElseGet(() -> init(g, roleId));
     }
 
-    public User of(long discordId) {
-        return of(rawOf(discordId));
+    public Role of(Guild g, long discordId) {
+        return of(rawOf(g, discordId));
     }
 
-    public User of(User u) {
-        return u.discordUser(client.retrieveUserById(u.discordId()).complete());
+    public Role of(Role r) {
+        Guild g = guildService.of(r.guild());
+        return r.discordRole(g.discordGuild().getRoleById(r.discordId()));
     }
 }

@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.repository;
+package me.redstom.privaterooms.entities.repository;
 
-import me.redstom.privaterooms.db.entity.User;
+import me.redstom.privaterooms.entities.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Optional<User> findByDiscordId(long discordId);
+    Optional<Role> findByDiscordId(long discordId);
 
 }

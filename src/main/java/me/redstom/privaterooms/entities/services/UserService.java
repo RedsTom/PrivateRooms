@@ -16,34 +16,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.services;
+package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.db.entity.Template;
-import me.redstom.privaterooms.db.repository.TemplateRepository;
-import me.redstom.privaterooms.db.repository.UserRepository;
-import net.dv8tion.jda.api.interactions.commands.Command;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.repository.UserRepository;
+import net.dv8tion.jda.api.JDA;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class TemplateService {
+public class UserService {
 
-    private final TemplateRepository templateRepository;
     private final UserRepository userRepository;
+    private final JDA client;
 
-    public Command.Choice[] completeTemplatesOf(long userId) {
-        return templateRepository.findAllByAuthorDiscordId(userId).stream()
-          .map(t -> new Command.Choice(
-            t.name(),
-            t.id().toString()
-          ))
-          .toArray(Command.Choice[]::new);
+    public User init(long userId) {
+        return userRepository.save(User.builder()
+          .discordId(userId)
+          .templates(new ArrayList<>())
+          .build());
     }
 
-    public List<Template> getTemplatesOf(long userId) {
-        return templateRepository.findAllByAuthorDiscordId(userId);
+    public User rawOf(long userId) {
+        return userRepository
+          .findByDiscordId(userId)
+          .orElseGet(() -> init(userId));
+    }
+
+    public User of(long discordId) {
+        return of(rawOf(discordId));
+    }
+
+    public User of(User u) {
+        return u.discordUser(client.retrieveUserById(u.discordId()).complete());
     }
 }

@@ -27,13 +27,14 @@ import com.moandjiezana.toml.Toml;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.redstom.privaterooms.db.entity.Guild;
-import me.redstom.privaterooms.db.entity.Template;
-import me.redstom.privaterooms.db.entity.User;
-import me.redstom.privaterooms.db.repository.TemplateRepository;
-import me.redstom.privaterooms.db.services.GuildService;
-import me.redstom.privaterooms.db.services.RoleService;
-import me.redstom.privaterooms.db.services.UserService;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Model;
+import me.redstom.privaterooms.entities.entity.Template;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.repository.TemplateRepository;
+import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.entities.services.RoleService;
+import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.room.RoomVisibility;
 import org.springframework.stereotype.Component;
 
@@ -154,9 +155,7 @@ public class MigrationManager {
         for (File template : file.listFiles()) {
             JsonObject obj = new Gson().fromJson(new FileReader(template), JsonObject.class);
 
-            Template.TemplateBuilder builder = Template.builder()
-              .author(user)
-              .name(template.getName().replace(".json", ""));
+            Model.ModelBuilder builder = Model.builder();
 
             Guild g = guildService.of(obj.get("serverId").getAsLong());
 
@@ -183,7 +182,12 @@ public class MigrationManager {
             addAllToBuilder(obj, "whitelistedRoles", i -> roleService.of(g, i), builder::whitelistRole);
             addAllToBuilder(obj, "blacklistedRoles", i -> roleService.of(g, i), builder::blacklistRole);
 
-            Template tmplt = builder.build();
+            Template tmplt = Template.builder()
+              .name(template.getName().replace(".json", ""))
+              .author(user)
+              .model(builder.build())
+              .build();
+
             templateRepository.save(tmplt);
 
             log.debug("Saved template {}", tmplt);

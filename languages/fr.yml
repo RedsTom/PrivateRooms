@@ -6,6 +6,9 @@ template:
     PRIVATE: 'Privé'
     HIDDEN: 'Caché'
 
+channels:
+  default-name: Salon de $name
+
 commands:
   template:
     list:

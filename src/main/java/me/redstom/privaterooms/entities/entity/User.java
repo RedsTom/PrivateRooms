@@ -16,24 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.db.entity;
+package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Locale;
 
 @Entity
-@Table(name = "guilds")
+@Table(name = "users")
 
 @Getter
 @Setter
 
-@Builder(toBuilder = true)
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Guild {
+public class User {
 
     @Id
     @GeneratedValue
@@ -43,18 +42,13 @@ public class Guild {
     private long discordId;
 
     @Transient
-    private net.dv8tion.jda.api.entities.Guild discordGuild;
+    private net.dv8tion.jda.api.entities.User discordUser;
 
-    @Builder.Default
-    @Column(nullable = false)
-    private Locale locale = Locale.ENGLISH;
+    @OneToMany
+    private List<Template> templates;
 
-    private long categoryId;
-    private long createChannelId;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<User> users;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Role> roles;
+    @Override
+    public String toString() {
+        return "User(id=%s, discordId=%s)".formatted(id, discordId);
+    }
 }

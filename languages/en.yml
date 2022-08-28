@@ -6,6 +6,9 @@ template:
     PRIVATE: 'Private'
     HIDDEN: 'Hidden'
 
+channels:
+  default-name: $name's room
+
 commands:
   template:
     list:
