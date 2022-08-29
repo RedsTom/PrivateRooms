@@ -62,7 +62,7 @@ public class Translator {
 
     public class Message {
 
-        private static final String FILTER_PATTERN = "\\$\\{ %s \\| \\w+ }";
+        private static final String FILTER_PATTERN = "\\$\\{ %s \\| [a-zA-Z\\.]+ }";
         private static final String VARIABLE_PATTERN = "\\$%s";
 
         private String message;

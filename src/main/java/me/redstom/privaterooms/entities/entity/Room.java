@@ -50,4 +50,7 @@ public class Room {
     @Embedded
     private Model model;
 
+    public Room(Room r) {
+        this(r.id, r.discordId, r.discordChannel, r.guild, new Model(r.model));
+    }
 }

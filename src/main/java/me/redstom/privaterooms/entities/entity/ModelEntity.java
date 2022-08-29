@@ -22,20 +22,48 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "templates")
+public interface ModelEntity {
 
-@Getter
-@Setter
+    ModelEntityType type();
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Template {
+    @Entity
+    @Table
 
-    @EmbeddedId
-    private TemplateId id;
+    @Getter
+    @Setter
 
-    @Embedded
-    private Model model;
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class ModelRole implements ModelEntity {
+        @Id @GeneratedValue
+        private Long id;
+
+        @ManyToOne
+        private me.redstom.privaterooms.entities.entity.Role referringRole;
+
+        @Column
+        private ModelEntityType type;
+    }
+
+    @Entity
+    @Table
+
+    @Getter
+    @Setter
+
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    class ModelUser implements ModelEntity {
+
+        @Id @GeneratedValue
+        private Long id;
+
+        @ManyToOne
+        private User referringUser;
+
+        @Column
+        private ModelEntityType type;
+    }
 }

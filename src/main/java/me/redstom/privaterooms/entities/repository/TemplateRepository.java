@@ -28,7 +28,7 @@ import java.util.Optional;
 @Repository
 public interface TemplateRepository extends JpaRepository<Template, Long> {
 
-    List<Template> findAllByAuthorDiscordId(long authorId);
+    List<Template> findAllByIdAuthorDiscordId(long authorId);
 
-    Optional<Template> findByAuthorDiscordIdAndName(long discordId, String name);
+    Optional<Template> findByIdAuthorDiscordIdAndIdName(long discordId, String name);
 }

@@ -22,6 +22,7 @@ package me.redstom.privaterooms.commands;
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.util.Colors;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.command.CommandExecutor;
@@ -77,14 +78,15 @@ public class SettingsCommand implements ICommand {
         guildService.update(guild, g -> g.locale(locale));
 
         Translator translator = i18n.of(locale);
-        event.replyEmbeds(new EmbedBuilder()
-          .setColor(0x00FF00)
-          .setDescription(translator.get("commands.settings.locale.success")
-            .with("locale", locale.getDisplayName(locale))
-            .toString()
-          )
-          .build()
-        ).queue();
+        event.deferReply(true)
+          .setEmbeds(new EmbedBuilder()
+            .setColor(Colors.GREEN)
+            .setDescription(translator.get("commands.settings.locale.success")
+              .with("locale", locale.getDisplayName(locale))
+              .toString()
+            )
+            .build()
+          ).queue();
     }
 
     @Override

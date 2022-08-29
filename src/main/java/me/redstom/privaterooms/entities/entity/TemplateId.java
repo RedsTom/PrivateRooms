@@ -16,20 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.util.command;
+package me.redstom.privaterooms.entities.entity;
 
-import lombok.SneakyThrows;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import lombok.*;
 
-import java.lang.reflect.Method;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-public record CommandExecutorRepr(ICommand instance, Method method) {
+@Embeddable
 
-    @SneakyThrows
-    public void run(SlashCommandInteractionEvent event) {
-        if (instance.check(event)) {
-            method.invoke(instance, event);
-        }
+@Getter
+@Setter
+@EqualsAndHashCode
 
-    }
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TemplateId implements Serializable {
+
+    @ManyToOne
+    private User author;
+
+    @Column(nullable = false)
+    private String name;
+
 }

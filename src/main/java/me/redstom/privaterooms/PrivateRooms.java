@@ -56,17 +56,20 @@ public class PrivateRooms {
             ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
               .filter(a -> a instanceof ICommand)
               .map(a -> (ICommand) a)
-              .peek(a -> Arrays.stream(a.getClass().getMethods())
-                .parallel()
-                .filter(m -> m.getAnnotation(CommandExecutor.class) != null)
-                .forEach(m -> commandExecutors.put(
-                  m.getAnnotation(CommandExecutor.class).value(),
-                  new CommandExecutorRepr(a, m)
-                )))
+              .peek(this::searchForCommandExecutors)
               .peek(this.commands::add)
               .map(ICommand::command)
               .toList()
           ).queue();
     }
 
+    private void searchForCommandExecutors(ICommand a) {
+        Arrays.stream(a.getClass().getMethods())
+          .parallel()
+          .filter(m -> m.getAnnotation(CommandExecutor.class) != null)
+          .forEach(m -> commandExecutors.put(
+            m.getAnnotation(CommandExecutor.class).value(),
+            new CommandExecutorRepr(a, m)
+          ));
+    }
 }

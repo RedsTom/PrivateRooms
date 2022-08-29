@@ -2,9 +2,9 @@ ready: Prêt ! Connecté sur $username
 
 template:
   visibility:
-    PUBLIC: 'Public'
-    PRIVATE: 'Privé'
-    HIDDEN: 'Caché'
+    PUBLIC: 'public'
+    PRIVATE: 'privé'
+    HIDDEN: 'caché'
 
 channels:
   default-name: Salon de $name
@@ -13,14 +13,23 @@ commands:
   config:
     error:
       title: Erreur
-      not-in-voice: |
-        Vous devez être dans un salon vocal pour exécuter cette commande !
-      not-a-room: |
-        Vous devez être dans un salon pour exécuter cette commande !
+      not-in-voice: Vous devez être dans un salon vocal pour exécuter cette commande !
+      not-a-room: Vous devez être dans un salon pour exécuter cette commande !
+      no-permissions: Vous n'avez pas la permission de configurer ce salon !
 
     restore:
+      title: Salon restauré
+      description: Votre salon a été restauré au dernier état que vous avez donné à un précédent salon.
       error:
         no-template: Vous n'avez pas de configuration précédente à restaurer
+
+    name:
+      title: Salon renommé
+      description: Votre salon a été renommé en `$name` !
+
+    visibility:
+      title: Visibilité du salon changée
+      description: Votre visibilité du salon a été changée en `${visibility | template.visibility}` !
 
   template:
     list:
@@ -36,11 +45,11 @@ commands:
         Moderators : $moderator_user utilisateurs et $moderator_role roles
 
   delete:
-    title: Room $room_name supprimé
+    title: Salon `$room_name` supprimé
     description: |
-      **o no** Vous avez supprimé votre room :sob:
+      Vous avez supprimé votre salon :sob:
       
-      S'il s'agissait d'une érreur, vous pouvez recréer une room en vous connectant dans <#$create_channel_id>.
+      S'il s'agissait d'une erreur, vous pouvez recréer une room en vous connectant dans <#$create_channel_id> et restaure en faisant `/config restore`.
 
   setup:
     success:

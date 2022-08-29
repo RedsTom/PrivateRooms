@@ -25,6 +25,7 @@ import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.TemplateService;
 import me.redstom.privaterooms.entities.services.UserService;
+import me.redstom.privaterooms.util.Colors;
 import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
@@ -89,32 +90,32 @@ public class TemplateCommand implements ICommand {
         List<Template> templates = templateService.getTemplatesOf(user.discordId());
 
         Function<Template, MessageEmbed.Field> templateField = t -> new MessageEmbed.Field(
-          "`%s` :".formatted(t.name()),
+          "`%s` :".formatted(t.id().name()),
           translator.get("commands.template.description")
             .with("max_users", t.model().maxUsers())
             .with("visibility", t.model().visibility())
-            .with("whitelist_user", t.model().whitelistUsers().size())
-            .with("whitelist_role", t.model().whitelistRoles().size())
-            .with("blacklist_user", t.model().blacklistUsers().size())
-            .with("blacklist_role", t.model().blacklistRoles().size())
-            .with("moderator_user", t.model().moderatorUsers().size())
-            .with("moderator_role", t.model().moderatorRoles().size())
+//            .with("whitelist_user", t.model().whitelistUsers().size())
+//            .with("whitelist_role", t.model().whitelistRoles().size())
+//            .with("blacklist_user", t.model().blacklistUsers().size())
+//            .with("blacklist_role", t.model().blacklistRoles().size())
+//            .with("moderator_user", t.model().moderatorUsers().size())
+//            .with("moderator_role", t.model().moderatorRoles().size())
             .toString(),
           true
         );
 
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor(
-          event.getUser().getName(),
-          null,
-          event.getUser().getAvatarUrl()
-        );
-        builder.setTitle(translator.get("commands.template.list.title")
-          .with("username", event.getUser().getName())
-          .toString()
-        );
-        builder.setDescription(translator.raw("commands.template.list.no-templates"));
-        builder.setColor(0x00FF00);
+        EmbedBuilder builder = new EmbedBuilder()
+          .setAuthor(
+            event.getUser().getName(),
+            null,
+            event.getUser().getAvatarUrl()
+          )
+          .setTitle(translator.get("commands.template.list.title")
+            .with("username", event.getUser().getName())
+            .toString()
+          )
+          .setDescription(translator.raw("commands.template.list.no-templates"))
+          .setColor(Colors.GREEN);
 
         if (templates.size() != 0) builder.setDescription("");
         templates.forEach(t -> builder.addField(templateField.apply(t)));

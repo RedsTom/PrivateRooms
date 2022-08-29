@@ -21,6 +21,7 @@ package me.redstom.privaterooms.commands;
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.util.Colors;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.command.CommandExecutor;
@@ -85,17 +86,16 @@ public class SetupCommand implements ICommand {
                 .createChannelId(chan.getIdLong())
               );
 
-              reply.setEphemeral(true)
-                .setEmbeds(new EmbedBuilder()
-                  .setTitle(translator.raw("commands.setup.success.title"))
-                  .setDescription(translator.get("commands.setup.success.description")
-                    .with("channel", chan.getAsMention())
-                    .toString()
-                  )
-                  .setFooter(deleted.get() ? translator.raw("commands.setup.success.note") : "")
-                  .setColor(0x00FF00)
-                  .build()
-                ).queue();
+              reply.setEphemeral(true).setEmbeds(new EmbedBuilder()
+                .setTitle(translator.raw("commands.setup.success.title"))
+                .setDescription(translator.get("commands.setup.success.description")
+                  .with("channel", chan.getAsMention())
+                  .toString()
+                )
+                .setFooter(deleted.get() ? translator.raw("commands.setup.success.note") : "")
+                .setColor(Colors.GREEN)
+                .build()
+              ).queue();
           }, err -> error(translator, reply, err)), err -> error(translator, reply, err));
     }
 

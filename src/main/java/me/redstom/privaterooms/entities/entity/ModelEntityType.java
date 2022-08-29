@@ -16,20 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.util.command;
+package me.redstom.privaterooms.entities.entity;
 
-import lombok.SneakyThrows;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-
-import java.lang.reflect.Method;
-
-public record CommandExecutorRepr(ICommand instance, Method method) {
-
-    @SneakyThrows
-    public void run(SlashCommandInteractionEvent event) {
-        if (instance.check(event)) {
-            method.invoke(instance, event);
-        }
-
-    }
+public enum ModelEntityType {
+    WHITELIST,
+    BLACKLIST,
+    MODERATOR
 }

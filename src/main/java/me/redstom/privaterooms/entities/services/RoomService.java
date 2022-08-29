@@ -20,19 +20,18 @@ package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.redstom.privaterooms.entities.entity.Guild;
-import me.redstom.privaterooms.entities.entity.Model;
-import me.redstom.privaterooms.entities.entity.Room;
-import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.repository.ModelRoleRepository;
+import me.redstom.privaterooms.entities.repository.ModelUserRepository;
 import me.redstom.privaterooms.entities.repository.RoomRepository;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.IPermissionHolder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.managers.Manager;
 import net.dv8tion.jda.api.managers.channel.concrete.VoiceChannelManager;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,10 @@ public class RoomService {
 
     private final JDA client;
     private final RoomRepository roomRepository;
+    private final ModelUserRepository modelUserRepository;
+    private final ModelRoleRepository modelRoleRepository;
     private final GuildService guildService;
+    private final RoleService roleService;
     private final UserService userService;
     private final TemplateService templateService;
     private final I18n i18n;
@@ -68,9 +70,14 @@ public class RoomService {
         VoiceChannel channel = category.createVoiceChannel(name)
           .complete();
 
-        Room room = of(roomRepository.save(Room.builder()
+        Room room = of(save(Room.builder()
           .model(Model.builder()
             .channelName(name)
+            .user(ModelEntity.ModelUser.builder()
+              .referringUser(userService.of(member.getIdLong()))
+              .type(ModelEntityType.MODERATOR)
+              .build()
+            )
             .build())
           .discordId(channel.getIdLong())
           .guild(g)
@@ -89,16 +96,16 @@ public class RoomService {
         return update(null, room, r -> r);
     }
 
-    public Room update(@Nullable Member issuer, Room room, UnaryOperator<Room> roomUpdater, UnaryOperator<Model> modelUpdater) {
-        return this.update(issuer, room, (r) -> {
-            roomUpdater.apply(r);
-            modelUpdater.apply(r.model());
-            return r;
-        });
+    private Room save(Room room) {
+        modelRoleRepository.saveAll(room.model().roles());
+        modelUserRepository.saveAll(room.model().users());
+
+        return roomRepository.save(room);
     }
 
-    public Room update(@Nullable Member issuer, Room r, UnaryOperator<Room> updated) {
-        Room room = roomRepository.save(updated.apply(r));
+    public Room update(@Nullable Member issuer, Room r, UnaryOperator<Model> updated) {
+        Room old = new Room(r);
+        Room room = roomRepository.save(r.model(updated.apply(r.model())));
         if (room.discordChannel() == null) {
             room = of(r);
         }
@@ -110,9 +117,9 @@ public class RoomService {
           room.guild().discordId()
         );
 
-        if(issuer != null) {
+        if (issuer != null) {
             User user = userService.of(issuer.getIdLong());
-            templateService.save("restore_" + user.discordId(), user, room.model());
+            templateService.save("previous", user, room.model());
         }
 
         VoiceChannel voiceChannel = room.discordChannel();
@@ -125,64 +132,81 @@ public class RoomService {
 
         Optional<VoiceChannelManager> manager = Optional.of(voiceChannel.getManager()
           .setName("%s %s".formatted(emoji, room.model().channelName()))
-          .setUserLimit(room.model().maxUsers())
         );
 
-        room.model().whitelistUsers().forEach(u -> {
-            Member member = voiceChannel.getGuild().getMember(u.discordUser());
-            if (member == null) return;
+        final Model model = room.model();
+        if (old.model().maxUsers() != room.model().maxUsers()) {
+            manager.map(m -> m.setUserLimit(model.maxUsers()));
+        }
 
-            manager.map(m -> m.putPermissionOverride(member, List.of(
-              Permission.VIEW_CHANNEL,
-              Permission.VOICE_CONNECT,
-              Permission.VOICE_SPEAK,
-              Permission.VOICE_START_ACTIVITIES,
-              Permission.VOICE_STREAM,
-              Permission.VOICE_USE_VAD
-            ), List.of()));
-        });
+        if (old.model().visibility() != room.model().visibility()) {
+            switch (room.model().visibility()) {
+                case PRIVATE -> manager.map(m -> m.putPermissionOverride(
+                  voiceChannel.getGuild().getPublicRole(),
+                  0,
+                  Permission.VOICE_CONNECT.getRawValue()
+                ));
+                case HIDDEN -> manager.map(m -> m.putPermissionOverride(
+                  voiceChannel.getGuild().getPublicRole(),
+                  0,
+                  Permission.getRaw(
+                    Permission.VOICE_CONNECT,
+                    Permission.VIEW_CHANNEL
+                  )
+                ));
+            }
+        }
 
-        room.model().blacklistUsers().forEach(u -> {
-            Member member = voiceChannel.getGuild().getMember(u.discordUser());
-            if (member == null) return;
+        if (old.model().users().size() != room.model().users().size()) {
+            room.model().users().forEach(u -> {
+                Member member = voiceChannel.getGuild().getMember(userService.of(u.referringUser()).discordUser());
+                if (member == null) return;
 
-            manager.map(m -> m.putPermissionOverride(member,
-              0,
-              Permission.VIEW_CHANNEL.getRawValue() | Permission.ALL_VOICE_PERMISSIONS)
-            );
-        });
+                setPermissions(manager, u, member);
+            });
+        }
 
-        room.model().moderatorUsers().forEach(u -> {
-            Member member = voiceChannel.getGuild().getMember(u.discordUser());
-            if (member == null) return;
+        if (old.model().roles().size() != room.model().roles().size()) {
+            room.model().roles().forEach(modelRole -> {
+                net.dv8tion.jda.api.entities.Role role = roleService.of(modelRole.referringRole()).discordRole();
 
-            manager.map(m -> m.putPermissionOverride(member, Permission.ALL_VOICE_PERMISSIONS, 0));
-        });
+                setPermissions(manager, modelRole, role);
+            });
+        }
 
-        room.model().whitelistRoles().forEach(role -> manager.map(m ->
-          m.putPermissionOverride(role.discordRole(), List.of(
-            Permission.VIEW_CHANNEL,
-            Permission.VOICE_CONNECT,
-            Permission.VOICE_SPEAK,
-            Permission.VOICE_START_ACTIVITIES,
-            Permission.VOICE_STREAM,
-            Permission.VOICE_USE_VAD
-          ), List.of())
-        ));
-
-        room.model().blacklistRoles().forEach(role -> manager.map(m ->
-          m.putPermissionOverride(role.discordRole(),
-            0,
-            Permission.VIEW_CHANNEL.getRawValue() | Permission.ALL_VOICE_PERMISSIONS)
-        ));
-
-        room.model().moderatorRoles().forEach(role -> manager.map(m ->
-          m.putPermissionOverride(role.discordRole(), Permission.ALL_VOICE_PERMISSIONS, 0)
-        ));
-
-        manager.ifPresent(Manager::queue);
+        manager.ifPresent(m -> m
+          .reason("%s edited the channel configuration".formatted(issuer == null ? "System" : issuer.getEffectiveName()))
+          .queue()
+        );
 
         return room;
+    }
+
+    private static void setPermissions(Optional<VoiceChannelManager> manager, ModelEntity e, IPermissionHolder permissible) {
+        switch (e.type()) {
+            case WHITELIST -> manager.map(m -> m.putPermissionOverride(
+              permissible,
+              List.of(
+                Permission.VIEW_CHANNEL,
+                Permission.VOICE_CONNECT,
+                Permission.VOICE_SPEAK,
+                Permission.VOICE_START_ACTIVITIES,
+                Permission.VOICE_STREAM,
+                Permission.VOICE_USE_VAD
+              ),
+              List.of()
+            ));
+            case BLACKLIST -> manager.map(m -> m.putPermissionOverride(
+              permissible,
+              0,
+              Permission.VIEW_CHANNEL.getRawValue() | Permission.ALL_VOICE_PERMISSIONS
+            ));
+            case MODERATOR -> manager.map(m -> m.putPermissionOverride(
+              permissible,
+              Permission.ALL_VOICE_PERMISSIONS,
+              0
+            ));
+        }
     }
 
     public Optional<Room> rawOf(net.dv8tion.jda.api.entities.VoiceChannel guild) {
@@ -206,6 +230,8 @@ public class RoomService {
 
     public void delete(Room room) {
         roomRepository.delete(room);
-        room.discordChannel().delete().queue();
+        room.discordChannel().delete()
+          .reason("Room deleted")
+          .queue();
     }
 }
