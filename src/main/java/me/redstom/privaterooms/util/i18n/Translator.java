@@ -86,13 +86,9 @@ public class Translator {
                 message = message.replace(slice, config.getString(path, path));
             }
 
-
-            Matcher variable = Pattern.compile(VARIABLE_PATTERN.formatted(key)).matcher(message);
-
-            while (variable.find()) {
-                String slice = variable.group();
-                message = message.replace(slice, value.toString());
-            }
+            message = Pattern.compile(VARIABLE_PATTERN.formatted(key))
+              .matcher(message)
+              .replaceAll(value.toString());
 
             return this;
         }

@@ -33,40 +33,39 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class PrivateRooms {
+
     private final ApplicationContext ctx;
     private final JDA client;
     private final List<ICommand> commands;
     private final Map<String, CommandExecutorRepr> commandExecutors;
 
-
     @SneakyThrows
     public void run() {
-        this.client.addEventListener(
-          ctx.getBeansWithAnnotation(RegisterListener.class).values().toArray(Object[]::new)
-        );
+        this.client.addEventListener(ctx.getBeansWithAnnotation(RegisterListener.class).values().toArray(Object[]::new));
 
-        this.client
-          .updateCommands()
-          .addCommands(
-            ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
-              .filter(a -> a instanceof ICommand)
-              .map(a -> (ICommand) a)
-              .peek(a -> Arrays.stream(a.getClass().getMethods())
-                .parallel()
-                .filter(m -> m.getAnnotation(CommandExecutor.class) != null)
-                .forEach(m -> commandExecutors.put(
-                  m.getAnnotation(CommandExecutor.class).value(),
-                  new CommandExecutorRepr(a, m)
-                )))
-              .peek(this.commands::add)
-              .map(ICommand::command)
-              .toList()
-          ).queue();
+        List<ICommand> iCommands = ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
+          .filter(a -> a instanceof ICommand)
+          .map(a -> (ICommand) a)
+          .toList();
+
+        Map<String, CommandExecutorRepr> executorMap = iCommands.stream()
+          .flatMap(a -> Arrays.stream(a.getClass().getMethods())
+            .map(m -> new CommandExecutorRepr(a, m)))
+          .filter(c -> c.method().getAnnotation(CommandExecutor.class) != null)
+          .collect(Collectors.toMap(c -> c.method().getAnnotation(CommandExecutor.class).value(), c -> c));
+
+        commands.addAll(iCommands);
+        commandExecutors.putAll(executorMap);
+        client.updateCommands()
+          .addCommands(iCommands.stream()
+            .map(ICommand::command)
+            .toList())
+          .queue();
     }
-
 }
