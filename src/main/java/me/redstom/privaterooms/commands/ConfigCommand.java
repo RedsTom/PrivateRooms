@@ -19,10 +19,10 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
+import me.redstom.privaterooms.entities.entity.ModelEntity;
+import me.redstom.privaterooms.entities.entity.ModelEntityType;
 import me.redstom.privaterooms.entities.entity.Template;
-import me.redstom.privaterooms.entities.services.GuildService;
-import me.redstom.privaterooms.entities.services.RoomService;
-import me.redstom.privaterooms.entities.services.TemplateService;
+import me.redstom.privaterooms.entities.services.*;
 import me.redstom.privaterooms.util.Colors;
 import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
@@ -32,6 +32,7 @@ import me.redstom.privaterooms.util.room.RoomCommandUtils;
 import me.redstom.privaterooms.util.room.RoomCommandUtils.RoomCommandContext;
 import me.redstom.privaterooms.util.room.RoomVisibility;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.*;
@@ -45,7 +46,8 @@ public class ConfigCommand implements ICommand {
 
     private final RoomCommandUtils roomUtils;
     private final RoomService roomService;
-    private final GuildService guildService;
+    private final RoleService roleService;
+    private final UserService userService;
     private final TemplateService templateService;
     private final I18n i18n;
 
@@ -81,7 +83,9 @@ public class ConfigCommand implements ICommand {
                 .addChoice("private", RoomVisibility.PRIVATE.name())
                 .addChoice("hidden", RoomVisibility.HIDDEN.name())
               ),
-            new SubcommandData("restore", "Restores the previous channel configuration")
+            new SubcommandData("restore", "Restores the previous channel configuration"),
+            new SubcommandData("limit", "Sets the user limit of the channel")
+              .addOption(OptionType.INTEGER, "limit", "The new limit of the channel", true)
           ).addSubcommandGroups(
             listGroup.apply("whitelist"),
             listGroup.apply("blacklist"),
@@ -156,5 +160,65 @@ public class ConfigCommand implements ICommand {
           .setColor(Colors.GREEN)
           .build()
         ).queue();
+    }
+
+    @CommandExecutor("config/limit")
+    public void limit(SlashCommandInteractionEvent event) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        int limit = event.getOption("limit").getAsInt();
+
+        roomService.update(ctx.member(), ctx.room(), m -> m.maxUsers(limit));
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config.limit.title"))
+          .setDescription(ctx.translator().get("commands.config.limit.description")
+            .with("limit", limit)
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
+    }
+
+    private void addUserTo(SlashCommandInteractionEvent event, ModelEntityType type, String commandKey) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        User user = event.getOption("user").getAsUser();
+
+        me.redstom.privaterooms.entities.entity.User u = userService.of(user.getIdLong());
+
+        roomService.update(ctx.member(), ctx.room(), m -> {
+              m.users().add(ModelEntity.ModelUser.builder()
+                .referringUser(u)
+                .type(type)
+                .build()
+              );
+              return m;
+          }
+        );
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config." + commandKey + ".add.title"))
+          .setDescription(ctx.translator().get("commands.config." + commandKey + ".add.description")
+            .with("user", user.getAsMention())
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
+    }
+
+    @CommandExecutor("config/whitelist/add")
+    public void addToWhitelist(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.WHITELIST, "whitelist");
+    }
+
+    @CommandExecutor("config/blacklist/add")
+    public void addToBlacklist(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.BLACKLIST, "blacklist");
+    }
+
+    @CommandExecutor("config/moderators/add")
+    public void addToModerators(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.MODERATOR, "moderators");
     }
 }

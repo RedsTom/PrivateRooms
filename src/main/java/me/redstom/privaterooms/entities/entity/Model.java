@@ -57,7 +57,7 @@ public class Model {
     @Singular
     private List<ModelEntity.ModelUser> users;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = { CascadeType.ALL })
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
     private List<ModelEntity.ModelRole> roles;

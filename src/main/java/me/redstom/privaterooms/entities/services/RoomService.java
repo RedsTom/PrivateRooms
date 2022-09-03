@@ -105,7 +105,7 @@ public class RoomService {
 
     public Room update(@Nullable Member issuer, Room r, UnaryOperator<Model> updated) {
         Room old = new Room(r);
-        Room room = roomRepository.save(r.model(updated.apply(r.model())));
+        Room room = save(r.model(updated.apply(r.model())));
         if (room.discordChannel() == null) {
             room = of(r);
         }
@@ -156,6 +156,9 @@ public class RoomService {
                 ));
             }
         }
+
+        System.out.println(old.model().users().size());
+        System.out.println(room.model().users().size());
 
         if (old.model().users().size() != room.model().users().size()) {
             room.model().users().forEach(u -> {
@@ -229,9 +232,9 @@ public class RoomService {
     }
 
     public void delete(Room room) {
-        roomRepository.delete(room);
         room.discordChannel().delete()
           .reason("Room deleted")
           .queue();
+        roomRepository.delete(room);
     }
 }

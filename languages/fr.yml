@@ -29,7 +29,7 @@ commands:
 
     visibility:
       title: Visibilité du salon changée
-      description: Votre visibilité du salon a été changée en `${visibility | template.visibility}` !
+      description: Votre visibilité du salon a été changée en `${ visibility | template.visibility }` !
 
   template:
     list:
