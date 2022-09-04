@@ -21,6 +21,7 @@ package me.redstom.privaterooms.entities.services;
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.entity.Model;
 import me.redstom.privaterooms.entities.entity.Template;
+import me.redstom.privaterooms.entities.entity.TemplateId;
 import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.repository.TemplateRepository;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -36,29 +37,34 @@ public class TemplateService {
     private final TemplateRepository templateRepository;
 
     public Command.Choice[] completeTemplatesOf(long userId) {
-        return templateRepository.findAllByAuthorDiscordId(userId).stream()
+        return templateRepository.findAllByIdAuthorDiscordId(userId).stream()
           .map(t -> new Command.Choice(
-            t.name(),
+            t.id().name(),
             t.id().toString()
           ))
           .toArray(Command.Choice[]::new);
     }
 
     public List<Template> getTemplatesOf(long userId) {
-        return templateRepository.findAllByAuthorDiscordId(userId);
+        return templateRepository.findAllByIdAuthorDiscordId(userId);
     }
 
     public Template save(String name, User owner, Model model) {
         Template template = Template.builder()
-          .name(name)
-          .author(owner)
+          .id(TemplateId.builder()
+            .author(owner)
+            .name(name)
+            .build())
           .model(model)
           .build();
+
+        Optional<Template> load = load(owner, name);
+        load.ifPresent(value -> template.id(value.id()));
 
         return templateRepository.save(template);
     }
 
     public Optional<Template> load(User owner, String name) {
-        return templateRepository.findByAuthorDiscordIdAndName(owner.discordId(), name);
+        return templateRepository.findByIdAuthorDiscordIdAndIdName(owner.discordId(), name);
     }
 }

@@ -19,13 +19,15 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.services.GuildService;
+import me.redstom.privaterooms.entities.services.RoomService;
+import me.redstom.privaterooms.entities.services.TemplateService;
+import me.redstom.privaterooms.util.Colors;
+import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
-import me.redstom.privaterooms.util.i18n.I18n;
-import me.redstom.privaterooms.util.i18n.Translator;
+import me.redstom.privaterooms.util.room.RoomCommandUtils;
+import me.redstom.privaterooms.util.room.RoomCommandUtils.RoomCommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -34,32 +36,41 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 @RequiredArgsConstructor
 public class DeleteCommand implements ICommand {
 
-    private final GuildService guildService;
+    private final TemplateService templateService;
+    private final RoomService roomService;
 
-    private final I18n i18n;
+    private final RoomCommandUtils roomUtils;
 
     @Override
     public CommandData command() {
         return Commands.slash("delete", "Delete the channel");
     }
 
+    @Override
+    public boolean check(SlashCommandInteractionEvent event) {
+        return roomUtils.check(event);
+    }
 
-    private MessageEmbed successEmbed(SlashCommandInteractionEvent event) {
+    @CommandExecutor("delete")
+    public void delete(SlashCommandInteractionEvent event) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
 
-        Translator translator = i18n.of(guildService.rawOf(event.getGuild()).locale());
+        templateService.save("previous", ctx.user(), ctx.room().model());
+        roomService.delete(ctx.room());
 
-        return new EmbedBuilder()
+        event.deferReply(true).setEmbeds(new EmbedBuilder()
           .setAuthor(event.getUser().getName(),
             null,
             event.getUser().getAvatarUrl())
-          .setTitle(translator.get("commands.delete.title")
-            .with("room_name", event.getChannel().getName())
+          .setTitle(ctx.translator().get("commands.delete.title")
+            .with("room_name", ctx.room().model().channelName())
             .toString())
-          .setDescription(translator.get("commands.delete.description")
-            .with("create_channel_id", guildService.of(event.getGuild().getIdLong()).createChannelId())
+          .setDescription(ctx.translator().get("commands.delete.description")
+            .with("create_channel_id", ctx.guild().createChannelId())
             .toString())
-          .setColor(0x00FF00)
+          .setColor(Colors.GREEN)
           .setImage(null)
-          .build();
+          .build()
+        ).queue();
     }
 }

@@ -27,13 +27,10 @@ import com.moandjiezana.toml.Toml;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.redstom.privaterooms.entities.entity.Guild;
-import me.redstom.privaterooms.entities.entity.Model;
-import me.redstom.privaterooms.entities.entity.Template;
-import me.redstom.privaterooms.entities.entity.User;
-import me.redstom.privaterooms.entities.repository.TemplateRepository;
+import me.redstom.privaterooms.entities.entity.*;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.RoleService;
+import me.redstom.privaterooms.entities.services.TemplateService;
 import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.room.RoomVisibility;
 import org.springframework.stereotype.Component;
@@ -55,7 +52,7 @@ public class MigrationManager {
     private final UserService userService;
     private final RoleService roleService;
     private final GuildService guildService;
-    private final TemplateRepository templateRepository;
+    private final TemplateService templateService;
 
     @SneakyThrows
     public void run() {
@@ -175,20 +172,50 @@ public class MigrationManager {
             builder.channelName(obj.get("name").getAsString());
             builder.maxUsers(obj.get("userLimit").getAsInt());
 
-            addAllToBuilder(obj, "whitelistedUsers", userService::rawOf, builder::whitelistUser);
-            addAllToBuilder(obj, "blacklistedUsers", userService::rawOf, builder::blacklistUser);
-            addAllToBuilder(obj, "moderators", userService::rawOf, builder::moderatorUser);
+            addAllToBuilder(obj, "whitelistedUsers", userService::rawOf, u -> builder
+              .user(ModelEntity.ModelUser.builder()
+                .referringUser(u)
+                .type(ModelEntityType.WHITELIST)
+                .build()
+              )
+            );
 
-            addAllToBuilder(obj, "whitelistedRoles", i -> roleService.of(g, i), builder::whitelistRole);
-            addAllToBuilder(obj, "blacklistedRoles", i -> roleService.of(g, i), builder::blacklistRole);
+            addAllToBuilder(obj, "blacklistedUsers", userService::rawOf, u -> builder
+              .user(ModelEntity.ModelUser.builder()
+                .referringUser(u)
+                .type(ModelEntityType.BLACKLIST)
+                .build()
+              )
+            );
 
-            Template tmplt = Template.builder()
-              .name(template.getName().replace(".json", ""))
-              .author(user)
-              .model(builder.build())
-              .build();
+            addAllToBuilder(obj, "moderators", userService::rawOf, u -> builder
+              .user(ModelEntity.ModelUser.builder()
+                .referringUser(u)
+                .type(ModelEntityType.MODERATOR)
+                .build()
+              )
+            );
 
-            templateRepository.save(tmplt);
+            addAllToBuilder(obj, "whitelistedRoles", i -> roleService.of(g, i), r -> builder
+              .role(ModelEntity.ModelRole.builder()
+                .referringRole(r)
+                .type(ModelEntityType.WHITELIST)
+                .build()
+              )
+            );
+            addAllToBuilder(obj, "blacklistedRoles", i -> roleService.of(g, i), r -> builder
+              .role(ModelEntity.ModelRole.builder()
+                .referringRole(r)
+                .type(ModelEntityType.BLACKLIST)
+                .build()
+              )
+            );
+
+            Template tmplt = templateService.save(
+              template.getName().replace(".json", ""),
+              user,
+              builder.build()
+            );
 
             log.debug("Saved template {}", tmplt);
         }

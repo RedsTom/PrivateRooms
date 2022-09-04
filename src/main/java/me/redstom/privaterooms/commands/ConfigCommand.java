@@ -19,22 +19,20 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.entity.Guild;
-import me.redstom.privaterooms.entities.entity.Room;
+import me.redstom.privaterooms.entities.entity.ModelEntity;
+import me.redstom.privaterooms.entities.entity.ModelEntityType;
 import me.redstom.privaterooms.entities.entity.Template;
-import me.redstom.privaterooms.entities.entity.User;
-import me.redstom.privaterooms.entities.services.GuildService;
-import me.redstom.privaterooms.entities.services.RoomService;
-import me.redstom.privaterooms.entities.services.TemplateService;
-import me.redstom.privaterooms.entities.services.UserService;
+import me.redstom.privaterooms.entities.services.*;
+import me.redstom.privaterooms.util.Colors;
+import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
-import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.i18n.I18n;
-import me.redstom.privaterooms.util.i18n.Translator;
+import me.redstom.privaterooms.util.room.RoomCommandUtils;
+import me.redstom.privaterooms.util.room.RoomCommandUtils.RoomCommandContext;
+import me.redstom.privaterooms.util.room.RoomVisibility;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.*;
@@ -46,9 +44,10 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ConfigCommand implements ICommand {
 
-    private final UserService userService;
+    private final RoomCommandUtils roomUtils;
     private final RoomService roomService;
-    private final GuildService guildService;
+    private final RoleService roleService;
+    private final UserService userService;
     private final TemplateService templateService;
     private final I18n i18n;
 
@@ -80,11 +79,13 @@ public class ConfigCommand implements ICommand {
               .addOption(OptionType.STRING, "name", "The new name of the channel", true),
             new SubcommandData("visibility", "Changes the visibility of the channel")
               .addOptions(new OptionData(OptionType.STRING, "visibility", "The new visibility of the channel", true, false)
-                .addChoice("public", "0")
-                .addChoice("private", "1")
-                .addChoice("hidden", "2")
+                .addChoice("public", RoomVisibility.PUBLIC.name())
+                .addChoice("private", RoomVisibility.PRIVATE.name())
+                .addChoice("hidden", RoomVisibility.HIDDEN.name())
               ),
-            new SubcommandData("restore", "Restores the previous channel configuration")
+            new SubcommandData("restore", "Restores the previous channel configuration"),
+            new SubcommandData("limit", "Sets the user limit of the channel")
+              .addOption(OptionType.INTEGER, "limit", "The new limit of the channel", true)
           ).addSubcommandGroups(
             listGroup.apply("whitelist"),
             listGroup.apply("blacklist"),
@@ -94,94 +95,130 @@ public class ConfigCommand implements ICommand {
 
     @Override
     public boolean check(SlashCommandInteractionEvent event) {
-        Guild guild = guildService.of(event.getGuild().getIdLong());
-        Member member = event.getMember();
-
-        Translator translator = i18n.of(guild.locale());
-
-        if (!member.getVoiceState().inAudioChannel()) {
-            event.replyEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.not-in-voice"))
-              .setColor(0xFF0000)
-              .build()
-            ).queue();
-
-            return false;
-        }
-
-        VoiceChannel channel = (VoiceChannel) member.getVoiceState().getChannel();
-
-        if (channel.getParentCategory().getIdLong() != guild.categoryId()) {
-            event.replyEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.wrong-category"))
-              .setColor(0xFF0000)
-              .build()
-            ).queue();
-
-            return false;
-        }
-
-        if (roomService.of(channel.getIdLong()).isEmpty()) {
-            event.replyEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.not-a-room"))
-              .setColor(0xFF0000)
-              .build()
-            ).queue();
-
-            return false;
-        }
-
-        return true;
+        return roomUtils.check(event);
     }
 
     @CommandExecutor("config/name")
     public void name(SlashCommandInteractionEvent event) {
-        CommandContext ctx = of(event);
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        String name = event.getOption("name").getAsString();
 
-        roomService.update(ctx.member, ctx.room, r -> r, m -> m
-          .channelName(event.getOption("name").getAsString())
+        roomService.update(ctx.member(), ctx.room(), m -> m
+          .channelName(name)
         );
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config.name.title"))
+          .setDescription(ctx.translator().get("commands.config.name.description")
+            .with("name", name)
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
     }
 
     @CommandExecutor("config/restore")
     public void restore(SlashCommandInteractionEvent event) {
-        CommandContext ctx = of(event);
+        RoomCommandContext ctx = roomUtils.contextOf(event);
 
-        Optional<Template> template = templateService.load(ctx.user, "restore_" + ctx.user.discordId());
+        Optional<Template> template = templateService.load(ctx.user(), "previous");
 
         if (!template.isPresent()) {
             event.replyEmbeds(new EmbedBuilder()
-              .setTitle(ctx.translator.raw("commands.config.error.title"))
-              .setDescription(ctx.translator.raw("commands.config.restore.error.no-template"))
+              .setTitle(ctx.translator().raw("commands.config.error.title"))
+              .setDescription(ctx.translator().raw("commands.config.restore.error.no-template"))
               .build()
             ).queue();
 
             return;
         }
 
-        roomService.update(ctx.member, ctx.room, r -> r.model(template.get().model()));
+        roomService.update(ctx.member(), ctx.room(), m -> template.get().model());
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(i18n.of(ctx.guild().locale()).raw("commands.config.restore.title"))
+          .setDescription(ctx.translator().raw("commands.config.restore.description"))
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
     }
 
-    record CommandContext(
-      Guild guild,
-      User user,
-      Member member,
-      Room room,
-      Translator translator
-    ) {
+    @CommandExecutor("config/visibility")
+    public void visibility(SlashCommandInteractionEvent event) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        RoomVisibility visibility = event.getOption("visibility", (s) -> RoomVisibility.valueOf(s.getAsString()));
+
+        roomService.update(ctx.member(), ctx.room(), m -> m.visibility(visibility));
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config.visibility.title"))
+          .setDescription(ctx.translator().get("commands.config.visibility.description")
+            .with("visibility", visibility.name())
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
     }
 
-    private CommandContext of(SlashCommandInteractionEvent event) {
-        Guild guild = guildService.of(event.getGuild().getIdLong());
-        User user = userService.of(event.getUser().getIdLong());
-        Member member = event.getMember();
+    @CommandExecutor("config/limit")
+    public void limit(SlashCommandInteractionEvent event) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        int limit = event.getOption("limit").getAsInt();
 
-        Translator translator = i18n.of(guild.locale());
-        Room room = roomService.of(member.getVoiceState().getChannel().getIdLong()).get();
+        roomService.update(ctx.member(), ctx.room(), m -> m.maxUsers(limit));
 
-        return new CommandContext(guild, user, member, room, translator);
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config.limit.title"))
+          .setDescription(ctx.translator().get("commands.config.limit.description")
+            .with("limit", limit)
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
+    }
+
+    private void addUserTo(SlashCommandInteractionEvent event, ModelEntityType type, String commandKey) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        User user = event.getOption("user").getAsUser();
+
+        me.redstom.privaterooms.entities.entity.User u = userService.of(user.getIdLong());
+
+        roomService.update(ctx.member(), ctx.room(), m -> {
+              m.users().add(ModelEntity.ModelUser.builder()
+                .referringUser(u)
+                .type(type)
+                .build()
+              );
+              return m;
+          }
+        );
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(ctx.translator().raw("commands.config." + commandKey + ".add.title"))
+          .setDescription(ctx.translator().get("commands.config." + commandKey + ".add.description")
+            .with("user", user.getAsMention())
+            .toString()
+          )
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
+    }
+
+    @CommandExecutor("config/whitelist/add")
+    public void addToWhitelist(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.WHITELIST, "whitelist");
+    }
+
+    @CommandExecutor("config/blacklist/add")
+    public void addToBlacklist(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.BLACKLIST, "blacklist");
+    }
+
+    @CommandExecutor("config/moderators/add")
+    public void addToModerators(SlashCommandInteractionEvent event) {
+        addUserTo(event, ModelEntityType.MODERATOR, "moderators");
     }
 }

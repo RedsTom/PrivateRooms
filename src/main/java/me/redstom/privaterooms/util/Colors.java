@@ -16,20 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.util.command;
+package me.redstom.privaterooms.util;
 
-import lombok.SneakyThrows;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+public class Colors {
 
-import java.lang.reflect.Method;
+    public static final int GREEN = 0x6ab04c;
+    public static final int RED = 0xeb4d4b;
+    public static final int BLUE = 0x686de0;
 
-public record CommandExecutorRepr(ICommand instance, Method method) {
-
-    @SneakyThrows
-    public void run(SlashCommandInteractionEvent event) {
-        if (instance.check(event)) {
-            method.invoke(instance, event);
-        }
-
-    }
 }

@@ -20,8 +20,14 @@ package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
 import me.redstom.privaterooms.util.room.RoomVisibility;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
@@ -45,34 +51,18 @@ public class Model {
     @Column(nullable = false)
     private RoomVisibility visibility = RoomVisibility.PUBLIC;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "whitelisted_users")
-    @Singular
-    private List<User> whitelistUsers;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "blacklisted_users")
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<User> blacklistUsers;
+    private List<ModelEntity.ModelUser> users;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "moderator_users")
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<User> moderatorUsers;
+    private List<ModelEntity.ModelRole> roles;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "whitelisted_roles")
-    @Singular
-    private List<Role> whitelistRoles;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "blacklisted_roles")
-    @Singular
-    private List<Role> blacklistRoles;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "template_moderator_roles")
-    @Singular
-    private List<Role> moderatorRoles;
-
+    public Model(Model m) {
+        this(m.channelName, m.maxUsers, m.visibility, new ArrayList<>(m.users), new ArrayList<>(m.roles));
+    }
 }

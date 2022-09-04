@@ -16,20 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.util.command;
+package me.redstom.privaterooms.entities.repository;
 
-import lombok.SneakyThrows;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import me.redstom.privaterooms.entities.entity.ModelEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Method;
-
-public record CommandExecutorRepr(ICommand instance, Method method) {
-
-    @SneakyThrows
-    public void run(SlashCommandInteractionEvent event) {
-        if (instance.check(event)) {
-            method.invoke(instance, event);
-        }
-
-    }
+@Repository
+public interface ModelUserRepository extends JpaRepository<ModelEntity.ModelUser, Long> {
 }

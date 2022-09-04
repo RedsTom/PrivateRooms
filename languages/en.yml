@@ -1,10 +1,10 @@
-ready: Ready ! Logged in as $username
+ready: Ready! Logged in as $username
 
 template:
   visibility:
-    PUBLIC: 'Public'
-    PRIVATE: 'Private'
-    HIDDEN: 'Hidden'
+    PUBLIC: 'public'
+    PRIVATE: 'private'
+    HIDDEN: 'hidden'
 
 channels:
   default-name: $name's room
@@ -13,14 +13,23 @@ commands:
   config:
     error:
       title: Error
-      not-in-voice: |
-        You must be in a voice channel to use this command !
-      not-a-room: |
-        You must be in a room to use this command !
+      not-in-voice: You must be in a voice channel to use this command!
+      not-a-room: You must be in a room to use this command!
+      no-permissions: You don't have enough permissions to configure this room!
 
     restore:
+      title: Room restored
+      description: Your room has been restored to the last state you gave it.
       error:
         no-template: You don't have a previous configuration to restore
+
+    name:
+      title: Room renamed
+      description: Your room has been renamed to `$name` !
+
+    visibility:
+      title: Room visibility changed
+      description: Your room visibility has been changed to `${ visibility | template.visibility }` !
 
   template:
     list:
@@ -36,11 +45,11 @@ commands:
         Moderators : $moderator_user users and $moderator_role roles
 
   delete:
-    title: Room $room_name deleted
+    title: Room `$room_name` deleted
     description: |
-      **o no** You deleted your room :sob:
+      You deleted your room :sob:
       
-      If it was a mistake, you can create a new one by connecting in <#$create_channel_id>.
+      If it was a mistake, you can create a new one by connecting in <#$create_channel_id> and restore its configuration with `/config restore`.
 
   setup:
     success:
