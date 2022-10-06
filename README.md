@@ -24,7 +24,7 @@ Most of the contributors are part of the staff but the members are also allowed 
 | Progression            |             |
 |------------------------|-------------|
 | Current State          | 🛠️ WIP     |
-| Estimated release date | ~09/15/2022 |
+| Estimated release date | ~12/24/2022 |
 
 --- 
 ## Host it yourself
