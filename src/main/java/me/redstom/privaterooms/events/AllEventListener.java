@@ -29,13 +29,12 @@ import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
@@ -90,23 +89,22 @@ public class AllEventListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
-        Guild guild = guildService.rawOf(event.getGuild());
-        if (event.getChannelJoined().getIdLong() == guild.createChannelId()) {
-            roomService.create(guild, event.getMember());
-        }
-    }
+    public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
+        if(event.getChannelJoined() != null) {
+            Guild guild = guildService.rawOf(event.getGuild());
+            if (event.getChannelJoined().getIdLong() == guild.createChannelId()) {
+                roomService.create(guild, event.getMember());
+            }
+        } else if (event.getChannelLeft() != null) {
+            if (event.getChannelLeft().getType() != ChannelType.VOICE) return;
+            if (event.getChannelLeft().getMembers().size() != 0) return;
 
-    @Override
-    public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
-        if (event.getChannelLeft().getType() != ChannelType.VOICE) return;
-        if (event.getChannelLeft().getMembers().size() != 0) return;
+            Guild guild = guildService.rawOf(event.getGuild());
+            VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();
 
-        Guild guild = guildService.rawOf(event.getGuild());
-        VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();
-
-        if (voiceChannel.getParentCategory().getIdLong() == guild.categoryId()) {
-            roomService.of(event.getChannelLeft().getIdLong()).ifPresent(roomService::delete);
+            if (voiceChannel.getParentCategory().getIdLong() == guild.categoryId()) {
+                roomService.of(event.getChannelLeft().getIdLong()).ifPresent(roomService::delete);
+            }
         }
     }
 }

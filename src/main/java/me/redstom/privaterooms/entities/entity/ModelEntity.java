@@ -44,6 +44,16 @@ public interface ModelEntity {
 
         @Column
         private ModelEntityType type;
+
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("ModelRole{");
+            sb.append("id=").append(id);
+            sb.append(", referringRole=").append(referringRole);
+            sb.append(", type=").append(type);
+            sb.append('}');
+            return sb.toString();
+        }
     }
 
     @Entity
@@ -65,5 +75,15 @@ public interface ModelEntity {
 
         @Column
         private ModelEntityType type;
+
+        @Override
+        public String toString() {
+            final StringBuffer sb = new StringBuffer("ModelUser{");
+            sb.append("id=").append(id);
+            sb.append(", referringUser=").append(referringUser);
+            sb.append(", type=").append(type);
+            sb.append('}');
+            return sb.toString();
+        }
     }
 }

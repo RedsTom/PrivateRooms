@@ -19,7 +19,7 @@
 package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import javax.persistence.*;
 
