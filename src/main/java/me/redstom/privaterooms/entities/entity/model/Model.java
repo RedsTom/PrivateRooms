@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.entities.entity;
+package me.redstom.privaterooms.entities.entity.model;
 
 import lombok.*;
 import me.redstom.privaterooms.util.room.RoomVisibility;
@@ -27,7 +27,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
@@ -51,18 +50,13 @@ public class Model {
     @Column(nullable = false)
     private RoomVisibility visibility = RoomVisibility.PUBLIC;
 
-
     @ManyToMany(cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<ModelEntity.ModelUser> users;
+    private List<ModelUser> users;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<ModelEntity.ModelRole> roles;
-
-    public Model(Model m) {
-        this(m.channelName, m.maxUsers, m.visibility, new ArrayList<>(m.users), new ArrayList<>(m.roles));
-    }
+    private List<ModelRole> roles;
 }

@@ -28,6 +28,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.entity.model.Model;
+import me.redstom.privaterooms.entities.entity.model.ModelEntityType;
+import me.redstom.privaterooms.entities.entity.model.ModelRole;
+import me.redstom.privaterooms.entities.entity.model.ModelUser;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.RoleService;
 import me.redstom.privaterooms.entities.services.TemplateService;
@@ -173,7 +177,7 @@ public class MigrationManager {
             builder.maxUsers(obj.get("userLimit").getAsInt());
 
             addAllToBuilder(obj, "whitelistedUsers", userService::rawOf, u -> builder
-              .user(ModelEntity.ModelUser.builder()
+              .user(ModelUser.builder()
                 .referringUser(u)
                 .type(ModelEntityType.WHITELIST)
                 .build()
@@ -181,7 +185,7 @@ public class MigrationManager {
             );
 
             addAllToBuilder(obj, "blacklistedUsers", userService::rawOf, u -> builder
-              .user(ModelEntity.ModelUser.builder()
+              .user(ModelUser.builder()
                 .referringUser(u)
                 .type(ModelEntityType.BLACKLIST)
                 .build()
@@ -189,7 +193,7 @@ public class MigrationManager {
             );
 
             addAllToBuilder(obj, "moderators", userService::rawOf, u -> builder
-              .user(ModelEntity.ModelUser.builder()
+              .user(ModelUser.builder()
                 .referringUser(u)
                 .type(ModelEntityType.MODERATOR)
                 .build()
@@ -197,14 +201,14 @@ public class MigrationManager {
             );
 
             addAllToBuilder(obj, "whitelistedRoles", i -> roleService.of(g, i), r -> builder
-              .role(ModelEntity.ModelRole.builder()
+              .role(ModelRole.builder()
                 .referringRole(r)
                 .type(ModelEntityType.WHITELIST)
                 .build()
               )
             );
             addAllToBuilder(obj, "blacklistedRoles", i -> roleService.of(g, i), r -> builder
-              .role(ModelEntity.ModelRole.builder()
+              .role(ModelRole.builder()
                 .referringRole(r)
                 .type(ModelEntityType.BLACKLIST)
                 .build()

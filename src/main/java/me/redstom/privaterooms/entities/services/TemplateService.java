@@ -19,7 +19,7 @@
 package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.entity.Model;
+import me.redstom.privaterooms.entities.entity.model.Model;
 import me.redstom.privaterooms.entities.entity.Template;
 import me.redstom.privaterooms.entities.entity.TemplateId;
 import me.redstom.privaterooms.entities.entity.User;

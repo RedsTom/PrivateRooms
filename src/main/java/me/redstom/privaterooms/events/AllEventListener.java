@@ -95,9 +95,10 @@ public class AllEventListener extends ListenerAdapter {
             if (event.getChannelJoined().getIdLong() == guild.createChannelId()) {
                 roomService.create(guild, event.getMember());
             }
-        } else if (event.getChannelLeft() != null) {
+        }
+        if (event.getChannelLeft() != null) {
             if (event.getChannelLeft().getType() != ChannelType.VOICE) return;
-            if (event.getChannelLeft().getMembers().size() != 0) return;
+            if (!event.getChannelLeft().getMembers().isEmpty()) return;
 
             Guild guild = guildService.rawOf(event.getGuild());
             VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();

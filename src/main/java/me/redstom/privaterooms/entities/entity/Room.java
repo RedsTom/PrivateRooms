@@ -19,6 +19,7 @@
 package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
+import me.redstom.privaterooms.entities.entity.model.Model;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 
 import javax.persistence.*;
@@ -49,8 +50,4 @@ public class Room {
 
     @Embedded
     private Model model;
-
-    public Room(Room r) {
-        this(r.id, r.discordId, r.discordChannel, r.guild, new Model(r.model));
-    }
 }

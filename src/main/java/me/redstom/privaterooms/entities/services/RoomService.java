@@ -20,7 +20,10 @@ package me.redstom.privaterooms.entities.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Room;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.entity.model.*;
 import me.redstom.privaterooms.entities.repository.ModelRoleRepository;
 import me.redstom.privaterooms.entities.repository.ModelUserRepository;
 import me.redstom.privaterooms.entities.repository.RoomRepository;
@@ -40,6 +43,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
 @Service
@@ -83,7 +87,7 @@ public class RoomService {
         Room room = of(save(Room.builder()
           .model(Model.builder()
             .channelName(name)
-            .user(ModelEntity.ModelUser.builder()
+            .user(ModelUser.builder()
               .referringUser(userService.of(member.getIdLong()))
               .type(ModelEntityType.MODERATOR)
               .build()
@@ -113,15 +117,38 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
+    public CompletableFuture<Room> update(Room room, Member issuer, UnaryOperator<ModelSynchronizerService> update) {
+        ModelSynchronizerService modelSynchronizerService = new ModelSynchronizerService(room);
+        update.apply(modelSynchronizerService);
+        modelSynchronizerService
+          .reason("%s edited the channel configuration".formatted(issuer == null ? "System" : issuer.getEffectiveName()));
+
+        CompletableFuture<Room> roomCompletableFuture = modelSynchronizerService.queue().thenApply(finalRoom -> {
+            log.info("\"{}\" issued a modification to room \"{}\" on \"{}\" ({}), did : {}",
+              issuer == null ? "System" : issuer.getEffectiveName(),
+              finalRoom.model().channelName(),
+              finalRoom.guild().discordGuild().getName(),
+              finalRoom.guild().discordId(),
+              modelSynchronizerService.actionsIsEmpty()
+                ? "NOTHING"
+                : "\n - " + String.join("\n - ", modelSynchronizerService.actions())
+            );
+            return finalRoom;
+        });
+
+        if (issuer != null) {
+            User user = userService.of(issuer.getIdLong());
+            templateService.save("previous", user, room.model());
+        }
+
+        return roomCompletableFuture;
+    }
+
     public Room update(@Nullable Member issuer, Room r, UnaryOperator<Model> updated) {
-        Room old = new Room(r);
+
+        Room old = r;
         Room room = save(r.model(updated.apply(r.model())));
 
-        System.out.println("Old : ");
-        System.out.println(old);
-        System.out.println("-----------------");
-        System.out.println("New : ");
-        System.out.println(r);
         if (room.discordChannel() == null) {
             room = of(r);
         }
@@ -179,7 +206,7 @@ public class RoomService {
             }
         }
 
-        for (ModelEntity.ModelUser u : room.model().users()) {
+        for (ModelUser u : room.model().users()) {
             if (old.model().users().stream()
               .filter(u1 -> Objects.equals(u.referringUser().id(), u1.referringUser().id()))
               .noneMatch(u1 -> u.type() == u1.type())) {
@@ -196,7 +223,7 @@ public class RoomService {
         room.model().roles().stream()
           .filter(r0 -> old.model().roles().stream()
             .filter(r1 -> Objects.equals(r0.referringRole().id(), r1.referringRole().id()))
-            .noneMatch(r1 -> r0.type() == r0.type()))
+            .noneMatch(r1 -> r0.type() == r1.type()))
           .forEach(modelRole -> {
               net.dv8tion.jda.api.entities.Role role = roleService.of(modelRole.referringRole()).discordRole();
 
@@ -214,7 +241,8 @@ public class RoomService {
                 finalRoom.guild().discordId(),
                 actions.length == 0 ? "NOTHING" : "\n - " + String.join("\n - ", actions)
               );
-          }));
+          })
+        );
 
         return room;
     }
@@ -267,9 +295,12 @@ public class RoomService {
           .map(this::of);
     }
 
-    public Room of(Room r) {
-        Guild guild = guildService.of(r.guild());
-        return r.discordChannel(guild.discordGuild().getVoiceChannelById(r.discordId()));
+    public Room of(Room room) {
+        if (room.discordChannel() != null) {
+            return room;
+        }
+        Guild guild = guildService.of(room.guild());
+        return room.discordChannel(guild.discordGuild().getVoiceChannelById(room.discordId()));
     }
 
     public void delete(Room room) {
