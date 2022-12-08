@@ -105,10 +105,9 @@ public class ConfigCommand implements ICommand {
     @CommandExecutor("config/restore")
     public void restore(SlashCommandInteractionEvent event) {
         RoomCommandContext ctx = roomUtils.contextOf(event);
-
         Optional<Template> template = templateService.load(ctx.user(), "previous");
 
-        if (!template.isPresent()) {
+        if (template.isEmpty()) {
             event.replyEmbeds(new EmbedBuilder()
               .setTitle(ctx.translator().raw("commands.config.error.title"))
               .setDescription(ctx.translator().raw("commands.config.restore.error.no-template"))
@@ -118,7 +117,7 @@ public class ConfigCommand implements ICommand {
             return;
         }
 
-        roomService.update(ctx.member(), ctx.room(), m -> template.get().model());
+        roomService.update(ctx.room(), ctx.member(), m -> m.apply(template.get().model()));
 
         event.replyEmbeds(new EmbedBuilder()
           .setTitle(i18n.of(ctx.guild().locale()).raw("commands.config.restore.title"))

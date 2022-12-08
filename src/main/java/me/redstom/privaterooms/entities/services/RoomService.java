@@ -118,12 +118,17 @@ public class RoomService {
     }
 
     public CompletableFuture<Room> update(Room room, Member issuer, UnaryOperator<ModelSynchronizerService> update) {
+        if (issuer != null) {
+            User user = userService.of(issuer.getIdLong());
+            templateService.save("previous", user, room.model());
+        }
+
         ModelSynchronizerService modelSynchronizerService = new ModelSynchronizerService(room);
         update.apply(modelSynchronizerService);
         modelSynchronizerService
           .reason("%s edited the channel configuration".formatted(issuer == null ? "System" : issuer.getEffectiveName()));
 
-        CompletableFuture<Room> roomCompletableFuture = modelSynchronizerService.queue().thenApply(finalRoom -> {
+        return modelSynchronizerService.queue().thenApply(finalRoom -> {
             log.info("\"{}\" issued a modification to room \"{}\" on \"{}\" ({}), did : {}",
               issuer == null ? "System" : issuer.getEffectiveName(),
               finalRoom.model().channelName(),
@@ -135,18 +140,11 @@ public class RoomService {
             );
             return finalRoom;
         });
-
-        if (issuer != null) {
-            User user = userService.of(issuer.getIdLong());
-            templateService.save("previous", user, room.model());
-        }
-
-        return roomCompletableFuture;
     }
 
     public Room update(@Nullable Member issuer, Room r, UnaryOperator<Model> updated) {
 
-        Room old = r;
+        Room old = Room.copyOf(r);
         Room room = save(r.model(updated.apply(r.model())));
 
         if (room.discordChannel() == null) {
@@ -171,10 +169,10 @@ public class RoomService {
         );
 
         final Model model = room.model();
-        if (old.model().maxUsers() != room.model().maxUsers()) {
+        if (old.model().userLimit() != room.model().userLimit()) {
             manager.map(
-              m -> m.setUserLimit(model.maxUsers()),
-              "Set user limit to %s".formatted(model.maxUsers())
+              m -> m.setUserLimit(model.userLimit()),
+              "Set user limit to %s".formatted(model.userLimit())
             );
         }
 

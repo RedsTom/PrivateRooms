@@ -27,6 +27,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
@@ -44,7 +45,7 @@ public class Model {
 
     @Builder.Default
     @Column(nullable = false)
-    private int maxUsers = 99;
+    private int userLimit = 99;
 
     @Builder.Default
     @Column(nullable = false)
@@ -59,4 +60,31 @@ public class Model {
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
     private List<ModelRole> roles;
+
+    private Model(Model model) {
+        this.channelName = model.channelName;
+        this.userLimit = model.userLimit;
+        this.visibility = model.visibility;
+        this.users = new ArrayList<>(model.users);
+        this.roles = new ArrayList<>(model.roles);
+    }
+
+    public static Model copyOf(Model model) {
+        return new Model(model);
+    }
+
+    /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ModelUser modelUser = (ModelUser) o;
+        return id != null && Objects.equals(id, modelUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+     */
 }

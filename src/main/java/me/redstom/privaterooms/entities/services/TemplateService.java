@@ -55,7 +55,7 @@ public class TemplateService {
             .author(owner)
             .name(name)
             .build())
-          .model(model)
+          .model(Model.copyOf(model))
           .build();
 
         Optional<Template> load = load(owner, name);

@@ -92,7 +92,7 @@ public class TemplateCommand implements ICommand {
         Function<Template, MessageEmbed.Field> templateField = t -> new MessageEmbed.Field(
           "`%s` :".formatted(t.id().name()),
           translator.get("commands.template.description")
-            .with("max_users", t.model().maxUsers())
+            .with("max_users", t.model().userLimit())
             .with("visibility", t.model().visibility())
 //            .with("whitelist_user", t.model().whitelistUsers().size())
 //            .with("whitelist_role", t.model().whitelistRoles().size())

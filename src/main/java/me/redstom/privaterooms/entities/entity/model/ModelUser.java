@@ -16,8 +16,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public
-class ModelUser implements ModelEntity {
+public class ModelUser implements ModelEntity {
 
     @Id
     @GeneratedValue

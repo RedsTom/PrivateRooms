@@ -25,6 +25,7 @@ import java.util.function.UnaryOperator;
 public class ModelSynchronizerService {
 
     private Function<Model, Model> update;
+    private Model updatedModel;
     private Room room;
     private VoiceChannelManager voiceChannelManager;
 
@@ -32,6 +33,7 @@ public class ModelSynchronizerService {
 
     public ModelSynchronizerService(Room room) {
         this.update = UnaryOperator.identity();
+        this.updatedModel = Model.copyOf(room.model());
         this.room = room;
         this.voiceChannelManager = room.discordChannel().getManager();
 
@@ -51,31 +53,48 @@ public class ModelSynchronizerService {
     }
 
     public ModelSynchronizerService channelName(String channelName) {
-        update = update.andThen(model -> model.channelName(channelName));
+        UnaryOperator<Model> modelOperator = model -> model.channelName(channelName);
+
+        if (updatedModelEquals(modelOperator)) return this;
+        updatedModel = modelOperator.apply(updatedModel);
+
+        update = update.andThen(modelOperator);
         voiceChannelManager.setName("%s %s".formatted(room.model().visibility().emoji(), channelName));
         actions.add("Set channel name to %s".formatted(channelName));
+
         return this;
     }
 
     public ModelSynchronizerService userLimit(int userLimit) {
-        update = update.andThen(model -> model.maxUsers(userLimit));
+        UnaryOperator<Model> modelOperator = model -> model.userLimit(userLimit);
+
+        if (updatedModelEquals(modelOperator)) return this;
+        updatedModel = modelOperator.apply(updatedModel);
+
+        update = update.andThen(modelOperator);
         voiceChannelManager.setUserLimit(userLimit);
         actions.add("Set user limit to %s".formatted(userLimit));
+
         return this;
     }
 
     public ModelSynchronizerService visibility(RoomVisibility visibility) {
+        UnaryOperator<Model> modelOperator = model -> model.visibility(visibility);
         VoiceChannel channel = voiceChannelManager.getChannel();
-        update = update.andThen(model -> model.visibility(visibility));
 
+        if (updatedModelEquals(modelOperator)) return this;
+        updatedModel = modelOperator.apply(updatedModel);
+
+        update = update.andThen(modelOperator);
         voiceChannelManager.putPermissionOverride(
           channel.getGuild().getPublicRole(),
           visibility.allowRaw(),
           visibility.denyRaw()
         );
-
         actions.add("Set channel visibility to %s".formatted(visibility.name()));
-        channelName(room.model().channelName());
+
+        channelName(updatedModel.channelName());
+
         return this;
     }
 
@@ -90,36 +109,57 @@ public class ModelSynchronizerService {
     public ModelSynchronizerService addUserToWhitelist(User user) {
         Member member = voiceChannelManager.getGuild().retrieveMemberById(user.discordId()).complete();
 
+        if (isUserInModel(user, ModelEntityType.WHITELIST)) return this;
+
         addUserToModel(user, ModelEntityType.WHITELIST);
         putPermissionTo(member, ModelEntityType.WHITELIST);
         actions.add("Added %s (%s) to the whitelist".formatted(member.getEffectiveName(), member.getId()));
+
         return this;
     }
 
     public ModelSynchronizerService addUserToBlacklist(User user) {
         Member member = voiceChannelManager.getGuild().retrieveMemberById(user.discordId()).complete();
 
+        if (isUserInModel(user, ModelEntityType.BLACKLIST)) return this;
+
         addUserToModel(user, ModelEntityType.BLACKLIST);
         putPermissionTo(member, ModelEntityType.BLACKLIST);
         actions.add("Added %s (%s) to the blacklist".formatted(member.getEffectiveName(), member.getId()));
+
         return this;
     }
 
     public ModelSynchronizerService addUserToModerator(User user) {
         Member member = voiceChannelManager.getGuild().retrieveMemberById(user.discordId()).complete();
 
+        if (isUserInModel(user, ModelEntityType.MODERATOR)) return this;
+
         addUserToModel(user, ModelEntityType.MODERATOR);
         putPermissionTo(member, ModelEntityType.MODERATOR);
         actions.add("Added %s (%s) as a moderator".formatted(member.getEffectiveName(), member.getId()));
+
         return this;
     }
 
+    private boolean isUserInModel(User user, ModelEntityType modelEntityType) {
+        //TODO Optimize this
+        return updatedModel.users().stream()
+          .filter(modelUser -> modelUser.type() == modelEntityType)
+          .map(ModelUser::referringUser)
+          .mapToLong(User::discordId)
+          .anyMatch(discordId -> discordId == user.discordId());
+    }
+
     private void addUserToModel(User user, ModelEntityType modelEntityType) {
-        update = update.andThen(model -> addUserToModel(model, ModelUser.builder()
+        UnaryOperator<Model> modelOperator = model -> addUserToModel(model, ModelUser.builder()
           .referringUser(user)
           .type(modelEntityType)
-          .build())
-        );
+          .build());
+
+        updatedModel = modelOperator.apply(updatedModel);
+
+        update = update.andThen(modelOperator);
     }
 
     private Model addUserToModel(Model model, ModelUser modelUser) {
@@ -133,6 +173,20 @@ public class ModelSynchronizerService {
           permissionSet.allowRaw(),
           permissionSet.denyRaw()
         );
+    }
+
+    public ModelSynchronizerService apply(Model model) {
+        channelName(model.channelName());
+        userLimit(model.userLimit());
+        visibility(model.visibility());
+        model.users()
+          .forEach(modelUser -> addUserTo(modelUser.referringUser(), modelUser.type()));
+
+        return this;
+    }
+
+    private boolean updatedModelEquals(UnaryOperator<Model> modelUnaryOperator) {
+        return updatedModel.equals(modelUnaryOperator.apply(Model.copyOf(updatedModel)));
     }
 
     public ModelSynchronizerService reason(String reason) {

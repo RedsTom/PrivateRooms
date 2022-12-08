@@ -174,7 +174,7 @@ public class MigrationManager {
             );
 
             builder.channelName(obj.get("name").getAsString());
-            builder.maxUsers(obj.get("userLimit").getAsInt());
+            builder.userLimit(obj.get("userLimit").getAsInt());
 
             addAllToBuilder(obj, "whitelistedUsers", userService::rawOf, u -> builder
               .user(ModelUser.builder()

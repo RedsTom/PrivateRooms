@@ -50,4 +50,12 @@ public class Room {
 
     @Embedded
     private Model model;
+
+    private Room(Room r) {
+        this(r.id, r.discordId, r.discordChannel, r.guild, Model.copyOf(r.model));
+    }
+
+    public static Room copyOf(Room room) {
+        return new Room(room);
+    }
 }
