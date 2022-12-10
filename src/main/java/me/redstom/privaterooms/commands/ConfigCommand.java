@@ -19,10 +19,13 @@
 package me.redstom.privaterooms.commands;
 
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.entity.ModelEntity;
-import me.redstom.privaterooms.entities.entity.ModelEntityType;
 import me.redstom.privaterooms.entities.entity.Template;
-import me.redstom.privaterooms.entities.services.*;
+import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.entity.model.ModelEntityType;
+import me.redstom.privaterooms.entities.services.RoleService;
+import me.redstom.privaterooms.entities.services.RoomService;
+import me.redstom.privaterooms.entities.services.TemplateService;
+import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.Colors;
 import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.ICommand;
@@ -32,8 +35,9 @@ import me.redstom.privaterooms.util.room.RoomCommandUtils;
 import me.redstom.privaterooms.util.room.RoomCommandUtils.RoomCommandContext;
 import me.redstom.privaterooms.util.room.RoomVisibility;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.*;
 
@@ -53,7 +57,7 @@ public class ConfigCommand implements ICommand {
 
     @Override
     public CommandData command() {
-        Function<String, SubcommandGroupData> listGroup = (name) ->
+        Function<String, SubcommandGroupData> listGroup = name ->
           new SubcommandGroupData(name, "Manage the %s of the channel".formatted(name))
             .addSubcommands(
               new SubcommandData("add", "Add a user to the %s".formatted(name))
@@ -77,15 +81,15 @@ public class ConfigCommand implements ICommand {
           .addSubcommands(
             new SubcommandData("name", "Rename the channel")
               .addOption(OptionType.STRING, "name", "The new name of the channel", true),
+            new SubcommandData("user-limit", "Sets the user limit of the channel")
+              .addOption(OptionType.INTEGER, "limit", "The new limit of the channel", true),
             new SubcommandData("visibility", "Changes the visibility of the channel")
               .addOptions(new OptionData(OptionType.STRING, "visibility", "The new visibility of the channel", true, false)
                 .addChoice("public", RoomVisibility.PUBLIC.name())
                 .addChoice("private", RoomVisibility.PRIVATE.name())
                 .addChoice("hidden", RoomVisibility.HIDDEN.name())
               ),
-            new SubcommandData("restore", "Restores the previous channel configuration"),
-            new SubcommandData("limit", "Sets the user limit of the channel")
-              .addOption(OptionType.INTEGER, "limit", "The new limit of the channel", true)
+            new SubcommandData("restore", "Restores the previous channel configuration")
           ).addSubcommandGroups(
             listGroup.apply("whitelist"),
             listGroup.apply("blacklist"),
@@ -98,14 +102,37 @@ public class ConfigCommand implements ICommand {
         return roomUtils.check(event);
     }
 
+    @CommandExecutor("config/restore")
+    public void restore(SlashCommandInteractionEvent event) {
+        RoomCommandContext ctx = roomUtils.contextOf(event);
+        Optional<Template> template = templateService.load(ctx.user(), "previous");
+
+        if (template.isEmpty()) {
+            event.replyEmbeds(new EmbedBuilder()
+              .setTitle(ctx.translator().raw("commands.config.error.title"))
+              .setDescription(ctx.translator().raw("commands.config.restore.error.no-template"))
+              .build()
+            ).queue();
+
+            return;
+        }
+
+        roomService.update(ctx.room(), ctx.member(), m -> m.apply(template.get().model()));
+
+        event.replyEmbeds(new EmbedBuilder()
+          .setTitle(i18n.of(ctx.guild().locale()).raw("commands.config.restore.title"))
+          .setDescription(ctx.translator().raw("commands.config.restore.description"))
+          .setColor(Colors.GREEN)
+          .build()
+        ).queue();
+    }
+
     @CommandExecutor("config/name")
     public void name(SlashCommandInteractionEvent event) {
         RoomCommandContext ctx = roomUtils.contextOf(event);
         String name = event.getOption("name").getAsString();
 
-        roomService.update(ctx.member(), ctx.room(), m -> m
-          .channelName(name)
-        );
+        roomService.update(ctx.room(), ctx.member(), m -> m.channelName(name));
 
         event.replyEmbeds(new EmbedBuilder()
           .setTitle(ctx.translator().raw("commands.config.name.title"))
@@ -118,27 +145,19 @@ public class ConfigCommand implements ICommand {
         ).queue();
     }
 
-    @CommandExecutor("config/restore")
-    public void restore(SlashCommandInteractionEvent event) {
+    @CommandExecutor("config/user-limit")
+    public void limit(SlashCommandInteractionEvent event) {
         RoomCommandContext ctx = roomUtils.contextOf(event);
+        int userLimit = event.getOption("userLimit").getAsInt();
 
-        Optional<Template> template = templateService.load(ctx.user(), "previous");
-
-        if (!template.isPresent()) {
-            event.replyEmbeds(new EmbedBuilder()
-              .setTitle(ctx.translator().raw("commands.config.error.title"))
-              .setDescription(ctx.translator().raw("commands.config.restore.error.no-template"))
-              .build()
-            ).queue();
-
-            return;
-        }
-
-        roomService.update(ctx.member(), ctx.room(), m -> template.get().model());
+        roomService.update(ctx.room(), ctx.member(), m -> m.userLimit(userLimit));
 
         event.replyEmbeds(new EmbedBuilder()
-          .setTitle(i18n.of(ctx.guild().locale()).raw("commands.config.restore.title"))
-          .setDescription(ctx.translator().raw("commands.config.restore.description"))
+          .setTitle(ctx.translator().raw("commands.config.user-limit.title"))
+          .setDescription(ctx.translator().get("commands.config.user-limit.description")
+            .with("user-limit", userLimit)
+            .toString()
+          )
           .setColor(Colors.GREEN)
           .build()
         ).queue();
@@ -147,9 +166,9 @@ public class ConfigCommand implements ICommand {
     @CommandExecutor("config/visibility")
     public void visibility(SlashCommandInteractionEvent event) {
         RoomCommandContext ctx = roomUtils.contextOf(event);
-        RoomVisibility visibility = event.getOption("visibility", (s) -> RoomVisibility.valueOf(s.getAsString()));
+        RoomVisibility visibility = event.getOption("visibility", s -> RoomVisibility.valueOf(s.getAsString()));
 
-        roomService.update(ctx.member(), ctx.room(), m -> m.visibility(visibility));
+        roomService.update(ctx.room(), ctx.member(), m -> m.visibility(visibility));
 
         event.replyEmbeds(new EmbedBuilder()
           .setTitle(ctx.translator().raw("commands.config.visibility.title"))
@@ -162,44 +181,27 @@ public class ConfigCommand implements ICommand {
         ).queue();
     }
 
-    @CommandExecutor("config/limit")
-    public void limit(SlashCommandInteractionEvent event) {
-        RoomCommandContext ctx = roomUtils.contextOf(event);
-        int limit = event.getOption("limit").getAsInt();
-
-        roomService.update(ctx.member(), ctx.room(), m -> m.maxUsers(limit));
-
-        event.replyEmbeds(new EmbedBuilder()
-          .setTitle(ctx.translator().raw("commands.config.limit.title"))
-          .setDescription(ctx.translator().get("commands.config.limit.description")
-            .with("limit", limit)
-            .toString()
-          )
-          .setColor(Colors.GREEN)
-          .build()
-        ).queue();
-    }
-
     private void addUserTo(SlashCommandInteractionEvent event, ModelEntityType type, String commandKey) {
         RoomCommandContext ctx = roomUtils.contextOf(event);
-        User user = event.getOption("user").getAsUser();
 
-        me.redstom.privaterooms.entities.entity.User u = userService.of(user.getIdLong());
+        Optional<User> userOptional = Optional.ofNullable(event.getOption("user"))
+          .map(OptionMapping::getAsUser)
+          .map(ISnowflake::getIdLong)
+          .map(userService::of);
 
-        roomService.update(ctx.member(), ctx.room(), m -> {
-              m.users().add(ModelEntity.ModelUser.builder()
-                .referringUser(u)
-                .type(type)
-                .build()
-              );
-              return m;
-          }
-        );
+        if (userOptional.isEmpty()) {
+            //TODO exception handling
+            return;
+        }
+
+        User user = userOptional.get();
+
+        roomService.update(ctx.room(), ctx.member(), m -> m.addUserTo(user, type));
 
         event.replyEmbeds(new EmbedBuilder()
           .setTitle(ctx.translator().raw("commands.config." + commandKey + ".add.title"))
           .setDescription(ctx.translator().get("commands.config." + commandKey + ".add.description")
-            .with("user", user.getAsMention())
+            .with("user", user.discordUser().getAsMention())
             .toString()
           )
           .setColor(Colors.GREEN)

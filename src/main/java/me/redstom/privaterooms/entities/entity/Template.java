@@ -19,6 +19,7 @@
 package me.redstom.privaterooms.entities.entity;
 
 import lombok.*;
+import me.redstom.privaterooms.entities.entity.model.Model;
 
 import javax.persistence.*;
 

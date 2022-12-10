@@ -18,10 +18,10 @@
 
 package me.redstom.privaterooms.entities.repository;
 
-import me.redstom.privaterooms.entities.entity.ModelEntity;
+import me.redstom.privaterooms.entities.entity.model.ModelUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ModelUserRepository extends JpaRepository<ModelEntity.ModelUser, Long> {
+public interface ModelUserRepository extends JpaRepository<ModelUser, Long> {
 }

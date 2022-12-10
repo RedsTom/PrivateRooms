@@ -16,50 +16,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.util.room;
+package me.redstom.privaterooms.entities.entity.model;
 
 import me.redstom.privaterooms.util.permission.PermissionSet;
 import net.dv8tion.jda.api.Permission;
 
 import java.util.EnumSet;
 
-public enum RoomVisibility implements PermissionSet {
-    PUBLIC(
+public enum ModelEntityType implements PermissionSet {
+    WHITELIST(
+      EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK,
+        Permission.VOICE_START_ACTIVITIES, Permission.VOICE_STREAM, Permission.VOICE_USE_VAD),
+      NONE),
+    BLACKLIST(
       NONE,
-      NONE,
-      "\uD83D\uDD13"), // "🔓"
-    PRIVATE(
-      NONE,
-      EnumSet.of(Permission.VOICE_CONNECT),
-      "\uD83D\uDD10"), // "🔐"
-    HIDDEN(
-      NONE,
-      EnumSet.of(Permission.VOICE_CONNECT, Permission.VIEW_CHANNEL),
-      "\uD83D\uDD12"); // "🔒"
+      Permission.getPermissions(Permission.ALL_VOICE_PERMISSIONS | Permission.VIEW_CHANNEL.getRawValue())),
+    MODERATOR(
+      Permission.getPermissions(Permission.ALL_VOICE_PERMISSIONS),
+      NONE);
 
-    private EnumSet<Permission> allow;
-    private EnumSet<Permission> deny;
+    private EnumSet<Permission> allowList;
+    private EnumSet<Permission> denyList;
     private long allowRaw;
     private long denyRaw;
 
-    private String emoji;
-
-    RoomVisibility(EnumSet<Permission> allow, EnumSet<Permission> deny, String emoji) {
-        this.allow = allow;
-        this.deny = deny;
+    ModelEntityType(EnumSet<Permission> allow, EnumSet<Permission> deny) {
+        this.allowList = allow;
+        this.denyList = deny;
         this.allowRaw = Permission.getRaw(allow);
         this.denyRaw = Permission.getRaw(deny);
-        this.emoji = emoji;
     }
 
     @Override
     public EnumSet<Permission> allowList() {
-        return allow;
+        return allowList;
     }
 
     @Override
     public EnumSet<Permission> denyList() {
-        return deny;
+        return denyList;
     }
 
     @Override
@@ -70,9 +65,5 @@ public enum RoomVisibility implements PermissionSet {
     @Override
     public long denyRaw() {
         return denyRaw;
-    }
-
-    public String emoji() {
-        return emoji;
     }
 }

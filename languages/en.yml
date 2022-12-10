@@ -27,6 +27,10 @@ commands:
       title: Room renamed
       description: Your room has been renamed to `$name` !
 
+    user-limit:
+      title: Room user limit changed
+      description: Your room user limit has been changed to `$user-limit`
+
     visibility:
       title: Room visibility changed
       description: Your room visibility has been changed to `${ visibility | template.visibility }` !

@@ -20,6 +20,10 @@ package me.redstom.privaterooms.util.room;
 
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.entity.model.Model;
+import me.redstom.privaterooms.entities.entity.model.ModelEntityType;
+import me.redstom.privaterooms.entities.entity.model.ModelRole;
+import me.redstom.privaterooms.entities.entity.model.ModelUser;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.RoomService;
 import me.redstom.privaterooms.entities.services.UserService;
@@ -90,13 +94,13 @@ public class RoomCommandUtils {
         Model model = room.get().model();
         boolean user = model.users().stream()
           .filter(u -> u.type() == ModelEntityType.MODERATOR)
-          .map(ModelEntity.ModelUser::referringUser)
+          .map(ModelUser::referringUser)
           .map(User::discordId)
           .anyMatch(id -> id == member.getIdLong());
 
         boolean role = model.roles().stream()
           .filter(r -> r.type() == ModelEntityType.MODERATOR)
-          .map(ModelEntity.ModelRole::referringRole)
+          .map(ModelRole::referringRole)
           .map(Role::discordId)
           .anyMatch(id -> member.getRoles().stream()
             .map(ISnowflake::getIdLong)
