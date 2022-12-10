@@ -16,10 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.entities.entity;
+package me.redstom.privaterooms.entities.entity.model;
 
-public enum ModelEntityType {
-    WHITELIST,
-    BLACKLIST,
-    MODERATOR
+public interface ModelEntity {
+
+    ModelEntityType type();
 }

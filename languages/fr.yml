@@ -25,11 +25,15 @@ commands:
 
     name:
       title: Salon renommé
-      description: Votre salon a été renommé en `$name` !
+      description: Le salon a été renommé en `$name`
+
+    user-limit:
+      title: Limite d'utilisateur du salon changée
+      description: La limite d'utilisateur du salon a été changé à `$user-limit`
 
     visibility:
       title: Visibilité du salon changée
-      description: Votre visibilité du salon a été changée en `${ visibility | template.visibility }` !
+      description: La visibilité du salon a été changée en `${ visibility | template.visibility }`
 
   template:
     list:

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.redstom.privaterooms.entities.entity;
+package me.redstom.privaterooms.entities.entity.model;
 
 import lombok.*;
 import me.redstom.privaterooms.util.room.RoomVisibility;
@@ -45,24 +45,46 @@ public class Model {
 
     @Builder.Default
     @Column(nullable = false)
-    private int maxUsers = 99;
+    private int userLimit = 99;
 
     @Builder.Default
     @Column(nullable = false)
     private RoomVisibility visibility = RoomVisibility.PUBLIC;
 
-
     @ManyToMany(cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<ModelEntity.ModelUser> users;
+    private List<ModelUser> users;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
-    private List<ModelEntity.ModelRole> roles;
+    private List<ModelRole> roles;
 
-    public Model(Model m) {
-        this(m.channelName, m.maxUsers, m.visibility, new ArrayList<>(m.users), new ArrayList<>(m.roles));
+    private Model(Model model) {
+        this.channelName = model.channelName;
+        this.userLimit = model.userLimit;
+        this.visibility = model.visibility;
+        this.users = new ArrayList<>(model.users);
+        this.roles = new ArrayList<>(model.roles);
     }
+
+    public static Model copyOf(Model model) {
+        return new Model(model);
+    }
+
+    /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ModelUser modelUser = (ModelUser) o;
+        return id != null && Objects.equals(id, modelUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+     */
 }
