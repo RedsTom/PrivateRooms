@@ -46,4 +46,4 @@ data/
 .idea/
 servers/
 templates/
-config*
+config.toml

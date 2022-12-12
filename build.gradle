@@ -2,13 +2,14 @@ plugins {
     id 'java'
     id 'application'
     id 'io.freefair.lombok' version '6.5.0.3'
+    id 'checkstyle'
 }
 
 group 'me.redstom'
 version '1.0-SNAPSHOT'
 def mainClass = 'me.redstom.privaterooms.Main'
 
-sourceCompatibility = targetCompatibility = '18'
+sourceCompatibility = targetCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -43,4 +44,8 @@ compileJava {
     manifest {
         attributes 'Main-Class': mainClass
     }
+}
+
+checkstyle {
+    toolVersion '10.4'
 }
