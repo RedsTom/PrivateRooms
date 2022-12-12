@@ -22,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.services.RoomService;
 import me.redstom.privaterooms.entities.services.TemplateService;
 import me.redstom.privaterooms.util.Colors;
+import me.redstom.privaterooms.util.command.Command;
 import me.redstom.privaterooms.util.command.CommandExecutor;
-import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.room.RoomCommandUtils;
 import me.redstom.privaterooms.util.room.RoomCommandUtils.RoomCommandContext;
@@ -34,10 +34,10 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 @RegisterCommand
 @RequiredArgsConstructor
-public class DeleteCommand implements ICommand {
+public class DeleteCommand implements Command {
 
     private final TemplateService templateService;
-    private final RoomService roomService;
+    private final RoomService     roomService;
 
     private final RoomCommandUtils roomUtils;
 
@@ -58,19 +58,20 @@ public class DeleteCommand implements ICommand {
         templateService.save("previous", ctx.user(), ctx.room().model());
         roomService.delete(ctx.room());
 
-        event.deferReply(true).setEmbeds(new EmbedBuilder()
-          .setAuthor(event.getUser().getName(),
-            null,
-            event.getUser().getAvatarUrl())
-          .setTitle(ctx.translator().get("commands.delete.title")
-            .with("room_name", ctx.room().model().channelName())
-            .toString())
-          .setDescription(ctx.translator().get("commands.delete.description")
-            .with("create_channel_id", ctx.guild().createChannelId())
-            .toString())
-          .setColor(Colors.GREEN)
-          .setImage(null)
-          .build()
-        ).queue();
+        String title = ctx.translator().get("commands.delete.title")
+                .with("room_name", ctx.room().model().channelName()).toString();
+        String description = ctx.translator().get("commands.delete.description")
+                .with("create_channel_id", ctx.guild().createChannelId())
+                .toString();
+        event.deferReply(true).setEmbeds(
+                new EmbedBuilder()
+                        .setAuthor(event.getUser().getName(),
+                                   null,
+                                   event.getUser().getAvatarUrl())
+                        .setTitle(title)
+                        .setDescription(description)
+                        .setColor(Colors.GREEN)
+                        .setImage(null)
+                        .build()).queue();
     }
 }

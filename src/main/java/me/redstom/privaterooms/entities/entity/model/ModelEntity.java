@@ -19,6 +19,5 @@
 package me.redstom.privaterooms.entities.entity.model;
 
 public interface ModelEntity {
-
     ModelEntityType type();
 }

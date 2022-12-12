@@ -19,19 +19,20 @@
 package me.redstom.privaterooms.commands;
 
 
+import java.util.Arrays;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.util.Colors;
-import me.redstom.privaterooms.util.command.ICommand;
-import me.redstom.privaterooms.util.command.RegisterCommand;
+import me.redstom.privaterooms.util.command.Command;
 import me.redstom.privaterooms.util.command.CommandExecutor;
+import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -39,34 +40,35 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandGroupData;
 
-import java.util.Arrays;
-import java.util.Locale;
-
 @RegisterCommand
 @RequiredArgsConstructor
-public class SettingsCommand implements ICommand {
+public class SettingsCommand implements Command {
 
-    private final I18n i18n;
+    private final I18n         i18n;
     private final GuildService guildService;
 
     @Override
     public CommandData command() {
         return Commands.slash("settings", "Configure the bot settings for the current serveur")
-          .setGuildOnly(true)
-          .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
-          .addSubcommands(
-            new SubcommandData("locale", "Sets the locale of the bot for this server")
-              .addOption(OptionType.STRING, "locale", "The locale of the bot", true, true)
-          )
-          .addSubcommandGroups(
-            new SubcommandGroupData("channels", "Configure the channels")
-              .addSubcommands(
-                new SubcommandData("new", "Set the \"Create room\" channel")
-                  .addOption(OptionType.CHANNEL, "channel", "The channel to set", true),
-                new SubcommandData("category", "Sets the category where rooms are created")
-                  .addOption(OptionType.CHANNEL, "channel", "The channel to set", true)
-              )
-          );
+                .setGuildOnly(true)
+                .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
+                .addSubcommands(
+                        new SubcommandData("locale", "Sets the locale of the bot for this server")
+                                .addOption(OptionType.STRING, "locale", "The locale of the bot",
+                                        true, true)
+                )
+                .addSubcommandGroups(
+                        new SubcommandGroupData("channels", "Configure the channels")
+                                .addSubcommands(
+                                        new SubcommandData("new", "Set the \"Create room\" channel")
+                                                .addOption(OptionType.CHANNEL, "channel",
+                                                        "The channel to set", true),
+                                        new SubcommandData("category",
+                                                "Sets the category where rooms are created")
+                                                .addOption(OptionType.CHANNEL, "channel",
+                                                        "The channel to set", true)
+                                )
+                );
     }
 
 
@@ -79,22 +81,24 @@ public class SettingsCommand implements ICommand {
 
         Translator translator = i18n.of(locale);
         event.deferReply(true)
-          .setEmbeds(new EmbedBuilder()
-            .setColor(Colors.GREEN)
-            .setDescription(translator.get("commands.settings.locale.success")
-              .with("locale", locale.getDisplayName(locale))
-              .toString()
-            )
-            .build()
-          ).queue();
+                .setEmbeds(new EmbedBuilder()
+                        .setColor(Colors.GREEN)
+                        .setDescription(translator.get("commands.settings.locale.success")
+                                .with("locale", locale.getDisplayName(locale))
+                                .toString()
+                        )
+                        .build()
+                ).queue();
     }
 
     @Override
     public void complete(CommandAutoCompleteInteractionEvent event) {
         if (event.getCommandPath().equalsIgnoreCase("settings/locale")) {
             event.replyChoices(Arrays.stream(i18n.getLocales())
-              .map(locale -> new Command.Choice(locale.getDisplayName(locale), locale.toLanguageTag()))
-              .toArray(Command.Choice[]::new)
+                    .map(locale -> new net.dv8tion.jda.api.interactions.commands.Command.Choice(
+                            locale.getDisplayName(locale),
+                            locale.toLanguageTag()))
+                    .toArray(net.dv8tion.jda.api.interactions.commands.Command.Choice[]::new)
             ).queue();
         }
     }

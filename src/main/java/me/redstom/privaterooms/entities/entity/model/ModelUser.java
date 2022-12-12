@@ -2,10 +2,18 @@
 
 package me.redstom.privaterooms.entities.entity.model;
 
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import me.redstom.privaterooms.entities.entity.User;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "model_user")
@@ -30,11 +38,9 @@ public class ModelUser implements ModelEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ModelUser{");
-        sb.append("id=").append(id);
-        sb.append(", referringUser=").append(referringUser);
-        sb.append(", type=").append(type);
-        sb.append('}');
-        return sb.toString();
+        return "ModelUser{" + "id=" + id
+                + ", referringUser=" + referringUser
+                + ", type=" + type
+                + '}';
     }
 }

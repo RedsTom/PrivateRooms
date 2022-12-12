@@ -18,17 +18,16 @@
 
 package me.redstom.privaterooms.entities.services;
 
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.entity.model.Model;
 import me.redstom.privaterooms.entities.entity.Template;
 import me.redstom.privaterooms.entities.entity.TemplateId;
 import me.redstom.privaterooms.entities.entity.User;
+import me.redstom.privaterooms.entities.entity.model.Model;
 import me.redstom.privaterooms.entities.repository.TemplateRepository;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +37,11 @@ public class TemplateService {
 
     public Command.Choice[] completeTemplatesOf(long userId) {
         return templateRepository.findAllByIdAuthorDiscordId(userId).stream()
-          .map(t -> new Command.Choice(
-            t.id().name(),
-            t.id().toString()
-          ))
-          .toArray(Command.Choice[]::new);
+                .map(t -> new Command.Choice(
+                        t.id().name(),
+                        t.id().toString()
+                ))
+                .toArray(Command.Choice[]::new);
     }
 
     public List<Template> getTemplatesOf(long userId) {
@@ -51,12 +50,12 @@ public class TemplateService {
 
     public Template save(String name, User owner, Model model) {
         Template template = Template.builder()
-          .id(TemplateId.builder()
-            .author(owner)
-            .name(name)
-            .build())
-          .model(Model.copyOf(model))
-          .build();
+                .id(TemplateId.builder()
+                        .author(owner)
+                        .name(name)
+                        .build())
+                .model(Model.copyOf(model))
+                .build();
 
         Optional<Template> load = load(owner, name);
         load.ifPresent(value -> template.id(value.id()));

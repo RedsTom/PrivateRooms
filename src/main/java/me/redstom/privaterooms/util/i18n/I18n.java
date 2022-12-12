@@ -18,16 +18,15 @@
 
 package me.redstom.privaterooms.util.i18n;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 @Component
 @Slf4j

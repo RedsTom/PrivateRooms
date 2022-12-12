@@ -20,29 +20,36 @@ package me.redstom.privaterooms;
 
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.util.Config;
+import me.redstom.privaterooms.util.command.Command;
 import me.redstom.privaterooms.util.command.CommandExecutorRepr;
-import me.redstom.privaterooms.util.command.ICommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.TransactionManager;
-
-import javax.persistence.EntityManager;
-import javax.sql.DataSource;
-import java.io.File;
-import java.util.*;
 
 @Configuration
 @ComponentScan(basePackages = {"me.redstom.privaterooms.*", "me.redstom.privaterooms"})
@@ -67,14 +74,14 @@ public class Main {
             configFile.createNewFile();
 
             Config config = new Config(
-              "TOKEN HERE",
-              new Config.DatabaseConfig(
-                "localhost",
-                5432,
-                "postgres",
-                "postgres",
-                "postgres"
-              )
+                    "TOKEN HERE",
+                    new Config.DatabaseConfig(
+                            "localhost",
+                            5432,
+                            "postgres",
+                            "postgres",
+                            "postgres"
+                    )
             );
 
             TomlWriter writer = new TomlWriter();
@@ -97,9 +104,9 @@ public class Main {
     @SneakyThrows
     public JDA client(Config config) {
         return JDABuilder
-          .createDefault(config.token())
-          .enableIntents(EnumSet.allOf(GatewayIntent.class))
-          .build();
+                .createDefault(config.token())
+                .enableIntents(EnumSet.allOf(GatewayIntent.class))
+                .build();
     }
 
     @Bean
@@ -111,7 +118,9 @@ public class Main {
     public DataSource dataSource(Config config) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://" + config.database().host() + ":" + config.database().port() + "/" + config.database().database());
+        dataSource.setUrl(
+                "jdbc:postgresql://" + config.database().host() + ":" + config.database().port()
+                        + "/" + config.database().database());
         dataSource.setUsername(config.database().username());
         dataSource.setPassword(config.database().password());
 
@@ -143,7 +152,7 @@ public class Main {
     }
 
     @Bean
-    public List<ICommand> commands() {
+    public List<Command> commands() {
         return new ArrayList<>();
     }
 

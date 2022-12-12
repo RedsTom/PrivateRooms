@@ -24,10 +24,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.moandjiezana.toml.Toml;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Template;
+import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.entity.model.Model;
 import me.redstom.privaterooms.entities.entity.model.ModelEntityType;
 import me.redstom.privaterooms.entities.entity.model.ModelRole;
@@ -39,38 +49,29 @@ import me.redstom.privaterooms.entities.services.UserService;
 import me.redstom.privaterooms.util.room.RoomVisibility;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class MigrationManager {
 
-    private final UserService userService;
-    private final RoleService roleService;
-    private final GuildService guildService;
+    private final UserService     userService;
+    private final RoleService     roleService;
+    private final GuildService    guildService;
     private final TemplateService templateService;
 
     @SneakyThrows
     public void run() {
         Lists.newArrayList("""
-          --------------------------------------------------------------
-          Detected old private rooms config and saves !
-          Those are not supported anymore ! Starting migration...
-                    
-          Please note that the old configuration will not be migrated !
-          The migrated elements will be :
-           - The templates
-           - The server configurations
-          --------------------------------------------------------------
-          """.split("\n")
+                                   --------------------------------------------------------------
+                                   Detected old private rooms config and saves !
+                                   Those are not supported anymore ! Starting migration...
+                                             
+                                   Please note that the old configuration will not be migrated !
+                                   The migrated elements will be :
+                                    - The templates
+                                    - The server configurations
+                                   --------------------------------------------------------------
+                                   """.split("\n")
         ).forEach(log::info);
 
         this.migrateServers();
@@ -79,8 +80,8 @@ public class MigrationManager {
         log.info("Migration finished ! All the data from the files are now in the database !");
         BufferedReader reader = new BufferedReader(new FileReader("config.yml"));
         log.info("Here's your old config.yml : \n{}", reader
-          .lines()
-          .collect(Collectors.joining("\n"))
+                .lines()
+                .collect(Collectors.joining("\n"))
         );
         reader.close();
         log.info("The config.yml file will be deleted to prevent any further migration.");
@@ -116,8 +117,8 @@ public class MigrationManager {
             }
 
             guildService.update(serverId, g -> g
-              .categoryId(Long.parseLong(categoryId))
-              .createChannelId(Long.parseLong(createChannelId))
+                    .categoryId(Long.parseLong(categoryId))
+                    .createChannelId(Long.parseLong(createChannelId))
             );
 
             log.debug("Migrated server " + serverId);
@@ -137,7 +138,9 @@ public class MigrationManager {
         }
 
         for (File file : templateFolder.listFiles()) {
-            if (!file.isDirectory()) continue;
+            if (!file.isDirectory()) {
+                continue;
+            }
 
             migrateUserTemplates(file);
         }
@@ -161,64 +164,66 @@ public class MigrationManager {
             Guild g = guildService.of(obj.get("serverId").getAsLong());
 
             if (g.discordGuild() == null) {
-                log.warn("The guild {} is not available, skipping template {}/{}", g.discordId(), userId, template.getName());
+                log.warn("The guild {} is not available, skipping template {}/{}", g.discordId(),
+                         userId, template.getName());
                 continue;
             }
 
-            boolean hidden = obj.get("hidden").getAsBoolean();
-            boolean _private = obj.get("private").getAsBoolean();
+            boolean isRoomHidden = obj.get("hidden").getAsBoolean();
+            boolean isRoomPrivate = obj.get("private").getAsBoolean();
 
-            builder.visibility(_private
-              ? RoomVisibility.PRIVATE
-              : hidden ? RoomVisibility.HIDDEN : RoomVisibility.PUBLIC
-            );
+            builder.visibility(isRoomPrivate
+                               ? RoomVisibility.PRIVATE
+                               : isRoomHidden
+                                 ? RoomVisibility.HIDDEN
+                                 : RoomVisibility.PUBLIC);
 
             builder.channelName(obj.get("name").getAsString());
             builder.userLimit(obj.get("userLimit").getAsInt());
 
             addAllToBuilder(obj, "whitelistedUsers", userService::rawOf, u -> builder
-              .user(ModelUser.builder()
-                .referringUser(u)
-                .type(ModelEntityType.WHITELIST)
-                .build()
-              )
+                    .user(ModelUser.builder()
+                                  .referringUser(u)
+                                  .type(ModelEntityType.WHITELIST)
+                                  .build()
+                    )
             );
 
             addAllToBuilder(obj, "blacklistedUsers", userService::rawOf, u -> builder
-              .user(ModelUser.builder()
-                .referringUser(u)
-                .type(ModelEntityType.BLACKLIST)
-                .build()
-              )
+                    .user(ModelUser.builder()
+                                  .referringUser(u)
+                                  .type(ModelEntityType.BLACKLIST)
+                                  .build()
+                    )
             );
 
             addAllToBuilder(obj, "moderators", userService::rawOf, u -> builder
-              .user(ModelUser.builder()
-                .referringUser(u)
-                .type(ModelEntityType.MODERATOR)
-                .build()
-              )
+                    .user(ModelUser.builder()
+                                  .referringUser(u)
+                                  .type(ModelEntityType.MODERATOR)
+                                  .build()
+                    )
             );
 
             addAllToBuilder(obj, "whitelistedRoles", i -> roleService.of(g, i), r -> builder
-              .role(ModelRole.builder()
-                .referringRole(r)
-                .type(ModelEntityType.WHITELIST)
-                .build()
-              )
+                    .role(ModelRole.builder()
+                                  .referringRole(r)
+                                  .type(ModelEntityType.WHITELIST)
+                                  .build()
+                    )
             );
             addAllToBuilder(obj, "blacklistedRoles", i -> roleService.of(g, i), r -> builder
-              .role(ModelRole.builder()
-                .referringRole(r)
-                .type(ModelEntityType.BLACKLIST)
-                .build()
-              )
+                    .role(ModelRole.builder()
+                                  .referringRole(r)
+                                  .type(ModelEntityType.BLACKLIST)
+                                  .build()
+                    )
             );
 
             Template tmplt = templateService.save(
-              template.getName().replace(".json", ""),
-              user,
-              builder.build()
+                    template.getName().replace(".json", ""),
+                    user,
+                    builder.build()
             );
 
             log.debug("Saved template {}", tmplt);
@@ -227,7 +232,8 @@ public class MigrationManager {
         log.debug("Templates of {} migrated", userId);
     }
 
-    private <T> void addAllToBuilder(JsonObject element, String name, Function<Long, T> transformer, Consumer<T> consumer) {
+    private <T> void addAllToBuilder(JsonObject element, String name, Function<Long, T> transformer,
+                                     Consumer<T> consumer) {
         JsonArray array = element.getAsJsonArray(name);
         for (JsonElement el : array) {
             T t = transformer.apply(el.getAsLong());

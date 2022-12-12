@@ -18,24 +18,23 @@
 
 package me.redstom.privaterooms.util.i18n;
 
+import java.io.File;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Data
 @Slf4j
 public class Translator {
 
-    private final Locale locale;
-    private File file;
-    private YamlConfiguration config;
+    private final Locale            locale;
+    private       File              file;
+    private       YamlConfiguration config;
 
     @Builder
     @SneakyThrows
@@ -62,7 +61,7 @@ public class Translator {
 
     public class Message {
 
-        private static final String FILTER_PATTERN = "\\$\\{ %s \\| [a-zA-Z\\.]+ }";
+        private static final String FILTER_PATTERN   = "\\$\\{ %s \\| [a-zA-Z\\.]+ }";
         private static final String VARIABLE_PATTERN = "\\$%s";
 
         private String message;
@@ -87,8 +86,8 @@ public class Translator {
             }
 
             message = Pattern.compile(VARIABLE_PATTERN.formatted(key))
-              .matcher(message)
-              .replaceAll(value.toString());
+                    .matcher(message)
+                    .replaceAll(value.toString());
 
             return this;
         }

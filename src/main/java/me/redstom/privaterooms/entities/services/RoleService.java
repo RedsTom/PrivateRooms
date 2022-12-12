@@ -29,19 +29,14 @@ import org.springframework.stereotype.Service;
 public class RoleService {
 
     private final RoleRepository roleRepository;
-    private final GuildService guildService;
+    private final GuildService   guildService;
 
     public Role init(Guild g, long roleId) {
-        return roleRepository.save(Role.builder()
-          .discordId(roleId)
-          .guild(g)
-          .build());
+        return roleRepository.save(Role.builder().discordId(roleId).guild(g).build());
     }
 
     public Role rawOf(Guild g, long roleId) {
-        return roleRepository
-          .findByDiscordId(roleId)
-          .orElseGet(() -> init(g, roleId));
+        return roleRepository.findByDiscordId(roleId).orElseGet(() -> init(g, roleId));
     }
 
     public Role of(Guild g, long discordId) {

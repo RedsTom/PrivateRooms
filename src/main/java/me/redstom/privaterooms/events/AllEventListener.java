@@ -18,14 +18,20 @@
 
 package me.redstom.privaterooms.events;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.redstom.privaterooms.entities.entity.Guild;
 import me.redstom.privaterooms.entities.services.GuildService;
 import me.redstom.privaterooms.entities.services.RoomService;
 import me.redstom.privaterooms.util.MigrationManager;
+import me.redstom.privaterooms.util.command.Command;
 import me.redstom.privaterooms.util.command.CommandExecutorRepr;
-import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import me.redstom.privaterooms.util.i18n.I18n;
 import me.redstom.privaterooms.util.i18n.Translator;
@@ -39,33 +45,26 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
 @RegisterListener
 @RequiredArgsConstructor
 @Slf4j
 public class AllEventListener extends ListenerAdapter {
 
-    private final List<ICommand> commands;
+    private final List<Command>                    commands;
     private final Map<String, CommandExecutorRepr> commandExecutors;
-    private final MigrationManager migrationManager;
-    private final I18n i18n;
-    private final GuildService guildService;
-    private final RoomService roomService;
-    private final ApplicationContext ctx;
+    private final MigrationManager                 migrationManager;
+    private final I18n                             i18n;
+    private final GuildService                     guildService;
+    private final RoomService                      roomService;
+    private final ApplicationContext               ctx;
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         Translator locale = i18n.of(Locale.getDefault());
 
         log.info(locale.get("ready")
-          .with("username", event.getJDA().getSelfUser().getAsTag())
-          .toString()
+                .with("username", event.getJDA().getSelfUser().getAsTag())
+                .toString()
         );
 
 
@@ -77,28 +76,33 @@ public class AllEventListener extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         Optional
-          .ofNullable(this.commandExecutors.get(event.getCommandPath()))
-          .ifPresent(repr -> repr.run(event));
+                .ofNullable(this.commandExecutors.get(event.getCommandPath()))
+                .ifPresent(repr -> repr.run(event));
     }
 
     @Override
-    public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent event) {
+    public void onCommandAutoCompleteInteraction(
+            @NotNull CommandAutoCompleteInteractionEvent event) {
         this.commands.stream()
-          .filter(cmd -> event.getCommandPath().startsWith(cmd.command().getName()))
-          .forEach(cmd -> cmd.complete(event));
+                .filter(cmd -> event.getCommandPath().startsWith(cmd.command().getName()))
+                .forEach(cmd -> cmd.complete(event));
     }
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
-        if(event.getChannelJoined() != null) {
+        if (event.getChannelJoined() != null) {
             Guild guild = guildService.rawOf(event.getGuild());
             if (event.getChannelJoined().getIdLong() == guild.createChannelId()) {
                 roomService.create(guild, event.getMember());
             }
         }
         if (event.getChannelLeft() != null) {
-            if (event.getChannelLeft().getType() != ChannelType.VOICE) return;
-            if (!event.getChannelLeft().getMembers().isEmpty()) return;
+            if (event.getChannelLeft().getType() != ChannelType.VOICE) {
+                return;
+            }
+            if (!event.getChannelLeft().getMembers().isEmpty()) {
+                return;
+            }
 
             Guild guild = guildService.rawOf(event.getGuild());
             VoiceChannel voiceChannel = (VoiceChannel) event.getChannelLeft();

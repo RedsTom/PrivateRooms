@@ -18,54 +18,58 @@
 
 package me.redstom.privaterooms;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.redstom.privaterooms.util.command.Command;
 import me.redstom.privaterooms.util.command.CommandExecutor;
 import me.redstom.privaterooms.util.command.CommandExecutorRepr;
-import me.redstom.privaterooms.util.command.ICommand;
 import me.redstom.privaterooms.util.command.RegisterCommand;
 import me.redstom.privaterooms.util.events.RegisterListener;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class PrivateRooms {
 
-    private final ApplicationContext ctx;
-    private final JDA client;
-    private final List<ICommand> commands;
+    private final ApplicationContext               ctx;
+    private final JDA                              client;
+    private final List<Command>                    commands;
     private final Map<String, CommandExecutorRepr> commandExecutors;
 
     @SneakyThrows
     public void run() {
-        this.client.addEventListener(ctx.getBeansWithAnnotation(RegisterListener.class).values().toArray(Object[]::new));
+        this.client.addEventListener(
+                ctx.getBeansWithAnnotation(RegisterListener.class).values().toArray(Object[]::new));
 
-        List<ICommand> iCommands = ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
-          .filter(a -> a instanceof ICommand)
-          .map(a -> (ICommand) a)
-          .toList();
+        List<Command> commandBeans =
+                ctx.getBeansWithAnnotation(RegisterCommand.class).values().stream()
+                        .filter(a -> a instanceof Command)
+                        .map(a -> (Command) a)
+                        .toList();
 
-        Map<String, CommandExecutorRepr> executorMap = iCommands.stream()
-          .flatMap(a -> Arrays.stream(a.getClass().getMethods())
-            .map(m -> new CommandExecutorRepr(a, m)))
-          .filter(c -> c.method().getAnnotation(CommandExecutor.class) != null)
-          .collect(Collectors.toMap(c -> c.method().getAnnotation(CommandExecutor.class).value(), c -> c));
+        Map<String, CommandExecutorRepr> executorMap = commandBeans.stream()
+                .flatMap(a -> Arrays.stream(a.getClass().getMethods())
+                        .map(m -> new CommandExecutorRepr(a, m)))
+                .filter(c -> c.method().getAnnotation(CommandExecutor.class) != null)
+                .collect(
+                        Collectors.toMap(
+                                c -> c.method().getAnnotation(CommandExecutor.class).value(),
+                                c -> c));
 
-        commands.addAll(iCommands);
+        this.commands.addAll(commandBeans);
         commandExecutors.putAll(executorMap);
         client.updateCommands()
-          .addCommands(iCommands.stream()
-            .map(ICommand::command)
-            .toList())
-          .queue();
+                .addCommands(commandBeans.stream()
+                        .map(Command::command)
+                        .toList())
+                .queue();
     }
 }

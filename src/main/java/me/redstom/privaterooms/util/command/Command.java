@@ -22,10 +22,10 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
-public interface ICommand {
+public interface Command {
 
     /**
-     * The command definition
+     * The command definition.
      *
      * @return The command definition
      */
@@ -37,12 +37,16 @@ public interface ICommand {
      * @param event The event that triggered the command.
      * @return True if the command is valid, false otherwise.
      */
-    default boolean check(SlashCommandInteractionEvent event) { return true; }
+    default boolean check(SlashCommandInteractionEvent event) {
+        return true;
+    }
 
     /**
      * Auto completes the command.
+     *
      * @param event The event that triggered the suggestion demanding.
      */
-    default void complete(CommandAutoCompleteInteractionEvent event) {}
+    default void complete(CommandAutoCompleteInteractionEvent event) {
+    }
 
 }

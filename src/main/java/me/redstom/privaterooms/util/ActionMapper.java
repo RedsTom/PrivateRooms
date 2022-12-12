@@ -25,20 +25,20 @@ import java.util.function.UnaryOperator;
 
 public class ActionMapper<T> {
 
-    public static <T> ActionMapper<T> of(T value) {
-        return new ActionMapper<>(value);
-    }
-
-    private T value;
-    private List<String> actions;
+    private final List<String> actions;
+    private       T            value;
 
     private ActionMapper(T value) {
         this.value = value;
         this.actions = new ArrayList<>();
     }
 
+    public static <T> ActionMapper<T> of(T value) {
+        return new ActionMapper<>(value);
+    }
+
     public ActionMapper<T> map(UnaryOperator<T> action, String reason) {
-        if(this.value != null) {
+        if (this.value != null) {
             this.value = action.apply(this.value);
             this.actions.add(reason);
         }
@@ -46,7 +46,7 @@ public class ActionMapper<T> {
     }
 
     public ActionMapper<T> then(BiConsumer<T, String[]> action) {
-        if(this.value != null) {
+        if (this.value != null) {
             action.accept(this.value, this.actions.toArray(String[]::new));
         }
         return this;

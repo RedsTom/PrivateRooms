@@ -18,12 +18,11 @@
 
 package me.redstom.privaterooms.util.command;
 
+import java.lang.reflect.Method;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.lang.reflect.Method;
-
-public record CommandExecutorRepr(ICommand instance, Method method) {
+public record CommandExecutorRepr(Command instance, Method method) {
 
     @SneakyThrows
     public void run(SlashCommandInteractionEvent event) {

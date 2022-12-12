@@ -18,17 +18,21 @@
 
 package me.redstom.privaterooms.entities.entity.model;
 
-import lombok.*;
-import me.redstom.privaterooms.util.room.RoomVisibility;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import me.redstom.privaterooms.util.room.RoomVisibility;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Embeddable
 
@@ -56,7 +60,7 @@ public class Model {
     @Singular
     private List<ModelUser> users;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @Singular
     private List<ModelRole> roles;

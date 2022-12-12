@@ -18,8 +18,12 @@
 
 package me.redstom.privaterooms.util.room;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import me.redstom.privaterooms.entities.entity.*;
+import me.redstom.privaterooms.entities.entity.Guild;
+import me.redstom.privaterooms.entities.entity.Role;
+import me.redstom.privaterooms.entities.entity.Room;
+import me.redstom.privaterooms.entities.entity.User;
 import me.redstom.privaterooms.entities.entity.model.Model;
 import me.redstom.privaterooms.entities.entity.model.ModelEntityType;
 import me.redstom.privaterooms.entities.entity.model.ModelRole;
@@ -38,16 +42,14 @@ import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class RoomCommandUtils {
 
     private final GuildService guildService;
-    private final UserService userService;
-    private final RoomService roomService;
-    private final I18n i18n;
+    private final UserService  userService;
+    private final RoomService  roomService;
+    private final I18n         i18n;
 
     public boolean check(SlashCommandInteractionEvent event) {
         Guild guild = guildService.of(event.getGuild().getIdLong());
@@ -57,10 +59,10 @@ public class RoomCommandUtils {
 
         if (!member.getVoiceState().inAudioChannel()) {
             event.deferReply(true).setEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.not-in-voice"))
-              .setColor(Colors.RED)
-              .build()
+                    .setTitle(translator.raw("commands.config.error.title"))
+                    .setDescription(translator.raw("commands.config.error.not-in-voice"))
+                    .setColor(Colors.RED)
+                    .build()
             ).queue();
 
             return false;
@@ -70,10 +72,10 @@ public class RoomCommandUtils {
 
         if (channel.getParentCategory().getIdLong() != guild.categoryId()) {
             event.deferReply(true).setEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.not-a-room"))
-              .setColor(Colors.RED)
-              .build()
+                    .setTitle(translator.raw("commands.config.error.title"))
+                    .setDescription(translator.raw("commands.config.error.not-a-room"))
+                    .setColor(Colors.RED)
+                    .build()
             ).queue();
 
             return false;
@@ -82,10 +84,10 @@ public class RoomCommandUtils {
         Optional<Room> room = roomService.of(channel.getIdLong());
         if (room.isEmpty()) {
             event.deferReply(true).setEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.not-a-room"))
-              .setColor(Colors.RED)
-              .build()
+                    .setTitle(translator.raw("commands.config.error.title"))
+                    .setDescription(translator.raw("commands.config.error.not-a-room"))
+                    .setColor(Colors.RED)
+                    .build()
             ).queue();
 
             return false;
@@ -93,41 +95,32 @@ public class RoomCommandUtils {
 
         Model model = room.get().model();
         boolean user = model.users().stream()
-          .filter(u -> u.type() == ModelEntityType.MODERATOR)
-          .map(ModelUser::referringUser)
-          .map(User::discordId)
-          .anyMatch(id -> id == member.getIdLong());
+                .filter(u -> u.type() == ModelEntityType.MODERATOR)
+                .map(ModelUser::referringUser)
+                .map(User::discordId)
+                .anyMatch(id -> id == member.getIdLong());
 
         boolean role = model.roles().stream()
-          .filter(r -> r.type() == ModelEntityType.MODERATOR)
-          .map(ModelRole::referringRole)
-          .map(Role::discordId)
-          .anyMatch(id -> member.getRoles().stream()
-            .map(ISnowflake::getIdLong)
-            .anyMatch(id::equals)
-          );
+                .filter(r -> r.type() == ModelEntityType.MODERATOR)
+                .map(ModelRole::referringRole)
+                .map(Role::discordId)
+                .anyMatch(id -> member.getRoles().stream()
+                        .map(ISnowflake::getIdLong)
+                        .anyMatch(id::equals)
+                );
 
         if (!(user || role || member.hasPermission(Permission.MANAGE_CHANNEL))) {
             event.deferReply(true).setEmbeds(new EmbedBuilder()
-              .setTitle(translator.raw("commands.config.error.title"))
-              .setDescription(translator.raw("commands.config.error.no-permissions"))
-              .setColor(Colors.RED)
-              .build()
+                    .setTitle(translator.raw("commands.config.error.title"))
+                    .setDescription(translator.raw("commands.config.error.no-permissions"))
+                    .setColor(Colors.RED)
+                    .build()
             ).queue();
 
             return false;
         }
 
         return true;
-    }
-
-    public record RoomCommandContext(
-      Guild guild,
-      User user,
-      Member member,
-      Room room,
-      Translator translator
-    ) {
     }
 
     public RoomCommandContext contextOf(SlashCommandInteractionEvent event) {
@@ -139,5 +132,14 @@ public class RoomCommandUtils {
         Room room = roomService.of(member.getVoiceState().getChannel().getIdLong()).get();
 
         return new RoomCommandContext(guild, user, member, room, translator);
+    }
+
+    public record RoomCommandContext(
+            Guild guild,
+            User user,
+            Member member,
+            Room room,
+            Translator translator
+    ) {
     }
 }

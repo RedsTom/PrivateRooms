@@ -18,31 +18,30 @@
 
 package me.redstom.privaterooms.util.room;
 
+import java.util.EnumSet;
 import me.redstom.privaterooms.util.permission.PermissionSet;
 import net.dv8tion.jda.api.Permission;
 
-import java.util.EnumSet;
-
 public enum RoomVisibility implements PermissionSet {
     PUBLIC(
-      NONE,
-      NONE,
-      "\uD83D\uDD13"), // "🔓"
+            NONE,
+            NONE,
+            "\uD83D\uDD13"), // "🔓"
     PRIVATE(
-      NONE,
-      EnumSet.of(Permission.VOICE_CONNECT),
-      "\uD83D\uDD10"), // "🔐"
+            NONE,
+            EnumSet.of(Permission.VOICE_CONNECT),
+            "\uD83D\uDD10"), // "🔐"
     HIDDEN(
-      NONE,
-      EnumSet.of(Permission.VOICE_CONNECT, Permission.VIEW_CHANNEL),
-      "\uD83D\uDD12"); // "🔒"
+            NONE,
+            EnumSet.of(Permission.VOICE_CONNECT, Permission.VIEW_CHANNEL),
+            "\uD83D\uDD12"); // "🔒"
 
-    private EnumSet<Permission> allow;
-    private EnumSet<Permission> deny;
-    private long allowRaw;
-    private long denyRaw;
+    private final EnumSet<Permission> allow;
+    private final EnumSet<Permission> deny;
+    private final long                allowRaw;
+    private final long                denyRaw;
 
-    private String emoji;
+    private final String emoji;
 
     RoomVisibility(EnumSet<Permission> allow, EnumSet<Permission> deny, String emoji) {
         this.allow = allow;

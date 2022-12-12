@@ -2,9 +2,8 @@
 
 package me.redstom.privaterooms.util.permission;
 
-import net.dv8tion.jda.api.Permission;
-
 import java.util.EnumSet;
+import net.dv8tion.jda.api.Permission;
 
 public interface PermissionSet {
 

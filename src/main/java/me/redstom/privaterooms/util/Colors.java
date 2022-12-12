@@ -21,7 +21,7 @@ package me.redstom.privaterooms.util;
 public class Colors {
 
     public static final int GREEN = 0x6ab04c;
-    public static final int RED = 0xeb4d4b;
-    public static final int BLUE = 0x686de0;
+    public static final int RED   = 0xeb4d4b;
+    public static final int BLUE  = 0x686de0;
 
 }

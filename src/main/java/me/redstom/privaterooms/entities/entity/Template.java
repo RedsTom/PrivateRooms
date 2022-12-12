@@ -18,10 +18,16 @@
 
 package me.redstom.privaterooms.entities.entity;
 
-import lombok.*;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import me.redstom.privaterooms.entities.entity.model.Model;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "templates")

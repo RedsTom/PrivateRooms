@@ -18,27 +18,28 @@
 
 package me.redstom.privaterooms.entities.entity.model;
 
+import java.util.EnumSet;
 import me.redstom.privaterooms.util.permission.PermissionSet;
 import net.dv8tion.jda.api.Permission;
 
-import java.util.EnumSet;
-
 public enum ModelEntityType implements PermissionSet {
     WHITELIST(
-      EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK,
-        Permission.VOICE_START_ACTIVITIES, Permission.VOICE_STREAM, Permission.VOICE_USE_VAD),
-      NONE),
+            EnumSet.of(Permission.VIEW_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK,
+                    Permission.VOICE_START_ACTIVITIES, Permission.VOICE_STREAM,
+                    Permission.VOICE_USE_VAD),
+            NONE),
     BLACKLIST(
-      NONE,
-      Permission.getPermissions(Permission.ALL_VOICE_PERMISSIONS | Permission.VIEW_CHANNEL.getRawValue())),
+            NONE,
+            Permission.getPermissions(
+                    Permission.ALL_VOICE_PERMISSIONS | Permission.VIEW_CHANNEL.getRawValue())),
     MODERATOR(
-      Permission.getPermissions(Permission.ALL_VOICE_PERMISSIONS),
-      NONE);
+            Permission.getPermissions(Permission.ALL_VOICE_PERMISSIONS),
+            NONE);
 
-    private EnumSet<Permission> allowList;
-    private EnumSet<Permission> denyList;
-    private long allowRaw;
-    private long denyRaw;
+    private final EnumSet<Permission> allowList;
+    private final EnumSet<Permission> denyList;
+    private final long                allowRaw;
+    private final long                denyRaw;
 
     ModelEntityType(EnumSet<Permission> allow, EnumSet<Permission> deny) {
         this.allowList = allow;
