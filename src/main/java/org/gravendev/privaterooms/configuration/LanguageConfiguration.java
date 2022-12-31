@@ -82,4 +82,13 @@ public class LanguageConfiguration {
         return bundles;
     }
 
+    @Bean
+    Locale defaultLocale() {
+        return Locale.ENGLISH;
+    }
+
+    @Bean
+    DiscordLocale defaultDiscordLocale(Locale defautlLocale) {
+        return DiscordLocale.from(defautlLocale);
+    }
 }
