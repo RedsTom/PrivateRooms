@@ -50,11 +50,16 @@ dependencies {
     implementation("org.hibernate:hibernate-core:6.1.6.Final")
 
     // Jackson
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 
     // Other Utils
     implementation("org.apache.commons:commons-dbcp2:2.9.0")
     implementation("ch.qos.logback:logback-classic:1.4.5")
+
+    // Project Fluent (for i18n)
+    implementation("net.xyzsd.fluent:fluent-base:0.70")
+    implementation("net.xyzsd.fluent:fluent-functions-cldr:0.70")
+    implementation("net.xyzsd.fluent:fluent-functions-icu:0.70")
 }
 
 // Runner
