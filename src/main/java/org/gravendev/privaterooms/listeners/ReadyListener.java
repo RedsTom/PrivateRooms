@@ -16,20 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms;
+package org.gravendev.privaterooms.listeners;
 
-import net.dv8tion.jda.api.JDA;
-import org.gravendev.privaterooms.configuration.GlobalConfiguration;
-import org.gravendev.privaterooms.listeners.utils.Listener;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.springframework.stereotype.Component;
 
-public class Main {
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(GlobalConfiguration.class);
+@Component
+@RequiredArgsConstructor
+public class ReadyListener extends ListenerAdapter {
 
-        JDA jda = context.getBean(JDA.class);
-
-        context.getBeansWithAnnotation(Listener.class).values().forEach(jda::addEventListener);
+    @Override
+    public void onReady(@NonNull ReadyEvent event) {
+        // TODO : Register commands and update activity
     }
+
 }

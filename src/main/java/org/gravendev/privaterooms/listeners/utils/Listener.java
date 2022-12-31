@@ -16,20 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms;
+package org.gravendev.privaterooms.listeners.utils;
 
-import net.dv8tion.jda.api.JDA;
-import org.gravendev.privaterooms.configuration.GlobalConfiguration;
-import org.gravendev.privaterooms.listeners.utils.Listener;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
-public class Main {
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(GlobalConfiguration.class);
+import java.lang.annotation.*;
 
-        JDA jda = context.getBean(JDA.class);
+@Component
 
-        context.getBeansWithAnnotation(Listener.class).values().forEach(jda::addEventListener);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Documented
+public @interface Listener {
+
 }
