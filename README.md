@@ -23,7 +23,7 @@ Most of the contributors are part of the staff but the members are also allowed 
 ## Progression
 | Progression            |             |
 |------------------------|-------------|
-| Current State          | 🛠️ WIP     |
+| Current State          | ❌ V3 ABORTED [See v3.1](https://github.com/GravenDev/PrivateRooms/tree/v3.1/)     |
 | Estimated release date | ~12/24/2022 |
 
 --- 
