@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.6'
-    implementation 'org.javacord:javacord:3.1.1'
+    implementation 'org.javacord:javacord:3.7.0'
     implementation 'com.konghq:unirest-java:3.11.04'
     implementation 'com.vdurmont:emoji-java:5.1.1'
     implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'

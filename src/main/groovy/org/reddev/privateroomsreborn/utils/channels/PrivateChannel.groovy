@@ -79,7 +79,7 @@ class PrivateChannel {
             updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.CONNECT)))
         }
         if (hidden) {
-            updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.READ_MESSAGES)))
+            updater.addPermissionOverwrite(server.everyoneRole, Permissions.fromBitmask(bitmask(), bitmask(PermissionType.VIEW_CHANNEL)))
         }
         if (!private_ && !hidden) {
             updater.removePermissionOverwrite(server.everyoneRole)
@@ -94,7 +94,7 @@ class PrivateChannel {
                     Permissions.fromBitmask(
                             bitmask(),
                             bitmask(
-                                    PermissionType.READ_MESSAGES
+                                    PermissionType.VIEW_CHANNEL
                             )
                     )
             )
@@ -115,7 +115,7 @@ class PrivateChannel {
                     Permissions.fromBitmask(
                             bitmask(),
                             bitmask(
-                                    PermissionType.READ_MESSAGES
+                                    PermissionType.VIEW_CHANNEL
                             )
                     )
             )
@@ -178,7 +178,7 @@ class PrivateChannel {
             if (roleId == guild.everyoneRole.id) {
                 if (permission.deniedPermissions.contains(PermissionType.CONNECT)) {
                     private_ = true
-                    if (permission.deniedPermissions.contains(PermissionType.READ_MESSAGES)) {
+                    if (permission.deniedPermissions.contains(PermissionType.VIEW_CHANNEL)) {
                         hidden = true
                     }
                 }
@@ -197,7 +197,7 @@ class PrivateChannel {
             if (permission.allowedPermission.contains(PermissionType.MOVE_MEMBERS)) {
                 moderators.add(userId)
             }
-            if (permission.deniedPermissions.contains(PermissionType.READ_MESSAGES)) {
+            if (permission.deniedPermissions.contains(PermissionType.VIEW_CHANNEL)) {
                 blacklistedUsers.add(userId)
             }
             if (permission.allowedPermission.contains(PermissionType.CONNECT)

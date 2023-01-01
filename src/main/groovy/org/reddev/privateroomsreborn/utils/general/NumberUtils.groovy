@@ -20,7 +20,7 @@ class NumberUtils {
         if (number == 0) sb.append(numbers.get(0)).append(" ")
         while (number > 0) {
             sb.append(numbers.get(number % 10)).append(" ")
-            number = number / 10
+            number = (number / 10).toInteger()
         }
         sb.deleteCharAt(sb.length() - 1)
         return sb.toString()
