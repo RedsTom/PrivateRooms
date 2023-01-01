@@ -16,23 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.i18n;
+package org.gravendev.privaterooms.i18n.commands;
 
-import fluent.bundle.FluentBundle;
-import java.util.EnumMap;
-import net.dv8tion.jda.api.interactions.DiscordLocale;
+import java.util.UUID;
 
-public class LanguageMap extends EnumMap<DiscordLocale, FluentBundle> {
-    public LanguageMap(Class<DiscordLocale> keyType) {
-        super(keyType);
+public class CommandUtils {
+
+    public static String randomCommandName() {
+        return UUID.randomUUID().toString().substring(12);
     }
 
-    @Override
-    public FluentBundle get(Object key) {
-        FluentBundle bundle = super.get(key);
-        if (bundle == null) {
-            return super.get(DiscordLocale.ENGLISH_US);
-        }
-        return bundle;
-    }
 }

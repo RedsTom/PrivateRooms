@@ -23,20 +23,18 @@ import fluent.bundle.FluentResource;
 import fluent.functions.cldr.CLDRFunctionFactory;
 import fluent.syntax.parser.FTLParser;
 import fluent.syntax.parser.FTLStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Locale;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import org.gravendev.privaterooms.i18n.LanguageMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Locale;
-import java.util.stream.Stream;
-
 @Configuration
-
 @Slf4j
 public class LanguageConfiguration {
 
@@ -70,11 +68,15 @@ public class LanguageConfiguration {
                 continue;
             }
 
-            FluentBundle bundle = FluentBundle.builder(locale, CLDRFunctionFactory.INSTANCE)
-                    .addResource(resource)
-                    .build();
+            FluentBundle bundle =
+                    FluentBundle.builder(locale, CLDRFunctionFactory.INSTANCE)
+                            .addResource(resource)
+                            .build();
 
-            log.info("Loaded file {} for locale {}", path, locale.getDisplayLanguage(Locale.ENGLISH));
+            log.info(
+                    "Loaded file {} for locale {}",
+                    path,
+                    locale.getDisplayLanguage(Locale.ENGLISH));
             bundles.put(DiscordLocale.from(locale), bundle);
         }
         log.info("Language loading finished! Found {} language(s).", bundles.size());
@@ -88,7 +90,7 @@ public class LanguageConfiguration {
     }
 
     @Bean
-    DiscordLocale defaultDiscordLocale(Locale defautlLocale) {
-        return DiscordLocale.from(defautlLocale);
+    DiscordLocale defaultDiscordLocale() {
+        return DiscordLocale.ENGLISH_US;
     }
 }

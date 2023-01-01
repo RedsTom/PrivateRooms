@@ -16,23 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.i18n;
+package org.gravendev.privaterooms.i18n.commands;
 
-import fluent.bundle.FluentBundle;
-import java.util.EnumMap;
-import net.dv8tion.jda.api.interactions.DiscordLocale;
+import lombok.Getter;
+import lombok.Setter;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandGroupData;
 
-public class LanguageMap extends EnumMap<DiscordLocale, FluentBundle> {
-    public LanguageMap(Class<DiscordLocale> keyType) {
-        super(keyType);
-    }
+import java.util.Map;
 
-    @Override
-    public FluentBundle get(Object key) {
-        FluentBundle bundle = super.get(key);
-        if (bundle == null) {
-            return super.get(DiscordLocale.ENGLISH_US);
-        }
-        return bundle;
+@Getter
+@Setter
+public class TranslatableSubcommandGroupData extends SubcommandGroupData implements ITranslatableCommmandData<SubcommandGroupData> {
+
+    private Map<String, Object> args;
+    private String nameKey, descriptionKey;
+
+    public TranslatableSubcommandGroupData(String nameKey, String descriptionKey) {
+        super(CommandUtils.randomCommandName(), CommandUtils.randomCommandName());
+        this.nameKey = nameKey;
+        this.descriptionKey = descriptionKey;
     }
 }
