@@ -16,22 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.i18n;
+package org.gravendev.privaterooms.i18n.keys;
 
-import fluent.bundle.FluentBundle;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
+@RequiredArgsConstructor @Getter
+public enum ErrorKeys implements TranslationKeys{
 
-public interface TranslationKeys {
+    ERROR_TITLE("error-title"),
+    ERROR_DESCRIPTION("error-description"),
 
-    String key();
+    ;
 
-    default String format(FluentBundle bundle) {
-        return bundle.format(key());
-    }
-
-    default String format(FluentBundle bundle, Map<String, ?> args) {
-        return bundle.format(key(), args);
-    }
-
+    private final String key;
 }

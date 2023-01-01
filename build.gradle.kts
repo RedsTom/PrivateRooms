@@ -54,7 +54,11 @@ dependencies {
 
     // Other Utils
     implementation("org.apache.commons:commons-dbcp2:2.9.0")
+    implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("ch.qos.logback:logback-classic:1.4.5")
+
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    annotationProcessor("com.google.code.findbugs:jsr305:3.0.2")
 
     // Project Fluent (for i18n)
     implementation("net.xyzsd.fluent:fluent-base:0.70")
@@ -77,7 +81,7 @@ tasks.withType(JavaCompile::class) {
 tasks.withType(Jar::class) {
     manifest {
         attributes(
-            "Main-Class" to main,
+                "Main-Class" to main,
         )
     }
 }
@@ -94,8 +98,8 @@ spotless {
 
     java {
         googleJavaFormat("1.15.0")
-            .reflowLongStrings()
-            .aosp()
+                .reflowLongStrings()
+                .aosp()
 
         indentWithSpaces(4)
         importOrder()

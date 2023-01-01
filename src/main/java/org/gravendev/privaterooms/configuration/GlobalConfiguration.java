@@ -18,6 +18,10 @@
 
 package org.gravendev.privaterooms.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.gravendev.privaterooms.commands.utils.CommandExecutorRepr;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -25,4 +29,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ComponentScan(basePackages = "org.gravendev.privaterooms")
 @EnableJpaRepositories
-public class GlobalConfiguration {}
+public class GlobalConfiguration {
+
+    @Bean
+    Map<String, CommandExecutorRepr> commands() {
+        return new HashMap<>();
+    }
+}

@@ -18,11 +18,13 @@
 
 package org.gravendev.privaterooms;
 
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import org.gravendev.privaterooms.configuration.GlobalConfiguration;
 import org.gravendev.privaterooms.listeners.utils.Listener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+@Slf4j
 public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
@@ -30,6 +32,7 @@ public class Main {
 
         JDA jda = context.getBean(JDA.class);
 
-        context.getBeansWithAnnotation(Listener.class).values().forEach(jda::addEventListener);
+        context.getBeansWithAnnotation(Listener.class).values()
+                .forEach(jda::addEventListener);
     }
 }

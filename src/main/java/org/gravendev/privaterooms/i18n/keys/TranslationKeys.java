@@ -16,13 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.listeners.utils;
+package org.gravendev.privaterooms.i18n.keys;
 
-import java.lang.annotation.*;
-import org.springframework.stereotype.Component;
+import fluent.bundle.FluentBundle;
+import java.util.Map;
 
-@Component
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Documented
-public @interface Listener {}
+public interface TranslationKeys {
+
+    String key();
+
+    default String format(FluentBundle bundle) {
+        return bundle.format(key());
+    }
+
+    default String format(FluentBundle bundle, Map<String, ?> args) {
+        return bundle.format(key(), args);
+    }
+}

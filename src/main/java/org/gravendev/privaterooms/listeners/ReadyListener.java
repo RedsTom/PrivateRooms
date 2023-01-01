@@ -20,17 +20,72 @@ package org.gravendev.privaterooms.listeners;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.stereotype.Component;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import org.gravendev.privaterooms.commands.utils.CommandContainer;
+import org.gravendev.privaterooms.commands.utils.CommandDeclaration;
+import org.gravendev.privaterooms.commands.utils.CommandExecutor;
+import org.gravendev.privaterooms.commands.utils.CommandExecutorRepr;
+import org.gravendev.privaterooms.i18n.commands.CommandLanguageManager;
+import org.gravendev.privaterooms.listeners.utils.Listener;
+import org.springframework.context.ApplicationContext;
 
-@Component
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Listener
 @RequiredArgsConstructor
 public class ReadyListener extends ListenerAdapter {
 
+    private final ApplicationContext ctx;
+    private final Map<String, CommandExecutorRepr> commands;
+    private final JDA jda;
+    private final CommandLanguageManager clm;
+
     @Override
     public void onReady(@NonNull ReadyEvent event) {
-        // TODO : Register commands and update activity
+        loadCommands();
     }
 
+    private void loadCommands() {
+        List<CommandData> commandData =
+                ctx.getBeansWithAnnotation(CommandContainer.class).values().stream()
+                        .flatMap(a -> Arrays.stream(a.getClass().getMethods())
+                                .filter(m -> m.isAnnotationPresent(CommandDeclaration.class))
+                                .map(m -> {
+                                    try {
+                                        return m.invoke(a, clm);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    return null;
+                                })
+                                .map(CommandData.class::cast))
+                        .toList();
+
+        System.out.println("Command list is : " + commandData);
+
+        this.jda.updateCommands().addCommands(commandData.toArray(CommandData[]::new)).queue();
+
+        Map<String, CommandExecutorRepr> retrievedCommands =
+                ctx.getBeansWithAnnotation(CommandContainer.class).values().stream()
+                        .flatMap(
+                                a ->
+                                        Arrays.stream(a.getClass().getMethods())
+                                                .map(m -> new CommandExecutorRepr(a, m)))
+                        .filter(c -> c.method().isAnnotationPresent(CommandExecutor.class))
+                        .collect(
+                                Collectors.toMap(
+                                        c ->
+                                                c.method()
+                                                        .getAnnotation(CommandExecutor.class)
+                                                        .path(),
+                                        c -> c));
+
+        this.commands.putAll(retrievedCommands);
+    }
 }

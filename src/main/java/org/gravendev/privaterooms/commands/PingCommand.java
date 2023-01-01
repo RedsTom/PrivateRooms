@@ -25,17 +25,18 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.gravendev.privaterooms.commands.utils.CommandContainer;
 import org.gravendev.privaterooms.commands.utils.CommandDeclaration;
 import org.gravendev.privaterooms.commands.utils.CommandExecutor;
-import org.gravendev.privaterooms.i18n.CommandLanguageManager;
 import org.gravendev.privaterooms.i18n.LanguageMap;
-import org.gravendev.privaterooms.i18n.TranslationKeys;
-import org.springframework.stereotype.Component;
+import org.gravendev.privaterooms.i18n.commands.CommandLanguageManager;
+import org.gravendev.privaterooms.i18n.commands.TranslatableCommandData;
+import org.gravendev.privaterooms.i18n.keys.TranslationKeys;
+import org.gravendev.privaterooms.utils.Colors;
 
 import java.util.Map;
 
-@Component
+@CommandContainer
 @RequiredArgsConstructor
 public class PingCommand {
 
@@ -43,7 +44,8 @@ public class PingCommand {
 
     @CommandDeclaration
     public CommandData ping(CommandLanguageManager clm) {
-        return clm.adapt(Commands.slash(PingCommandKeys.PING_NAME.key(), PingCommandKeys.PING_DESCRIPTION.key()));
+        return clm.adapt(new TranslatableCommandData(
+                PingCommandKeys.PING_NAME.key(), PingCommandKeys.PING_DESCRIPTION.key()));
     }
 
     @CommandExecutor("ping")
@@ -53,17 +55,20 @@ public class PingCommand {
         long gateway = event.getJDA().getGatewayPing();
         long rest = event.getJDA().getRestPing().complete();
 
-        MessageEmbed embed = new EmbedBuilder()
-                .setTitle(PingCommandKeys.PING_EMBED_TITLE.format(bundle))
-                .setDescription(PingCommandKeys.PING_EMBED_DESCRIPTION.format(bundle, Map.of(
-                        "gateway", gateway,
-                        "rest", rest
-                )))
-                .build();
+        MessageEmbed embed =
+                new EmbedBuilder()
+                        .setTitle(PingCommandKeys.PING_EMBED_TITLE.format(bundle))
+                        .setDescription(
+                                PingCommandKeys.PING_EMBED_DESCRIPTION.format(
+                                        bundle,
+                                        Map.of(
+                                                "gateway", gateway,
+                                                "rest", rest)))
+                        .setColor(Colors.BLUE)
+                        .build();
 
         event.replyEmbeds(embed).queue();
     }
-
 
     @RequiredArgsConstructor
     @Getter

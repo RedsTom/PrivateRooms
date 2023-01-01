@@ -16,13 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.listeners.utils;
+package org.gravendev.privaterooms.commands.utils;
 
-import java.lang.annotation.*;
-import org.springframework.stereotype.Component;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-@Component
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Documented
-public @interface Listener {}
+public record CommandExecutorRepr(Object instance, Method method) {
+
+    public void run(SlashCommandInteractionEvent event)
+            throws InvocationTargetException, IllegalAccessException {
+        method.invoke(instance, event);
+    }
+}

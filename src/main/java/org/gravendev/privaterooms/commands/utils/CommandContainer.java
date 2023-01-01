@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.gravendev.privaterooms.listeners.utils;
+package org.gravendev.privaterooms.commands.utils;
 
 import java.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 @Component
-@Retention(RetentionPolicy.RUNTIME)
+
 @Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Listener {}
+public @interface CommandContainer {}

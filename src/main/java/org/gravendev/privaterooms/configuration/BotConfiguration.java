@@ -79,8 +79,8 @@ public class BotConfiguration {
 
     @Lazy
     @Bean
-    JDA bot(ConfigModel model) throws InterruptedException {
-        return JDABuilder.create(model.token(), GUILD_VOICE_STATES).build().awaitReady();
+    JDA bot(ConfigModel model) {
+        return JDABuilder.create(model.token(), GUILD_VOICE_STATES).build();
     }
 
     public record ConfigModel(
