@@ -18,14 +18,14 @@
 
 package org.gravendev.privaterooms.i18n.commands;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.util.Map;
-
-@Getter @Setter
+@Getter
+@Setter
 public class TranslatableOptionData extends OptionData implements ITranslatableCommmandData<OptionData> {
 
     private Map<String, Object> args;
@@ -39,7 +39,8 @@ public class TranslatableOptionData extends OptionData implements ITranslatableC
         this(type, nameKey, descriptionKey, isRequired, false);
     }
 
-    public TranslatableOptionData(OptionType type, String nameKey, String descriptionKey, boolean isRequired, boolean isAutoComplete) {
+    public TranslatableOptionData(
+            OptionType type, String nameKey, String descriptionKey, boolean isRequired, boolean isAutoComplete) {
         super(type, CommandUtils.randomCommandName(), CommandUtils.randomCommandName(), isRequired, isAutoComplete);
         this.nameKey = nameKey;
         this.descriptionKey = descriptionKey;

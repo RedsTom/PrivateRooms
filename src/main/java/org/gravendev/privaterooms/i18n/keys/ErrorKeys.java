@@ -21,12 +21,11 @@ package org.gravendev.privaterooms.i18n.keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor @Getter
-public enum ErrorKeys implements TranslationKeys{
-
+@RequiredArgsConstructor
+@Getter
+public enum ErrorKeys implements TranslationKeys {
     ERROR_TITLE("error-title"),
     ERROR_DESCRIPTION("error-description"),
-
     ;
 
     private final String key;

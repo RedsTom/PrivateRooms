@@ -19,6 +19,8 @@
 package org.gravendev.privaterooms.i18n.commands;
 
 import fluent.bundle.FluentBundle;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
@@ -30,11 +32,7 @@ import org.gravendev.privaterooms.i18n.LanguageMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
-
 @AllArgsConstructor
 @Slf4j
 public class CommandLanguageManager {
@@ -104,7 +102,6 @@ public class CommandLanguageManager {
         return rt;
     }
 
-
     public TranslatableOptionData adapt(OptionData data) {
         if (data instanceof TranslatableOptionData d) {
             return adapt(d);
@@ -121,7 +118,6 @@ public class CommandLanguageManager {
 
         return rt;
     }
-
 
     private TranslatableCommandData adapt(TranslatableCommandData data) {
         applyTo(data);
@@ -186,10 +182,9 @@ public class CommandLanguageManager {
         data.setName(defaultBundle.format(name, data.args()));
         data.setDescription(defaultBundle.format(description, data.args()));
 
-        bundles.forEach(
-                (locale, bundle) -> {
-                    data.setNameLocalization(locale, bundle.format(name, data.args()));
-                    data.setDescriptionLocalization(locale, bundle.format(description, data.args()));
-                });
+        bundles.forEach((locale, bundle) -> {
+            data.setNameLocalization(locale, bundle.format(name, data.args()));
+            data.setDescriptionLocalization(locale, bundle.format(description, data.args()));
+        });
     }
 }

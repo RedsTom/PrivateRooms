@@ -49,14 +49,8 @@ public class BotConfiguration {
             Files.createFile(configuration);
 
             ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
-            ConfigModel model =
-                    new ConfigModel(
-                            "TOKEN HERE",
-                            "postgresql://localhost",
-                            5432,
-                            "postgres",
-                            "postgres",
-                            "privaterooms");
+            ConfigModel model = new ConfigModel(
+                    "TOKEN HERE", "postgresql://localhost", 5432, "postgres", "postgres", "privaterooms");
 
             BufferedWriter fileWriter = Files.newBufferedWriter(configuration);
             objectWriter.writeValue(fileWriter, model);
@@ -84,10 +78,5 @@ public class BotConfiguration {
     }
 
     public record ConfigModel(
-            String token,
-            String dbHost,
-            int dbPort,
-            String dbUser,
-            String dbPassword,
-            String dbName) {}
+            String token, String dbHost, int dbPort, String dbUser, String dbPassword, String dbName) {}
 }

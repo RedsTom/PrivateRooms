@@ -19,6 +19,7 @@
 package org.gravendev.privaterooms.commands;
 
 import fluent.bundle.FluentBundle;
+import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -34,8 +35,6 @@ import org.gravendev.privaterooms.i18n.commands.TranslatableCommandData;
 import org.gravendev.privaterooms.i18n.keys.TranslationKeys;
 import org.gravendev.privaterooms.utils.Colors;
 
-import java.util.Map;
-
 @CommandContainer
 @RequiredArgsConstructor
 public class PingCommand {
@@ -44,8 +43,8 @@ public class PingCommand {
 
     @CommandDeclaration
     public CommandData ping(CommandLanguageManager clm) {
-        return clm.adapt(new TranslatableCommandData(
-                PingCommandKeys.PING_NAME.key(), PingCommandKeys.PING_DESCRIPTION.key()));
+        return clm.adapt(
+                new TranslatableCommandData(PingCommandKeys.PING_NAME.key(), PingCommandKeys.PING_DESCRIPTION.key()));
     }
 
     @CommandExecutor("ping")
@@ -55,17 +54,15 @@ public class PingCommand {
         long gateway = event.getJDA().getGatewayPing();
         long rest = event.getJDA().getRestPing().complete();
 
-        MessageEmbed embed =
-                new EmbedBuilder()
-                        .setTitle(PingCommandKeys.PING_EMBED_TITLE.format(bundle))
-                        .setDescription(
-                                PingCommandKeys.PING_EMBED_DESCRIPTION.format(
-                                        bundle,
-                                        Map.of(
-                                                "gateway", gateway,
-                                                "rest", rest)))
-                        .setColor(Colors.BLUE)
-                        .build();
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle(PingCommandKeys.PING_EMBED_TITLE.format(bundle))
+                .setDescription(PingCommandKeys.PING_EMBED_DESCRIPTION.format(
+                        bundle,
+                        Map.of(
+                                "gateway", gateway,
+                                "rest", rest)))
+                .setColor(Colors.BLUE)
+                .build();
 
         event.replyEmbeds(embed).queue();
     }

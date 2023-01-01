@@ -27,12 +27,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @Slf4j
 public class Main {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(GlobalConfiguration.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(GlobalConfiguration.class);
 
         JDA jda = context.getBean(JDA.class);
 
-        context.getBeansWithAnnotation(Listener.class).values()
-                .forEach(jda::addEventListener);
+        context.getBeansWithAnnotation(Listener.class).values().forEach(jda::addEventListener);
     }
 }

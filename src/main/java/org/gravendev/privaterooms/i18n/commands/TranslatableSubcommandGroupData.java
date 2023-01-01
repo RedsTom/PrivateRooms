@@ -18,15 +18,15 @@
 
 package org.gravendev.privaterooms.i18n.commands;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandGroupData;
 
-import java.util.Map;
-
 @Getter
 @Setter
-public class TranslatableSubcommandGroupData extends SubcommandGroupData implements ITranslatableCommmandData<SubcommandGroupData> {
+public class TranslatableSubcommandGroupData extends SubcommandGroupData
+        implements ITranslatableCommmandData<SubcommandGroupData> {
 
     private Map<String, Object> args;
     private String nameKey, descriptionKey;

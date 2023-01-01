@@ -18,26 +18,32 @@
 
 package org.gravendev.privaterooms.i18n.commands;
 
-import net.dv8tion.jda.api.interactions.DiscordLocale;
-
 import java.util.Map;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 
 public interface ITranslatableCommmandData<T> {
 
     String getName();
+
     String nameKey();
+
     String getDescription();
+
     String descriptionKey();
 
     T setName(String name);
+
     T nameKey(String nameKey);
+
     T setDescription(String description);
+
     T descriptionKey(String descriptionKey);
 
     T setNameLocalization(DiscordLocale locale, String text);
+
     T setDescriptionLocalization(DiscordLocale locale, String text);
 
     Map<String, Object> args();
-    T args(Map<String, Object> args);
 
+    T args(Map<String, Object> args);
 }

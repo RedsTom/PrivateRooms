@@ -18,13 +18,12 @@
 
 package org.gravendev.privaterooms.i18n.commands;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -39,34 +38,43 @@ public class TranslatableSubcommandData extends SubcommandData implements ITrans
         this.descriptionKey = descriptionKey;
     }
 
-    @NotNull
-    @Override
-    public SubcommandData addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required, boolean autoComplete) {
+    @NotNull @Override
+    public SubcommandData addOption(
+            @NotNull OptionType type,
+            @NotNull String name,
+            @NotNull String description,
+            boolean required,
+            boolean autoComplete) {
         return addOptions(new TranslatableOptionData(type, name, description)
                 .setRequired(required)
                 .setAutoComplete(autoComplete));
     }
 
-    @NotNull
-    @Override
-    public SubcommandData addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required) {
+    @NotNull @Override
+    public SubcommandData addOption(
+            @NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required) {
         return addOption(type, name, description, required, false);
     }
 
-    @NotNull
-    @Override
+    @NotNull @Override
     public SubcommandData addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description) {
         return addOption(type, name, description, false);
     }
 
-    public SubcommandData addOption(CommandLanguageManager clm, OptionType type, String name, String description, boolean required, boolean autoComplete) {
+    public SubcommandData addOption(
+            CommandLanguageManager clm,
+            OptionType type,
+            String name,
+            String description,
+            boolean required,
+            boolean autoComplete) {
         return addOptions(clm.adapt(new TranslatableOptionData(type, name, description)
                 .setRequired(required)
-                .setAutoComplete(autoComplete)
-        ));
+                .setAutoComplete(autoComplete)));
     }
 
-    public SubcommandData addOption(CommandLanguageManager clm, OptionType type, String name, String description, boolean required) {
+    public SubcommandData addOption(
+            CommandLanguageManager clm, OptionType type, String name, String description, boolean required) {
         return this.addOption(clm, type, name, description, required, false);
     }
 

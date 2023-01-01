@@ -18,6 +18,7 @@
 
 package org.gravendev.privaterooms.i18n.commands;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -26,11 +27,10 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 @Getter
 @Setter
-public class TranslatableCommandData extends CommandDataImpl implements SlashCommandData, ITranslatableCommmandData<CommandDataImpl> {
+public class TranslatableCommandData extends CommandDataImpl
+        implements SlashCommandData, ITranslatableCommmandData<CommandDataImpl> {
 
     private Map<String, Object> args;
     private String nameKey, descriptionKey;
@@ -45,22 +45,25 @@ public class TranslatableCommandData extends CommandDataImpl implements SlashCom
         super(type, CommandUtils.randomCommandName());
     }
 
-    @NotNull
-    @Override
-    public CommandDataImpl addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required, boolean autoComplete) {
+    @NotNull @Override
+    public CommandDataImpl addOption(
+            @NotNull OptionType type,
+            @NotNull String name,
+            @NotNull String description,
+            boolean required,
+            boolean autoComplete) {
         return addOptions(new TranslatableOptionData(type, name, description)
                 .setRequired(required)
                 .setAutoComplete(autoComplete));
     }
 
-    @NotNull
-    @Override
-    public CommandDataImpl addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required) {
+    @NotNull @Override
+    public CommandDataImpl addOption(
+            @NotNull OptionType type, @NotNull String name, @NotNull String description, boolean required) {
         return addOption(type, name, description, required, false);
     }
 
-    @NotNull
-    @Override
+    @NotNull @Override
     public CommandDataImpl addOption(@NotNull OptionType type, @NotNull String name, @NotNull String description) {
         return addOption(type, name, description, false);
     }

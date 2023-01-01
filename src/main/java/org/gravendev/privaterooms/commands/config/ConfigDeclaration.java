@@ -18,6 +18,9 @@
 
 package org.gravendev.privaterooms.commands.config;
 
+import static org.gravendev.privaterooms.commands.config.ConfigDeclaration.ConfigDeclarationKeys.*;
+
+import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -25,16 +28,11 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandGroupData;
 import org.gravendev.privaterooms.commands.utils.CommandContainer;
 import org.gravendev.privaterooms.commands.utils.CommandDeclaration;
-import org.gravendev.privaterooms.i18n.LanguageMap;
 import org.gravendev.privaterooms.i18n.commands.CommandLanguageManager;
 import org.gravendev.privaterooms.i18n.commands.TranslatableCommandData;
 import org.gravendev.privaterooms.i18n.commands.TranslatableSubcommandData;
 import org.gravendev.privaterooms.i18n.commands.TranslatableSubcommandGroupData;
 import org.gravendev.privaterooms.i18n.keys.TranslationKeys;
-
-import java.util.Map;
-
-import static org.gravendev.privaterooms.commands.config.ConfigDeclaration.ConfigDeclarationKeys.*;
 
 @CommandContainer
 @RequiredArgsConstructor
@@ -45,13 +43,8 @@ public class ConfigDeclaration {
     @CommandDeclaration
     public CommandData config(CommandLanguageManager clm) {
         return clm.adapt(new TranslatableCommandData(COMMAND_NAME.key(), COMMAND_DESCRIPTION.key())
-                .addSubcommandGroups(
-                        configGroup("whitelist"),
-                        configGroup("blacklist"),
-                        configGroup("moderators")
-                )
-                .addSubcommands()
-        );
+                .addSubcommandGroups(configGroup("whitelist"), configGroup("blacklist"), configGroup("moderators"))
+                .addSubcommands());
     }
 
     private SubcommandGroupData configGroup(String name) {
@@ -66,14 +59,12 @@ public class ConfigDeclaration {
                         new TranslatableSubcommandData(GROUP_ADD_ROLE_NAME.key, GROUP_ADD_ROLE_DESCRIPTION.key)
                                 .addOption(adapted, OptionType.ROLE, ROLE.key, "\u200E", true),
                         new TranslatableSubcommandData(GROUP_REMOVE_ROLE_NAME.key, GROUP_REMOVE_ROLE_DESCRIPTION.key)
-                                .addOption(adapted, OptionType.ROLE, ROLE.key, "\u200E", true)
-                )));
+                                .addOption(adapted, OptionType.ROLE, ROLE.key, "\u200E", true))));
     }
 
     @RequiredArgsConstructor
     @Getter
     enum ConfigDeclarationKeys implements TranslationKeys {
-
         COMMAND_NAME("commands-config-name"),
         COMMAND_DESCRIPTION("commands-config-description"),
 

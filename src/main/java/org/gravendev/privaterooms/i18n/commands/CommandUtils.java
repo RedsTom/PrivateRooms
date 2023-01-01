@@ -25,5 +25,4 @@ public class CommandUtils {
     public static String randomCommandName() {
         return UUID.randomUUID().toString().substring(12);
     }
-
 }

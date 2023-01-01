@@ -68,15 +68,11 @@ public class LanguageConfiguration {
                 continue;
             }
 
-            FluentBundle bundle =
-                    FluentBundle.builder(locale, CLDRFunctionFactory.INSTANCE)
-                            .addResource(resource)
-                            .build();
+            FluentBundle bundle = FluentBundle.builder(locale, CLDRFunctionFactory.INSTANCE)
+                    .addResource(resource)
+                    .build();
 
-            log.info(
-                    "Loaded file {} for locale {}",
-                    path,
-                    locale.getDisplayLanguage(Locale.ENGLISH));
+            log.info("Loaded file {} for locale {}", path, locale.getDisplayLanguage(Locale.ENGLISH));
             bundles.put(DiscordLocale.from(locale), bundle);
         }
         log.info("Language loading finished! Found {} language(s).", bundles.size());

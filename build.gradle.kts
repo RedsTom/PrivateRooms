@@ -97,9 +97,7 @@ spotless {
     }
 
     java {
-        googleJavaFormat("1.15.0")
-                .reflowLongStrings()
-                .aosp()
+        palantirJavaFormat()
 
         indentWithSpaces(4)
         importOrder()

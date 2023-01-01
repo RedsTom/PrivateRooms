@@ -19,6 +19,7 @@
 package org.gravendev.privaterooms.listeners;
 
 import fluent.bundle.FluentBundle;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -29,8 +30,6 @@ import org.gravendev.privaterooms.i18n.LanguageMap;
 import org.gravendev.privaterooms.i18n.keys.ErrorKeys;
 import org.gravendev.privaterooms.listeners.utils.Listener;
 import org.gravendev.privaterooms.utils.Colors;
-
-import java.util.Map;
 
 @Listener
 @RequiredArgsConstructor
@@ -54,9 +53,7 @@ public class CommandListener extends ListenerAdapter {
                         .setColor(Colors.RED)
                         .build();
 
-                event.replyEmbeds(errorEmbed)
-                        .setEphemeral(true)
-                        .queue();
+                event.replyEmbeds(errorEmbed).setEphemeral(true).queue();
             }
         }
     }

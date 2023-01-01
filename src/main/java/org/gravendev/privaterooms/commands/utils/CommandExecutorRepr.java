@@ -24,8 +24,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 public record CommandExecutorRepr(Object instance, Method method) {
 
-    public void run(SlashCommandInteractionEvent event)
-            throws InvocationTargetException, IllegalAccessException {
+    public void run(SlashCommandInteractionEvent event) throws InvocationTargetException, IllegalAccessException {
         method.invoke(instance, event);
     }
 }
