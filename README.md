@@ -9,7 +9,7 @@
 All the projects in the <code>GravenDev</code> organisation are used by the discord server <code>
 discord.gg/graven</code> both by the moderators and the members.
 Most of the contributors are part of the staff but the members are also allowed to contribute.
-  
+
 ---
 ## Global informations
 
@@ -26,7 +26,7 @@ Most of the contributors are part of the staff but the members are also allowed 
 | Current State          | 🛠️ WIP     |
 | Estimated release date | ~12/24/2023 |
 
---- 
+---
 ## Host it yourself
 The PrivateRooms bot is a publicly available bot but can be hosted on your own server.
 It's not that complicated, but it needs few steps to get it to work.
