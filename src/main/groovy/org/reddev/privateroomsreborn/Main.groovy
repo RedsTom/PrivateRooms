@@ -6,13 +6,18 @@ import groovy.transform.CompileStatic
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.activity.ActivityType
+import org.javacord.api.entity.intent.Intent
+import org.javacord.api.entity.message.embed.EmbedBuilder
 import org.javacord.api.entity.user.UserStatus
+import org.javacord.api.interaction.SlashCommandInteraction
 import org.reddev.privateroomsreborn.commands.utils.CommandManager
 import org.reddev.privateroomsreborn.events.VoiceJoinListener
 import org.reddev.privateroomsreborn.events.VoiceLeaveListener
 import org.reddev.privateroomsreborn.utils.BotConfig
 import org.reddev.privateroomsreborn.utils.general.LangUtils
 import org.simpleyaml.configuration.file.YamlConfiguration
+
+import java.awt.Color
 
 import static org.reddev.privateroomsreborn.utils.ETerminalColors.*
 
@@ -31,12 +36,33 @@ class Main {
             LangUtils.createLangFiles(config)
             LangUtils.updateLanguageCache(config)
 
-            DiscordApi api = new DiscordApiBuilder().setToken(config.token).login().join()
+            DiscordApi api = new DiscordApiBuilder()
+                    .setAllIntents()
+                    .setToken(config.token)
+                    .login().join()
 
             api.addMessageCreateListener { CommandManager.onMessage(it, config) }
             api.addServerVoiceChannelMemberJoinListener(new VoiceJoinListener())
             api.addServerVoiceChannelMemberLeaveListener(new VoiceLeaveListener())
-            api.updateActivity(ActivityType.LISTENING, "${config.defaultPrefix}help | " + api.owner.get().discriminatedName)
+            api.addSlashCommandCreateListener { event ->
+                def interaction = event.getSlashCommandInteraction()
+
+                interaction.createImmediateResponder()
+                        .addEmbed(new EmbedBuilder()
+                                .setTitle("Oups !")
+                                .setColor(Color.ORANGE)
+                                .setDescription("""
+                                    On dirait bien que le développeur n'a pas encore implémenté les slash commands !
+                                    Il va falloir continuer à utiliser les bonnes vieilles commandes !
+                                    
+                                    `%help` Donne de l'aide sur les commandes
+                                    `%config` Configure le salon vocal actuel
+                                    `%template` Configure les modèles de salons
+                                """.stripIndent())
+                        )
+                        .respond()
+            }
+            api.updateActivity(ActivityType.LISTENING, "${config.defaultPrefix}help")
             api.updateStatus(UserStatus.DO_NOT_DISTURB)
         }
     }

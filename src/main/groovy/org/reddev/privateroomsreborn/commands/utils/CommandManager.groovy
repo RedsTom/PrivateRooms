@@ -35,7 +35,7 @@ class CommandManager {
         if (event.message.author.botUser) {
             return
         }
-        if (event.message.groupMessage) {
+        if (event.message.privateMessage){
             event.channel.sendMessage(l("errors.no-dm", "en"))
             return
         }

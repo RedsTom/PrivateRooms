@@ -62,7 +62,7 @@ class CommandUtils {
     static int bitmask(PermissionType... permissionTypes) {
         int bitmask = 0x0
         for (def permissionType in permissionTypes) {
-            bitmask = bitmask + permissionType.value
+            bitmask = (bitmask + permissionType.value).toInteger()
         }
         return bitmask
     }
