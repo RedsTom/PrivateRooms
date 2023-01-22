@@ -31,7 +31,7 @@ class PrivateChannel {
     @Expose
     String name
     @Expose
-    int userLimit = 99
+    int userLimit = 0
     @Expose
     List<Long> whitelistedUsers = [], blacklistedUsers = [], whitelistedRoles = [], blacklistedRoles = [], moderators = []
     @Expose
@@ -47,11 +47,31 @@ class PrivateChannel {
      */
     CompletableFuture<Void> create(DiscordApi api) {
         Server server = api.getServerById(serverId).get()
+        ServerConfig config = ConfigUtils.getServerConfig(server)
+        ChannelCategory category = server.getChannelCategoryById(config.categoryId).get()
 
-        server.createVoiceChannelBuilder().setName("Channel creating...").create().thenAccept({
-            this.channelId = it.id
-            this.update(api)
-        })
+        def builder = server.createVoiceChannelBuilder()
+                .setName(name)
+                .setUserlimit(userLimit)
+                .setCategory(category)
+
+        moderators.forEach { userId ->
+            User user = api.getUserById(userId).get()
+            builder.addPermissionOverwrite(user,
+                    Permissions.fromBitmask(bitmask(
+                            PermissionType.MOVE_MEMBERS,
+                            PermissionType.CONNECT,
+                            PermissionType.SEND_MESSAGES),
+                            bitmask()
+                    )
+            )
+        }
+
+        builder
+                .create()
+                .thenAccept({
+                    this.channelId = it.id
+                })
     }
 
     static <T extends DiscordEntity & Permissionable> CompletableFuture<Void> clear(ServerVoiceChannel channel, T permissible) {

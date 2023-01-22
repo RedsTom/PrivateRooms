@@ -20,7 +20,7 @@ class VoiceJoinListener implements ServerVoiceChannelMemberJoinListener {
 
             PrivateChannel channel = new PrivateChannel(
                     name: "🔓 ${event.user.getDisplayName(server)}'s channel",
-                    userLimit: 99,
+                    userLimit: 0,
                     moderators: Arrays.asList(event.user.id),
                     serverId: server.id,
             )
