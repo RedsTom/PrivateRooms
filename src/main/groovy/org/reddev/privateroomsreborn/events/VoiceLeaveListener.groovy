@@ -12,7 +12,7 @@ class VoiceLeaveListener implements ServerVoiceChannelMemberLeaveListener {
         if (!event.channel.category.isPresent()) return
         if (event.channel.connectedUsers.size() == 0) {
             if (event.channel.category.get().idAsString == config.categoryId
-                    && !config.whitelistedVoiceChannels.contains(event.channel.id)
+                    && !config.whitelistedVoiceChannels?.contains(event.channel.id)
                     && event.channel.idAsString != config.createChannelId) {
                 event.channel.delete("No longer users in channel")
             }

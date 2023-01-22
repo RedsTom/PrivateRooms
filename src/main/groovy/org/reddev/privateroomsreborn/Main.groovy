@@ -84,14 +84,14 @@ class Main {
             String defaultConfig = '''
                     |# Token of the bot
                     |token: TOKEN HERE
-                    |prefix: %
+                    |prefix: '%'
                     |languages:
                     |   - us
                     |   - fr
                     |# Admins of the bot
                     |bot-ops:
                     |   # Enter the ID of the op as key, and the discriminator as value
-                    |723471302123323434: "0135"
+                    |723471302123323434: "4616"
             '''.stripMargin()
 
             defaultConfig.readLines().forEach { line ->
