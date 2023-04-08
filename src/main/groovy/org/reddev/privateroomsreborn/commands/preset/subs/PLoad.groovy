@@ -30,7 +30,7 @@ class PLoad implements TCommand {
 
         Gson gson = Main.GSON
         String name = args.join(" ")
-        ConfigUtils.loadTemplate(gson, event.messageAuthor, name, channel).thenAccept { correct ->
+        ConfigUtils.loadTemplate(gson, event.messageAuthor.asUser().get(), name, channel).thenAccept { correct ->
             if (correct) {
                 channel.moderators.add(event.messageAuthor.id)
                 channel.update(event.api)

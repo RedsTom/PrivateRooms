@@ -153,3 +153,20 @@ cmd:
       error:
         absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur pour cet utilisateur !"
         not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon !"
+    list:
+      description: "Affiche la liste des presets enregistrés sur le serveur"
+      title: "Liste des presets"
+      no-presets: "Vous n'avez aucun preset enregistré !"
+    default:
+      description: "Charge les paramètres par défaut du salon"
+      reset:
+        description: "Réinitialiser les paramètres par défaut du salon"
+        title: "Réinitialisation des paramètres par défaut"
+        no-default: "<:no:739186219333976084> Aucun paramètre par défaut n'a été trouvé pour cet utilisateur !"
+        success: "<:yes:739186219338170421> Les paramètres par défaut ont bien été réinitialisés !"
+      set:
+        description: "Définir les paramètres par défaut du salon"
+        title: "Définition des paramètres par défaut"
+        not-found: "<:no:739186219333976084> Aucun preset avec ce nom n'a été trouvé pour cet utilisateur !"
+        error: "<:no:739186219333976084> Une erreur est survenue lors de la définition des paramètres par défaut !"
+        success: "<:yes:739186219338170421> Les paramètres par défaut ont bien été définis !"

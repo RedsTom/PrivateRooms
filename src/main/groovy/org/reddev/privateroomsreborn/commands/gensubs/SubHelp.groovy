@@ -40,7 +40,7 @@ class SubHelp implements TCommand {
                 |
                 | > **${l("cmd.help.embed.aliases", event.server.get())}**
                 | `${name.join("`, `")}`
-                | ~~------------------------------~~
+                | ~~--------------------~~
                 """.stripMargin(), true)
                 }
             }
