@@ -24,7 +24,7 @@ cmd:
   # Setup command
   setup:
     description: "Set up the category and the channel to create a private room"
-    success: "<:yes:739186219338170421> The category and the channel has been created"
+    success: "<:yes:739186219338170421> The category and the channel have been created"
 
   # Reload language command
   reload-languages:
@@ -153,3 +153,7 @@ cmd:
       error:
         absent: "<:no:739186219333976084> The preset `%s` does not exist for this user !"
         not-moderator: "<:no:739186219333976084> You're not a moderator in this channel !"
+    list:
+      description: "Shows the list of all the presets registered for this user."
+      title: "Presets list"
+      no-presets: "You have not presets saved!"

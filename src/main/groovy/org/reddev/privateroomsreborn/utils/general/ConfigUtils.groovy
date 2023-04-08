@@ -108,4 +108,12 @@ class ConfigUtils {
         if (!serverFolder.exists()) serverFolder.mkdir()
         serverFolder
     }
+
+    static File getTemplateFolder(MessageAuthor user) {
+        File templatesFolder = new File(System.getProperty("user.dir"), "templates/")
+        if (!templatesFolder.exists()) return null
+        File serverFolder = new File(templatesFolder, "${user.id}/")
+        if (!serverFolder.exists()) return null
+        serverFolder
+    }
 }

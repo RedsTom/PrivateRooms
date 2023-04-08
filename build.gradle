@@ -1,4 +1,5 @@
 plugins {
+    id 'java'
     id 'groovy'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
@@ -38,5 +39,15 @@ dependencies {
     implementation 'com.moandjiezana.toml:toml4j:0.7.2'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = [] // don't compile Java code twice
+        }
+        groovy {
+            srcDirs = [ 'src/main/groovy', 'src/main/java']
+        }
+    }
+}
 
 sourceCompatibility = targetCompatibility = '1.8'
