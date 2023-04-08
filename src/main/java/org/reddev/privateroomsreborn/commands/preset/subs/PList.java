@@ -20,7 +20,7 @@ public class PList implements TCommand {
     @Override
     public void execute(MessageCreateEvent event, BotConfig config, String cmd, String[] args) {
 
-        File folder = ConfigUtils.getTemplateFolder(event.getMessageAuthor());
+        File folder = ConfigUtils.getTemplateFolder(event.getMessageAuthor().asUser().get());
 
         if (folder == null || !folder.exists() || folder.listFiles().length == 0) {
             EmbedBuilder eb = new EmbedBuilder()
