@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
 
 class ConfigUtils {
 
-    static boolean saveTemplate(Gson gson, MessageAuthor user, String name, String content) {
+    static boolean saveTemplate(Gson gson, User user, String name, String content) {
         def userFolder = createTemplateFolder(user)
 
         File file = new File(userFolder, "${name}.json")
