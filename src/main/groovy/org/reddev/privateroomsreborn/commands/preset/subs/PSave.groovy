@@ -31,7 +31,7 @@ class PSave implements TCommand {
 
         Gson gson = Main.GSON
         String jsonOutput = gson.toJson(channel)
-        if (ConfigUtils.saveTemplate(gson, event.messageAuthor, args.join(" "), jsonOutput)) {
+        if (ConfigUtils.saveTemplate(gson, event.messageAuthor.asUser().get(), args.join(" "), jsonOutput)) {
             event.channel.sendMessage(j(l("cmd.preset.save.success", event.server.get()), args.join(" ")))
         } else {
             event.channel.sendMessage(j(l("cmd.preset.save.error.already-exists", event.server.get()), args.join(" ")))
