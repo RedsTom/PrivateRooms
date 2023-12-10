@@ -6,10 +6,10 @@ settings:
 # Errors that can happen
 errors:
   error: "Erreur"
-  no-exists: "<:no:739186219333976084> Cette commande n'existe pas !"
-  incorrect-syntax: "<:no:739186219333976084> Utilisation incorrecte ! Veuillez utiliser : "
-  no-dm: "<:no:739186219333976084> Le bot ne supporte pas les commandes en MP !"
-  no-permission: "<:no:739186219333976084> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !"
+  no-exists: "<:no:767085333270626345> Cette commande n'existe pas !"
+  incorrect-syntax: "<:no:767085333270626345> Utilisation incorrecte ! Veuillez utiliser : "
+  no-dm: "<:no:767085333270626345> Le bot ne supporte pas les commandes en MP !"
+  no-permission: "<:no:767085333270626345> Désolé, mais vous n'avez pas la permission d'exécuter cette commande !"
 
 # Command messages
 cmd:
@@ -24,12 +24,12 @@ cmd:
   # Setup command
   setup:
     description: "Mets en place la catégorie et le salon pour créer un salon privé"
-    success: "<:yes:739186219338170421> La catégorie et le salon ont été créés"
+    success: "<:yes:767085333581791263> La catégorie et le salon ont été créés"
 
   # Reload language command
   reload-languages:
     description: "Recharge les fichiers de langue"
-    success: "<:yes:739186219338170421> Les fichiers de langue ont été rechargés"
+    success: "<:yes:767085333581791263> Les fichiers de langue ont été rechargés"
 
   # Ping command
   ping:
@@ -40,10 +40,10 @@ cmd:
   config:
     description: "Configure le salon vocal actuel"
     error:
-      not-in-voice-channel: "<:no:739186219333976084> Vous n'êtes pas dans un salon vocal"
-      not-a-private-room: "<:no:739186219333976084> Vous n'êtes pas dans un salon privé"
-      not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon"
-      cannot-find-user: "<:no:739186219333976084> Impossible de trouver l'utilisateur avec l'id **``%s``**"
+      not-in-voice-channel: "<:no:767085333270626345> Vous n'êtes pas dans un salon vocal"
+      not-a-private-room: "<:no:767085333270626345> Vous n'êtes pas dans un salon privé"
+      not-moderator: "<:no:767085333270626345> Vous n'êtes pas modérateur de ce salon"
+      cannot-find-user: "<:no:767085333270626345> Impossible de trouver l'utilisateur avec l'id **``%s``**"
     # Sub commands
     whitelist:
       description: "Gère la list blanche de votre salon"
@@ -54,17 +54,17 @@ cmd:
       add:
         role:
           description: "Ajoute un role à la liste blanche de votre salon"
-          success: "<:yes:739186219338170421> Le role **``%s``** a bien été ajouté à la liste blanche du salon"
+          success: "<:yes:767085333581791263> Le role **``%s``** a bien été ajouté à la liste blanche du salon"
         user:
           description: "Ajoute un utilisateur à la liste blanche de votre salon"
-          success: "<:yes:739186219338170421> L'utilisateur **``%s``** a bien été ajouté à la liste blanche du salon"
+          success: "<:yes:767085333581791263> L'utilisateur **``%s``** a bien été ajouté à la liste blanche du salon"
       remove:
         role:
           description: "Retire un role de la liste blanche de votre salon"
-          success: "<:yes:739186219338170421> Le role **``%s``** a bien été retiré de la liste blanche du salon"
+          success: "<:yes:767085333581791263> Le role **``%s``** a bien été retiré de la liste blanche du salon"
         user:
           description: "Retire un utilisateur de la liste blanche de votre salon"
-          success: "<:yes:739186219338170421> L'utilisateur  **``%s``** a bien été retiré de la liste blanche du salon"
+          success: "<:yes:767085333581791263> L'utilisateur  **``%s``** a bien été retiré de la liste blanche du salon"
     blacklist:
       description: "Gère la list noire de votre salon"
       show:
@@ -74,17 +74,17 @@ cmd:
       add:
         role:
           description: "Ajoute un role à la liste noire de votre salon"
-          success: "<:yes:739186219338170421> Le role **``%s``** a bien été ajouté à la liste noire du salon"
+          success: "<:yes:767085333581791263> Le role **``%s``** a bien été ajouté à la liste noire du salon"
         user:
           description: "Ajoute un utilisateur à la liste noire de votre salon"
-          success: "<:yes:739186219338170421> L'utilisateur **``%s``** a bien été ajouté à la liste noire du salon"
+          success: "<:yes:767085333581791263> L'utilisateur **``%s``** a bien été ajouté à la liste noire du salon"
       remove:
         role:
           description: "Retire un role de la liste noire de votre salon"
-          success: "<:yes:739186219338170421> Le role **``%s``** a bien été retiré de la liste noire du salon"
+          success: "<:yes:767085333581791263> Le role **``%s``** a bien été retiré de la liste noire du salon"
         user:
           description: "Retire un utilisateur de la liste noire de votre salon"
-          success: "<:yes:739186219338170421> L'utilisateur  **``%s``** a bien été retiré de la liste noire du salon"
+          success: "<:yes:767085333581791263> L'utilisateur  **``%s``** a bien été retiré de la liste noire du salon"
     moderators:
       description: "Gère les modérateurs de votre salon"
       show:
@@ -93,25 +93,25 @@ cmd:
         no-value-present: "Pas d'entrées"
       add:
         description: "Ajoute un utilisateur à la liste des modérateurs"
-        success: "<:yes:739186219338170421> L'utilisateur **`%s`** a bien été ajouté à la liste des modérateurs"
+        success: "<:yes:767085333581791263> L'utilisateur **`%s`** a bien été ajouté à la liste des modérateurs"
       remove:
         description: "Retire un utilisateur de la liste des modérateurs"
-        success: "<:yes:739186219338170421> L'utilisateur **`%s`** a bien été retiré de la liste des modérateurs"
+        success: "<:yes:767085333581791263> L'utilisateur **`%s`** a bien été retiré de la liste des modérateurs"
     name:
       description: "Change le nom de votre salon"
-      success: "<:yes:739186219338170421> Le nom de votre salon a bien été changé pour **`%s`**"
+      success: "<:yes:767085333581791263> Le nom de votre salon a bien été changé pour **`%s`**"
     user-limit:
       description: "Ajoute une limite d'utilisateurs à votre salon (0 pour désactiver)"
-      success: "<:yes:739186219338170421> La limite d'utilisateur du salon a bien été définie à **%s**"
+      success: "<:yes:767085333581791263> La limite d'utilisateur du salon a bien été définie à **%s**"
     public:
       description: "Rend le salon privé actuel public"
-      success: "<:yes:739186219338170421> Le salon a bien été rendu public"
+      success: "<:yes:767085333581791263> Le salon a bien été rendu public"
     private:
       description: "Rend le salon privé actuel non-accessible"
-      success: "<:yes:739186219338170421> Le salon a bien été rendu privé"
+      success: "<:yes:767085333581791263> Le salon a bien été rendu privé"
     hide:
       description: "Cache le salon privé actuel"
-      success: "<:yes:739186219338170421> Le salon a bien été caché"
+      success: "<:yes:767085333581791263> Le salon a bien été caché"
 
   # Settings command
   settings:
@@ -132,27 +132,27 @@ cmd:
         description: "La langue du bot a été changée vers le"
     wvc:
       description: "Ajoute un salon à la liste des salons ne se supprimant pas automatiquement"
-      success: "<:yes:739186219338170421> Le salon `%s` a bien été ajouté à la liste des salons ne se supprimant pas automatiquement"
+      success: "<:yes:767085333581791263> Le salon `%s` a bien été ajouté à la liste des salons ne se supprimant pas automatiquement"
 
   # Preset command
   preset:
     description: "Gère les preset du serveur actuel"
     error:
-      not-in-voice-channel: "<:no:739186219333976084> Vous n'êtes pas dans un salon vocal"
-      not-a-private-room: "<:no:739186219333976084> Vous n'êtes pas dans un salon privé"
-      not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon"
+      not-in-voice-channel: "<:no:767085333270626345> Vous n'êtes pas dans un salon vocal"
+      not-a-private-room: "<:no:767085333270626345> Vous n'êtes pas dans un salon privé"
+      not-moderator: "<:no:767085333270626345> Vous n'êtes pas modérateur de ce salon"
     save:
       description: "Sauvegarde les paramètres actuels du salon sous un nom, afin de pouvoir être rechargé par la suite"
       error:
-        already-exists: "<:no:739186219333976084> Le nom `%s` existe déjà sur ce serveur !"
-        no-argument: "<:no:739186219333976084> Veuillez préciser un nom de preset !"
-      success: "<:yes:739186219338170421> Le preset a été sauvegardé sous le nom `%s`"
+        already-exists: "<:no:767085333270626345> Le nom `%s` existe déjà sur ce serveur !"
+        no-argument: "<:no:767085333270626345> Veuillez préciser un nom de preset !"
+      success: "<:yes:767085333581791263> Le preset a été sauvegardé sous le nom `%s`"
     load:
       description: "Charge les paramètres du salon selon un preset enregistré précédemment"
-      success: "<:yes:739186219338170421> Le preset `%s` a bien été chargé"
+      success: "<:yes:767085333581791263> Le preset `%s` a bien été chargé"
       error:
-        absent: "<:no:739186219333976084> Le preset `%s` n'existe pas sur pour cet utilisateur !"
-        not-moderator: "<:no:739186219333976084> Vous n'êtes pas modérateur de ce salon !"
+        absent: "<:no:767085333270626345> Le preset `%s` n'existe pas sur pour cet utilisateur !"
+        not-moderator: "<:no:767085333270626345> Vous n'êtes pas modérateur de ce salon !"
     list:
       description: "Affiche la liste des presets enregistrés sur le serveur"
       title: "Liste des presets"
@@ -162,11 +162,17 @@ cmd:
       reset:
         description: "Réinitialiser les paramètres par défaut du salon"
         title: "Réinitialisation des paramètres par défaut"
-        no-default: "<:no:739186219333976084> Aucun paramètre par défaut n'a été trouvé pour cet utilisateur !"
-        success: "<:yes:739186219338170421> Les paramètres par défaut ont bien été réinitialisés !"
+        no-default: "<:no:767085333270626345> Aucun paramètre par défaut n'a été trouvé pour cet utilisateur !"
+        success: "<:yes:767085333581791263> Les paramètres par défaut ont bien été réinitialisés !"
       set:
         description: "Définir les paramètres par défaut du salon"
         title: "Définition des paramètres par défaut"
-        not-found: "<:no:739186219333976084> Aucun preset avec ce nom n'a été trouvé pour cet utilisateur !"
-        error: "<:no:739186219333976084> Une erreur est survenue lors de la définition des paramètres par défaut !"
-        success: "<:yes:739186219338170421> Les paramètres par défaut ont bien été définis !"
+        not-found: "<:no:767085333270626345> Aucun preset avec ce nom n'a été trouvé pour cet utilisateur !"
+        error: "<:no:767085333270626345> Une erreur est survenue lors de la définition des paramètres par défaut !"
+        success: "<:yes:767085333581791263> Les paramètres par défaut ont bien été définis !"
+    delete:
+      description: "Supprime un preset enregistré"
+      success: "<:yes:767085333581791263> Le preset `%s` a bien été supprimé"
+      error:
+        not-found: "<:no:767085333270626345> Le preset `%s` n'existe pas pour cet utilisateur !"
+        generic: "<:no:767085333270626345> Une erreur est survenue lors de la suppression du preset `%s`"

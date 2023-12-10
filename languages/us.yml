@@ -6,10 +6,10 @@ settings:
 # Errors that can happen
 errors:
   error: "Error"
-  no-exists: "<:no:739186219333976084> This command does not exist"
-  incorrect-syntax: "<:no:739186219333976084> Incorrect usage ! Please use : "
-  no-dm: "<:no:739186219333976084> The bot does not support DM commands !"
-  no-permission: "<:no:739186219333976084> Sorry, but you don't have enough permissions to execute this command !"
+  no-exists: "<:no:767085333270626345> This command does not exist"
+  incorrect-syntax: "<:no:767085333270626345> Incorrect usage ! Please use : "
+  no-dm: "<:no:767085333270626345> The bot does not support DM commands !"
+  no-permission: "<:no:767085333270626345> Sorry, but you don't have enough permissions to execute this command !"
 
 # Command messages
 cmd:
@@ -24,12 +24,12 @@ cmd:
   # Setup command
   setup:
     description: "Set up the category and the channel to create a private room"
-    success: "<:yes:739186219338170421> The category and the channel have been created"
+    success: "<:yes:767085333581791263> The category and the channel have been created"
 
   # Reload language command
   reload-languages:
     description: "Reloads the languages files"
-    success: "<:yes:739186219338170421> The languages files has been reloaded"
+    success: "<:yes:767085333581791263> The languages files has been reloaded"
 
   # Ping command
   ping:
@@ -40,10 +40,10 @@ cmd:
   config:
     description: "Configures your actual private room"
     error:
-      not-in-voice-channel: "<:no:739186219333976084> You are not in a voice channel"
-      not-a-private-room: "<:no:739186219333976084> You are not in a private room"
-      not-moderator: "<:no:739186219333976084> You're not a moderator in this channel"
-      cannot-find-user: "<:no:739186219333976084> Unable to find the user with the id **`%s`**"
+      not-in-voice-channel: "<:no:767085333270626345> You are not in a voice channel"
+      not-a-private-room: "<:no:767085333270626345> You are not in a private room"
+      not-moderator: "<:no:767085333270626345> You're not a moderator in this channel"
+      cannot-find-user: "<:no:767085333270626345> Unable to find the user with the id **`%s`**"
     # Sub commands
     whitelist:
       description: "Manages the whitelist of your channel"
@@ -54,17 +54,17 @@ cmd:
       add:
         role:
           description: "Adds a role to the whitelist of your channel"
-          success: "<:yes:739186219338170421> The role **`%s`** has been added to the whitelist of your channel"
+          success: "<:yes:767085333581791263> The role **`%s`** has been added to the whitelist of your channel"
         user:
           description: "Adds an user to the whitelist of your channel"
-          success: "<:yes:739186219338170421> The user **%s** has been added to your channel's whitelist"
+          success: "<:yes:767085333581791263> The user **%s** has been added to your channel's whitelist"
       remove:
         role:
           description: "Removes a role from the whitelist of your channel"
-          success: "<:yes:739186219338170421> The role **`%s`** has been removed from the whitelist of your channel"
+          success: "<:yes:767085333581791263> The role **`%s`** has been removed from the whitelist of your channel"
         user:
           description: "Removes an user from the whitelist of your channel"
-          success: "<:yes:739186219338170421> The user **`%s`** has been removed from the whitelist of your channel"
+          success: "<:yes:767085333581791263> The user **`%s`** has been removed from the whitelist of your channel"
     blacklist:
       description: "Manages the blacklist of your channel"
       show:
@@ -74,17 +74,17 @@ cmd:
       add:
         role:
           description: "Adds a role to the blacklist of your channel"
-          success: "<:yes:739186219338170421> The role **`%s`** has been added to the blacklist of your channel"
+          success: "<:yes:767085333581791263> The role **`%s`** has been added to the blacklist of your channel"
         user:
           description: "Adds an user to the blacklist of your channel"
-          success: "<:yes:739186219338170421> The user **%s** has been added to your channel's blacklist"
+          success: "<:yes:767085333581791263> The user **%s** has been added to your channel's blacklist"
       remove:
         role:
           description: "Removes a role from the blacklist of your channel"
-          success: "<:yes:739186219338170421> The role **`%s`** has been removed from the blacklist of your channel"
+          success: "<:yes:767085333581791263> The role **`%s`** has been removed from the blacklist of your channel"
         user:
           description: "Removes an user from the blacklist of your channel"
-          success: "<:yes:739186219338170421> The user **`%s`** has been removed from the blacklist of your channel"
+          success: "<:yes:767085333581791263> The user **`%s`** has been removed from the blacklist of your channel"
     moderators:
       description: "Manages the moderators of your channel"
       show:
@@ -93,33 +93,33 @@ cmd:
         no-value-present: "No entry"
       add:
         description: "Adds an user to the moderators list"
-        success: "<:yes:739186219338170421> The user **`%s`** has been added to the moderators of your channel"
+        success: "<:yes:767085333581791263> The user **`%s`** has been added to the moderators of your channel"
       remove:
         description: "Removes an user from the moderators list"
-        success: "<:yes:739186219338170421> The user **`%s`** has been removed to the moderators of your channel"
+        success: "<:yes:767085333581791263> The user **`%s`** has been removed to the moderators of your channel"
   name:
     description: "Changes the name of your channel"
-    success: "<:yes:739186219338170421> The name of your channel has been set to **`%s`**"
+    success: "<:yes:767085333581791263> The name of your channel has been set to **`%s`**"
   user-limit:
     description: "Adds an user limit to your channel (0 to disable)"
-    success: "<:yes:739186219338170421> The user limit of the channel has been defined to **`%s`**"
+    success: "<:yes:767085333581791263> The user limit of the channel has been defined to **`%s`**"
   public:
     description: "Makes the actual private room public"
-    success: "<:yes:739186219338170421> The channel has been make public"
+    success: "<:yes:767085333581791263> The channel has been make public"
   private:
     description: "Makes the actual private room private"
-    success: "<:yes:739186219338170421> The channel has been make private"
+    success: "<:yes:767085333581791263> The channel has been make private"
   hide:
     description: "Hides the actual private room"
-    success: "<:yes:739186219338170421> The channel has been hidden"
+    success: "<:yes:767085333581791263> The channel has been hidden"
 
   # Settings command
   settings:
     description: "Configures the bot specifically for the current server"
     error:
-      not-in-voice-channel: "<:no:739186219333976084> You are not in a voice channel"
-      not-a-private-room: "<:no:739186219333976084> You are not in a private room"
-      not-moderator: "<:no:739186219333976084> You're not a moderator in this channel"
+      not-in-voice-channel: "<:no:767085333270626345> You are not in a voice channel"
+      not-a-private-room: "<:no:767085333270626345> You are not in a private room"
+      not-moderator: "<:no:767085333270626345> You're not a moderator in this channel"
     # Sub commands
     current:
       description: "Shows the current settings of the serveur"
@@ -136,7 +136,7 @@ cmd:
         description: "The bot's language has been set to"
     wvc:
       description: "Adds a channel to the non-deleting channels list"
-      success: "<:yes:739186219338170421> The channel `%s` has been added to the non-deleting channels"
+      success: "<:yes:767085333581791263> The channel `%s` has been added to the non-deleting channels"
 
   # Preset command
   preset:
@@ -144,15 +144,15 @@ cmd:
     save:
       description: "Saves the settings of your channel to a file"
       error:
-        already-exists: "<:no:739186219333976084> The preset `%s` already exists on this server !"
-        no-argument: "<:no:739186219333976084> Please precise the preset name !"
-      success: "<:yes:739186219338170421> The preset has been saved as `%s`"
+        already-exists: "<:no:767085333270626345> The preset `%s` already exists on this server !"
+        no-argument: "<:no:767085333270626345> Please precise the preset name !"
+      success: "<:yes:767085333581791263> The preset has been saved as `%s`"
     load:
       description: "Loads the settings of the channel based on a previous-saved preset"
-      success: "<:yes:739186219338170421> The preset `%s` has been loaded"
+      success: "<:yes:767085333581791263> The preset `%s` has been loaded"
       error:
-        absent: "<:no:739186219333976084> The preset `%s` does not exist for this user !"
-        not-moderator: "<:no:739186219333976084> You're not a moderator in this channel !"
+        absent: "<:no:767085333270626345> The preset `%s` does not exist for this user !"
+        not-moderator: "<:no:767085333270626345> You're not a moderator in this channel !"
     list:
       description: "Shows the list of all the presets registered for this user."
       title: "Presets list"
@@ -162,10 +162,16 @@ cmd:
       reset:
         description: "Reset channel's default configuration"
         title: "Reset default configuration"
-        no-default: "<:no:739186219333976084> No default configuration has been found for this user !"
-        success: "<:yes:739186219338170421> The default configuration has been reset !"
+        no-default: "<:no:767085333270626345> No default configuration has been found for this user !"
+        success: "<:yes:767085333581791263> The default configuration has been reset !"
       set:
         description: "Set the default configuration of the channel"
         title: "Set default configuration"
-        not-found: "<:no:739186219333976084> No preset with this name has been found for this user !"
-        error: "<:no:739186219333976084> An error has occurred while setting the default configuration !"
+        not-found: "<:no:767085333270626345> No preset with this name has been found for this user !"
+        error: "<:no:767085333270626345> An error has occurred while setting the default configuration !"
+    delete:
+      description: "Deletes a preset"
+      success: "<:yes:767085333581791263> The preset `%s` has been deleted"
+      error:
+        not-found: "<:no:767085333270626345> The preset `%s` does not exist for this user !"
+        generic: "<:no:767085333270626345> An error has occurred while deleting the preset `%s` !"
