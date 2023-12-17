@@ -32,7 +32,7 @@ class CommandPreset implements TCommand {
         subCommands.put(["load"], new PLoad())
         subCommands.put(["list", "=", "show"], new PList())
         subCommands.put(["default", "def"], new PDefault())
-        subCommands.put(["delete", "dev", "remove", "rm", "-"], new PDelete())
+        subCommands.put(["delete", "del", "remove", "rm", "-"], new PDelete())
     }
 
     @Override
